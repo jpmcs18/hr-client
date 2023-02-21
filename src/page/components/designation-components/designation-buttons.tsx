@@ -9,9 +9,13 @@ import Pagination from '../pagination';
 export default function DesignationButtons({
   onNextPage,
   onDelete,
+  page,
+  pageCount,
 }: {
   onNextPage: (page: number) => {};
   onDelete: () => {};
+  page: number;
+  pageCount: number;
 }) {
   const dispatch = useDispatch();
   const designationState = useSelector((state: RootState) => state.designation);
@@ -53,8 +57,8 @@ export default function DesignationButtons({
       </div>
 
       <Pagination
-        pages={designationState.pageCount}
-        currentPageNumber={designationState.currentPage}
+        pages={pageCount}
+        currentPageNumber={page}
         goInPage={onNextPage}></Pagination>
     </section>
   );

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useSetBusy,
@@ -20,24 +20,26 @@ export default function DesignationPage() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
+  const [key, setKey] = useState<string>('');
+  const [pageCount, setPageCount] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(
     () => {
-      searchDes;
+      console.log('call')
+      searchDes();
     },
     //eslint-disable-next-line
-    []
+    [key, currentPage]
   );
 
   async function searchDes() {
     setBusy(true);
-    await searchDesignation(
-      designationState.searchKey,
-      designationState.currentPage
-    )
+    console.log(key, currentPage);
+    await searchDesignation(key, currentPage)
       .then((res) => {
         if (res !== undefined) {
           dispatch(designationActions.fill(res.results));
-          dispatch(designationActions.setPageCount(res.pageCount));
+          setPageCount(() => res.pageCount);
         }
       })
       .catch((err) => {
@@ -46,28 +48,27 @@ export default function DesignationPage() {
       .then(() => setBusy(false));
   }
   async function search(key: string) {
-    dispatch(designationActions.setSearchKey(key));
-    dispatch(designationActions.setCurrentPage(1));
-    await searchDes();
+    setKey((x) => key);
+    setCurrentPage((x) => 1);
   }
   async function onModalClose(hasChanges: boolean) {
     if (hasChanges) searchDes();
   }
   async function nextPage(page: number) {
-    dispatch(designationActions.setCurrentPage(page));
-    await searchDes();
+    setCurrentPage(() => page);
   }
   async function onDelete() {}
   return (
     <>
       <section>
-        <SearchBar
-          search={search}
-          placeholder='Search Key'
-          value={designationState.searchKey}
-        />
+        <SearchBar search={search} placeholder='Search Key' value={key} />
       </section>
-      <DesignationButtons onNextPage={nextPage} onDelete={onDelete} />
+      <DesignationButtons
+        onNextPage={nextPage}
+        onDelete={onDelete}
+        page={currentPage}
+        pageCount={pageCount}
+      />
       <DesignationItems />
       {designationModalState.isModalShow && (
         <ManageDesignation onClose={onModalClose} />

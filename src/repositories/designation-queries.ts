@@ -9,7 +9,7 @@ export async function searchDesignation(
 ): Promise<SearchResult<Designation> | undefined> {
   var query = '?page=' + page;
   if (!!key) {
-    query = '&key=' + encodeURI(key);
+    query += '&key=' + encodeURI(key);
   }
   return await httpGet<SearchResult<Designation>>(
     DesignationEnd.Search + query

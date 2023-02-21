@@ -17,7 +17,7 @@ export default function Pagination({
   currentPageNumber: number;
   goInPage: (page: number) => void;
 }) {
-  const [currentPage, setCurrentPage] = useState<number>(currentPageNumber);
+  const [currentPage, setCurrentPage] = useState<number>(() => 1);
   const [canGoFirst, setGoFirst] = useState<boolean>(false);
   const [canGoBefore, setGoBefore] = useState<boolean>(false);
   const [canGoAfter, setGoAfter] = useState<boolean>(false);
