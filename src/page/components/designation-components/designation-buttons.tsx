@@ -1,36 +1,35 @@
-import {
-  faAdd,
-  faArrowRightArrowLeft,
-  faEdit,
-  faEye,
-  faList,
-  faPrint,
-  faRefresh,
-  faTrash,
-  faUpload,
-} from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { useSetToasterMessage } from '../../../custom-hooks/authorize-provider';
-import { employeeActions } from '../../../state/reducers/employee-reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { designationModalActions } from '../../../state/reducers/designation-modal-reducer';
+import { designationActions } from '../../../state/reducers/designation-reducer';
 import { RootState } from '../../../state/store';
 import Pagination from '../pagination';
 
-export default function EmployeeButtons({
+export default function DesignationButtons({
   onNextPage,
+  onDelete,
 }: {
   onNextPage: (page: number) => {};
+  onDelete: () => {};
 }) {
   const dispatch = useDispatch();
-  const employeeState = useSelector((state: RootState) => state.employee);
-  const setToasterMessage = useSetToasterMessage();
+  const designationState = useSelector((state: RootState) => state.designation);
   function add() {
-    dispatch(employeeActions.setSelected(undefined));
-    dispatch(employeeActions.setShowModal(true));
+    dispatch(designationActions.setSelected(undefined));
+    dispatch(
+      designationModalActions.setDesignation({ id: 0, description: '' })
+    );
+    dispatch(designationModalActions.setShowModal(true));
   }
-  function edit() {}
+  function edit() {
+    dispatch(
+      designationModalActions.setDesignation(
+        designationState.selectedDesignation!
+      )
+    );
+    dispatch(designationModalActions.setShowModal(true));
+  }
   return (
     <section className='btn-actions-group-container'>
       <div className='btn-actions-group'>
@@ -39,22 +38,23 @@ export default function EmployeeButtons({
         </button>
         <button
           className='btn-action'
-          disabled={!employeeState.selectedEmployee}
+          disabled={!designationState.selectedDesignation}
           onClick={edit}
           title='Edit'>
           <FontAwesomeIcon icon={faEdit} />
         </button>
         <button
           className='btn-action'
-          disabled={!employeeState.selectedEmployee}
+          disabled={!designationState.selectedDesignation}
+          onClick={onDelete}
           title='Delete'>
           <FontAwesomeIcon icon={faTrash} />
         </button>
       </div>
 
       <Pagination
-        pages={employeeState.pageCount}
-        currentPageNumber={employeeState.currentPage}
+        pages={designationState.pageCount}
+        currentPageNumber={designationState.currentPage}
         goInPage={onNextPage}></Pagination>
     </section>
   );

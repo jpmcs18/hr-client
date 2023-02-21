@@ -65,7 +65,7 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
         });
       })
       .catch((err) => {
-        setMessage({ message: err.message });
+        setToasterMessage({ content: err.message });
       })
       .finally(() => setBusy(false));
   }

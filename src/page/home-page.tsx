@@ -29,6 +29,7 @@ import Dashboard from './dashboard';
 import ManageProfile from './modals/manage-profile';
 import ModuleRoute from '../client-model/ModuleRoute';
 import EmployeePage from './components/employee-components/employee-page';
+import DesignationPage from './components/designation-components/designation-page';
 export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
   const authorize = useAuthorize();
@@ -154,6 +155,10 @@ export default function HomePage() {
             />
             <Route path={SystemModules[1].route} element={<Dashboard />} />
             <Route path={SystemModules[2].route} element={<EmployeePage />} />
+            <Route
+              path={SystemModules[3].route}
+              element={<DesignationPage />}
+            />
             <Route
               path='*'
               element={<Navigate to={SystemModules[0].route} replace />}

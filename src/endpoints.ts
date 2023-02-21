@@ -21,4 +21,7 @@ export const EmployeeEnd = {
 
 export const DesignationEnd = {
   Search: 'designations/search',
+  Insert: 'designations',
+  Update: 'designations',
+  Delete: 'designations',
 };
