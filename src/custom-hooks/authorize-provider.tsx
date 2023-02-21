@@ -129,15 +129,13 @@ export function AuthorizeProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <>
+    <div>
       <div
         className={
           'loading-screen' + (showLoading > 0 ? ' loading-block' : '')
         }>
         <div className='loading-blocker'></div>
         <div className='loading'>
-          <div></div>
-          <div></div>
           <div></div>
         </div>
       </div>
@@ -168,6 +166,6 @@ export function AuthorizeProvider({ children }: { children: ReactNode }) {
           </OpenMessageDialogContext.Provider>
         </SetToasterMessageContext.Provider>
       </SetBusyContext.Provider>
-    </>
+    </div>
   );
 }

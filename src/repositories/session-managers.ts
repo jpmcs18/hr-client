@@ -59,20 +59,6 @@ export function saveSessionProfile(profile: SystemUser) {
 export function clearSessionProfile() {
   localStorage.removeItem(profile_add);
 }
-
-// export function getSessionMenus(): MenuItem[] | undefined {
-//   try {
-//     return JSON.parse(decrypt(localStorage.getItem(navigation_add) ?? ''));
-//   } catch {
-//     return undefined;
-//   }
-// }
-// export function saveSessionMenus(menus: MenuItem[]) {
-//   if (menus !== undefined) {
-//     localStorage.setItem(navigation_add, encrypt(JSON.stringify(menus)));
-//   }
-// }
-
 export function clearSessionMenus() {
   localStorage.removeItem(navigation_add);
 }

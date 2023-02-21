@@ -7,6 +7,8 @@ import {
   useUpdateUserProfile,
 } from '../custom-hooks/authorize-provider';
 import { authenticate } from '../repositories/security-queries';
+import { saveSessionProfile } from '../repositories/session-managers';
+import { getData } from '../repositories/system-user-queries';
 import LoginRequest from '../request-model/LoginRequest';
 import CustomPassword from './components/custom-password';
 import CustomTextBox from './components/custom-textbox';
@@ -25,7 +27,7 @@ export default function LoginPage() {
     await authenticate(user)
       .then(async (res) => {
         if (res) {
-          //   await getProfile();
+          await getProfile();
           updateAuthorize(res);
         }
       })
@@ -34,73 +36,58 @@ export default function LoginPage() {
       })
       .finally(() => setBusy(false));
   }
-  //   async function getLookups(): Promise<MenuItem[] | undefined> {
-  //     return await getModuleListOfLookups()
-  //       .then((res) => {
-  //         if (res !== undefined) {
-  //           return res.map((m) => {
-  //             return {
-  //               name: m.description,
-  //               route: m.route,
+
+  // async function getListOfModule(user: SystemUser) {
+  //   setBusy(true);
+  //   await getModuleListOfMains()
+  //     .then(async (res) => {
+  //       if (res !== undefined) {
+  //         const menuItems: MenuItem[] = [];
+
+  //         for (const module of res.filter(
+  //           (x) =>
+  //             user.systemUserAccess?.some(
+  //               (y) => y.moduleRight.moduleId === x.id && y.granted
+  //             ) || user.isAdmin
+  //         )) {
+  //           if (module.description === 'Lookups') {
+  //             var data = {
+  //               isHead: true,
+  //               name: module.description,
+  //               menus: await getLookups(),
   //             };
-  //           });
-  //         }
-  //         return [];
-  //       })
-  //       .finally(() => []);
-  //   }
-  //   async function getListOfModule(user: SystemUser) {
-  //     setBusy(true);
-  //     await getModuleListOfMains()
-  //       .then(async (res) => {
-  //         if (res !== undefined) {
-  //           const menuItems: MenuItem[] = [];
-
-  //           for (const module of res.filter(
-  //             (x) =>
-  //               user.systemUserAccess?.some(
-  //                 (y) => y.moduleRight.moduleId === x.id && y.granted
-  //               ) || user.isAdmin
-  //           )) {
-  //             if (module.description === 'Lookups') {
-  //               var data = {
-  //                 isHead: true,
-  //                 name: module.description,
-  //                 menus: await getLookups(),
-  //               };
-  //               menuItems.push(data);
-  //             } else {
-  //               menuItems.push({
-  //                 name: module.description,
-  //                 route: module.route,
-  //               });
-  //             }
+  //             menuItems.push(data);
+  //           } else {
+  //             menuItems.push({
+  //               name: module.description,
+  //               route: module.route,
+  //             });
   //           }
-
-  //           saveSessionMenus(menuItems);
   //         }
-  //       })
-  //       .catch((err) => {
-  //         setToasterMessage({ content: err.message });
-  //       })
-  //       .finally(() => setBusy(false));
-  //   }
 
-  //   async function getProfile() {
-  //     setBusy(true);
-  //     await getUserData()
-  //       .then(async (res) => {
-  //         if (res !== undefined) {
-  //           saveSessionProfile(res);
-  //           updateProfile(res);
-  //           //   await getListOfModule(res);
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         setToasterMessage({ content: err.message });
-  //       })
-  //       .finally(() => setBusy(false));
-  //   }
+  //         saveSessionMenus(menuItems);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       setToasterMessage({ content: err.message });
+  //     })
+  //     .finally(() => setBusy(false));
+  // }
+
+  async function getProfile() {
+    setBusy(true);
+    await getData()
+      .then(async (res) => {
+        if (res !== undefined) {
+          saveSessionProfile(res);
+          updateProfile(res);
+        }
+      })
+      .catch((err) => {
+        setToasterMessage({ content: err.message });
+      })
+      .finally(() => setBusy(false));
+  }
   function onTextChange({ elementName, value }: CustomReturn) {
     console.log(elementName, value);
     setUser({ ...user, [elementName]: value });

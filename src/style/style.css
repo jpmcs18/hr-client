@@ -13,6 +13,7 @@
   --blocker-color: #000;
   --background-color: #efefef;
   --primary-color: #a10101;
+  --primary-color2: #ce3838;
   --primary-color-accent: #fff;
   --primary-color-selected: #c70202;
   --primary-color-selected-accent: #fff;
@@ -54,7 +55,7 @@
 
 .dark-mode {
   --container-background-color: #0b0b0b;
-  --search-background: #1b1b1b;
+  --search-background: #151515;
   --color: #eee;
   --input-border-color: #aaa;
   --input-selected-border-color: #fff;
@@ -72,7 +73,7 @@
   --primary-color-hover: #204700;
   --primary-color-hover-accent: #eee;
   --primary-color-menu-inactive: #ddd;
-  --primary-color-disable: #ccc;
+  --primary-color-disable: #555;
   --primary-table-alternating: #252525;
   --referral-background-color: #44484b;
   --secondary-color: #4f4646;
@@ -224,6 +225,10 @@ header nav .menu-show {
           box-sizing: border-box !important;
 }
 
+header nav .menu-show .menu-icon {
+  height: 1em !important;
+}
+
 header nav .menus {
   -webkit-transition: width ease-in-out 0.3s;
   transition: width ease-in-out 0.3s;
@@ -296,14 +301,6 @@ header nav .menus .menu-item-container .menus-container .menu-items {
   text-align: left;
 }
 
-header nav .menus .menu-item-container .menus-container .menu-items .head {
-  padding: 0.5em 1em;
-  text-align: left;
-  font-size: var(--menu-header-font-size);
-  font-weight: var(--demibold);
-  color: var(--primary-color-accent);
-}
-
 header nav .menus .menu-item-container .menus-container .menu-items .main-menus a {
   padding: 0.5em 1.5em 0.5em 1em !important;
 }
@@ -317,6 +314,7 @@ header nav .menus .menu-item-container .menus-container .menu-items .main-menus 
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  overflow-x: hidden;
 }
 
 header nav .menus .menu-item-container .menus-container .menu-items .navs a,
@@ -342,6 +340,9 @@ header nav .menus .menu-item-container .menus-container .menu-items .main-menus 
 
 header nav .menus .menu-item-container .menus-container .menu-items .navs a .menu-icon,
 header nav .menus .menu-item-container .menus-container .menu-items .main-menus a .menu-icon {
+  -webkit-transition: height ease-in-out 0.5s;
+  transition: height ease-in-out 0.5s;
+  height: 0;
   float: right;
 }
 
@@ -813,164 +814,115 @@ input:disabled {
 
 .loading-block .loading-blocker {
   z-index: 999999;
-  background-color: var(--blocker-color);
+  background-color: #aaa;
   width: 100%;
   height: 100vh;
   overflow: hidden;
   position: fixed;
-  opacity: 0.6;
+  opacity: 0.5;
   top: 0;
   left: 0;
 }
 
 .loading-block .loading {
   position: absolute;
+  z-index: 9999999;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.loading-block .loading div:nth-child(1) {
-  -webkit-animation: breathe 1s infinite alternate;
-          animation: breathe 1s infinite alternate;
-}
-
-.loading-block .loading div:nth-child(2) {
-  -webkit-animation: breathe 2s infinite alternate;
-          animation: breathe 2s infinite alternate;
-}
-
-.loading-block .loading div:nth-child(3) {
-  -webkit-animation: breathe 3s infinite alternate;
-          animation: breathe 3s infinite alternate;
 }
 
 .loading-block .loading div {
-  position: absolute;
-  z-index: 9999999;
-  cursor: progress;
-  height: 5em;
-  width: 5em;
+  position: relative;
+  border: 0.5em solid var(--primary-color2);
   border-radius: 50%;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  height: 3em;
+  width: 3em;
+  -webkit-animation: rotate 2s infinite;
+          animation: rotate 2s infinite;
 }
 
 .loading-block .loading div:after {
   content: '';
   position: absolute;
-  border-left: 1em dotted var(--loading-color-1);
-  border-right: 1em dotted var(--loading-color-2);
-  top: 2.1em;
-  animation: rotate 3s infinite reverse;
-  height: 1em;
-  width: 3em;
+  border: 0.4em solid var(--primary-color2);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0.3em;
+  top: 0em;
+  left: 0em;
+  right: 0em;
+  bottom: 0em;
+  border-radius: 50%;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  -webkit-animation: rotate-back 2.5s infinite;
+          animation: rotate-back 2.5s infinite;
 }
 
 .loading-block .loading div:before {
   content: '';
   position: absolute;
-  border-top: 1em dotted var(--loading-color-3);
-  border-bottom: 1em dotted var(--loading-color-4);
-  animation: rotate2 3s infinite reverse;
-  left: 2.1em;
-  height: 3em;
-  width: 1em;
+  border: 0.4em solid var(--primary-color2);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0.3em;
+  top: 0em;
+  left: 0em;
+  right: 0em;
+  bottom: 0em;
+  border-radius: 50%;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  -webkit-animation: rotate 2.5s infinite;
+          animation: rotate 2.5s infinite;
 }
 
-@-webkit-keyframes breathe {
+@-webkit-keyframes rotate-back {
+  from {
+    rotate: 360deg;
+  }
   to {
-    -webkit-transform: scale(0.2);
-            transform: scale(0.2);
+    rotate: 0deg;
   }
 }
 
-@keyframes breathe {
+@keyframes rotate-back {
+  from {
+    rotate: 360deg;
+  }
   to {
-    -webkit-transform: scale(0.2);
-            transform: scale(0.2);
+    rotate: 0deg;
   }
 }
 
 @-webkit-keyframes rotate {
-  0% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+  from {
+    rotate: 0deg;
   }
-  30% {
-    border-left: 1em dotted var(--loading-color-2);
-    border-right: 1em dotted var(--loading-color-1);
-  }
-  50% {
-    border-left: 1em dotted var(--loading-color-3);
-    border-right: 1em dotted var(--loading-color-4);
+  to {
+    rotate: 360deg;
   }
 }
 
 @keyframes rotate {
-  0% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+  from {
+    rotate: 0deg;
   }
-  30% {
-    border-left: 1em dotted var(--loading-color-2);
-    border-right: 1em dotted var(--loading-color-1);
-  }
-  50% {
-    border-left: 1em dotted var(--loading-color-3);
-    border-right: 1em dotted var(--loading-color-4);
-  }
-}
-
-@-webkit-keyframes rotate2 {
-  0% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-  30% {
-    border-top: 1em dotted var(--loading-color-4);
-    border-bottom: 1em dotted var(--loading-color-3);
-  }
-  50% {
-    border-top: 1em dotted var(--loading-color-1);
-    border-bottom: 1em dotted var(--loading-color-2);
-  }
-}
-
-@keyframes rotate2 {
-  0% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-  30% {
-    border-top: 1em dotted var(--loading-color-4);
-    border-bottom: 1em dotted var(--loading-color-3);
-  }
-  50% {
-    border-top: 1em dotted var(--loading-color-1);
-    border-bottom: 1em dotted var(--loading-color-2);
-  }
-}
-
-@-webkit-keyframes scale {
-  0% {
-    -webkit-transform: scale(0.5);
-            transform: scale(0.5);
-  }
-}
-
-@keyframes scale {
-  0% {
-    -webkit-transform: scale(0.5);
-            transform: scale(0.5);
+  to {
+    rotate: 360deg;
   }
 }
 
@@ -993,6 +945,7 @@ input:disabled {
           flex-grow: 1;
   border: none;
   color: var(--color);
+  background: var(--search-background);
 }
 
 .search-container .search-icon {
@@ -1304,10 +1257,6 @@ input:disabled {
   border: none;
 }
 
-.item-table tbody tr td .btn-actions-group {
-  float: right;
-}
-
 .item-table tbody tr .no-padding {
   height: unset !important;
   padding: 0em !important;
@@ -1340,6 +1289,18 @@ input:disabled {
 
 .specs span {
   margin-right: 0.3em;
+}
+
+.btn-actions-group-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
 }
 
 .btn-actions-group {

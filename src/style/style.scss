@@ -13,6 +13,7 @@
   --blocker-color: #000;
   --background-color: #efefef;
   --primary-color: #a10101;
+  --primary-color2: #ce3838;
   --primary-color-accent: #fff;
   --primary-color-selected: #c70202;
   --primary-color-selected-accent: #fff;
@@ -53,7 +54,7 @@
 }
 .dark-mode {
   --container-background-color: #0b0b0b;
-  --search-background: #1b1b1b;
+  --search-background: #151515;
   --color: #eee;
   --input-border-color: #aaa;
   --input-selected-border-color: #fff;
@@ -71,7 +72,7 @@
   --primary-color-hover: #204700;
   --primary-color-hover-accent: #eee;
   --primary-color-menu-inactive: #ddd;
-  --primary-color-disable: #ccc;
+  --primary-color-disable: #555;
   --primary-table-alternating: #252525;
   --referral-background-color: #44484b;
   --secondary-color: #4f4646;
@@ -185,6 +186,9 @@ header {
       z-index: 99 !important;
       width: 100% !important;
       box-sizing: border-box !important;
+      .menu-icon {
+        height: 1em !important;
+      }
     }
     .menus {
       transition: width ease-in-out 0.3s;
@@ -222,13 +226,6 @@ header {
             flex-direction: column;
             justify-content: flex-start;
             text-align: left;
-            .head {
-              padding: 0.5em 1em;
-              text-align: left;
-              font-size: var(--menu-header-font-size);
-              font-weight: var(--demibold);
-              color: var(--primary-color-accent);
-            }
             .main-menus {
               a {
                 padding: 0.5em 1.5em 0.5em 1em !important;
@@ -238,6 +235,7 @@ header {
             .main-menus {
               display: flex;
               flex-direction: column;
+              overflow-x: hidden;
               a {
                 text-align: left;
                 font-size: var(--menu-font-size);
@@ -252,6 +250,8 @@ header {
                   }
                 }
                 .menu-icon {
+                  transition: height ease-in-out 0.5s;
+                  height: 0;
                   float: right;
                 }
               }
@@ -626,102 +626,81 @@ input {
   z-index: 99999;
   .loading-blocker {
     z-index: 999999;
-    background-color: var(--blocker-color);
+    background-color: #aaa;
     width: 100%;
     height: 100vh;
     overflow: hidden;
     position: fixed;
-    opacity: 0.6;
+    opacity: 0.5;
     top: 0;
     left: 0;
   }
   .loading {
     position: absolute;
+    z-index: 9999999;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    display: flex;
     justify-content: center;
     align-items: center;
-    display: flex;
-    div:nth-child(1) {
-      animation: breathe 1s infinite alternate;
-    }
-    div:nth-child(2) {
-      animation: breathe 2s infinite alternate;
-    }
-    div:nth-child(3) {
-      animation: breathe 3s infinite alternate;
-    }
     div {
-      position: absolute;
-      z-index: 9999999;
-      cursor: progress;
-      height: 5em;
-      width: 5em;
+      position: relative;
+      border: 0.5em solid var(--primary-color2);
       border-radius: 50%;
-
+      border-left-color: transparent;
+      border-right-color: transparent;
+      height: 3em;
+      width: 3em;
+      animation: rotate 2s infinite;
       &:after {
         content: '';
         position: absolute;
-
-        border-left: 1em dotted var(--loading-color-1);
-        border-right: 1em dotted var(--loading-color-2);
-        top: 2.1em;
-        animation: rotate 3s infinite reverse;
-        height: 1em;
-        width: 3em;
+        border: 0.4em solid var(--primary-color2);
+        box-sizing: border-box;
+        margin: 0.3em;
+        top: 0em;
+        left: 0em;
+        right: 0em;
+        bottom: 0em;
+        border-radius: 50%;
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+        animation: rotate-back 2.5s infinite;
       }
-
       &:before {
         content: '';
         position: absolute;
-        border-top: 1em dotted var(--loading-color-3);
-        border-bottom: 1em dotted var(--loading-color-4);
-        animation: rotate2 3s infinite reverse;
-        left: 2.1em;
-        height: 3em;
-        width: 1em;
+        border: 0.4em solid var(--primary-color2);
+        box-sizing: border-box;
+        margin: 0.3em;
+        top: 0em;
+        left: 0em;
+        right: 0em;
+        bottom: 0em;
+        border-radius: 50%;
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+        animation: rotate 2.5s infinite;
       }
     }
   }
 }
-
-@keyframes breathe {
+@keyframes rotate-back {
+  from {
+    rotate: 360deg;
+  }
   to {
-    transform: scale(0.2);
+    rotate: 0deg;
   }
 }
 @keyframes rotate {
-  0% {
-    transform: rotate(360deg);
+  from {
+    rotate: 0deg;
   }
-  30% {
-    border-left: 1em dotted var(--loading-color-2);
-    border-right: 1em dotted var(--loading-color-1);
-  }
-  50% {
-    border-left: 1em dotted var(--loading-color-3);
-    border-right: 1em dotted var(--loading-color-4);
-  }
-}
-@keyframes rotate2 {
-  0% {
-    transform: rotate(360deg);
-  }
-  30% {
-    border-top: 1em dotted var(--loading-color-4);
-    border-bottom: 1em dotted var(--loading-color-3);
-  }
-  50% {
-    border-top: 1em dotted var(--loading-color-1);
-    border-bottom: 1em dotted var(--loading-color-2);
-  }
-}
-
-@keyframes scale {
-  0% {
-    transform: scale(0.5);
+  to {
+    rotate: 360deg;
   }
 }
 .search-container {
@@ -736,6 +715,7 @@ input {
     flex-grow: 1;
     border: none;
     color: var(--color);
+    background: var(--search-background);
   }
 
   .search-icon {
@@ -987,10 +967,6 @@ input {
             }
           }
         }
-
-        .btn-actions-group {
-          float: right;
-        }
       }
       .no-padding {
         height: unset !important;
@@ -1017,6 +993,11 @@ input {
   span {
     margin-right: 0.3em;
   }
+}
+.btn-actions-group-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 .btn-actions-group {
   margin: 0.5em;
@@ -1057,6 +1038,7 @@ input {
     }
   }
 }
+
 .btn-border {
   box-sizing: border-box;
   text-decoration: none;

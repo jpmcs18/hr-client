@@ -1,5 +1,6 @@
 import { UserEnd } from '../endpoints';
-import { httpPut } from './base';
+import SystemUser from '../entities/SystemUser';
+import { httpGet, httpPut } from './base';
 
 export async function saveProfile(
   username: string,
@@ -11,4 +12,8 @@ export async function saveProfile(
     password,
     newPassword,
   });
+}
+
+export async function getData(): Promise<SystemUser | undefined> {
+  return await httpGet<SystemUser>(UserEnd.GetData);
 }

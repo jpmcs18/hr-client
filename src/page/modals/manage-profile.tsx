@@ -12,7 +12,7 @@ import {
   saveSessionProfile,
   setTheme,
 } from '../../repositories/session-managers';
-import { saveProfile } from '../../repositories/systemuser-queries';
+import { saveProfile } from '../../repositories/system-user-queries';
 import UpdateUserProfile from '../../request-model/UpdateProfile';
 import CustomCheckBox from '../components/custom-checkbox';
 import CustomCheckBoxButton from '../components/custom-checkbox-button';

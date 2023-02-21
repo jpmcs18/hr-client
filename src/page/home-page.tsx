@@ -22,11 +22,13 @@ import {
   faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useMemo, useState } from 'react';
-import ModuleRoutes from '../routes';
+import { useState } from 'react';
+import SystemModules from '../routes';
+import Icon from './components/icon';
 import Dashboard from './dashboard';
 import ManageProfile from './modals/manage-profile';
-import Icon from './components/icon';
+import ModuleRoute from '../client-model/ModuleRoute';
+import EmployeePage from './components/employee-components/employee-page';
 export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
   const authorize = useAuthorize();
@@ -34,7 +36,7 @@ export default function HomePage() {
   const updateAuthorize = useUpdateAuthorize();
   const setMessage = useSetMessage();
   const [showMenu, setShowMenu] = useState(false);
-  // const menus: MenuItem[] = getSessionMenus() ?? [];
+  const [menus, setMenus] = useState<ModuleRoute[]>([]);
   function logoutUser() {
     setMessage({
       message: 'Continue to logout?',
@@ -53,103 +55,80 @@ export default function HomePage() {
           <header>
             <nav>
               <div className='menu-container'>
-                  <div className='nav-menu-container'>
-                    <button
-                      className='nav-icon'
-                      onClick={() => setShowMenu(() => true)}>
-                      <FontAwesomeIcon icon={faBars as IconProp} />
-                    </button>
-                    <div className={'menus ' + (showMenu ? 'menu-show' : '')}>
-                      <div className='menu-item-container'>
-                        <div className='menu-item-header'>
-                          <NavLink
-                            onClick={() => setShowMenu(() => false)}
-                            to={ModuleRoutes.Home}
-                            className='nav-icon home-icon'>
-                            <FontAwesomeIcon icon={faHome as IconProp} />
-                          </NavLink>
-                          <button
-                            className='nav-icon close-nav-menu'
-                            onClick={() => setShowMenu(() => false)}>
-                            <FontAwesomeIcon icon={faTimes as IconProp} />
-                          </button>
-                        </div>
-
-                        <div className='menu-container mobile-profile'>
-                          <div className='name'>
-                            <label
-                              className='nav-menu'
-                              onClick={() => {
-                                setShowProfile(true);
-                                setShowMenu(() => false);
-                              }}>
-                              {profile?.displayName}
-                              <FontAwesomeIcon
-                                className='name-icon'
-                                icon={faAngleRight as IconProp}
-                              />
-                            </label>
-                            <span className='name-subtitle'>
-                              {profile?.username}
-                            </span>
-                          </div>
-                          <button
-                            onClick={logoutUser}
-                            className='nav-menu logout'>
-                            Logout
-                          </button>
-                        </div>
-                        <div className='menus-container'>
-                          {/* {menus.map((menu) => (
-                            <div className='menu-items' key={menu.name}>
-                              {menu.isHead ? (
-                                <>
-                                  <div className='head'>{menu.name}</div>
-                                  <div className='navs'>
-                                    {menu.menus?.map((nav) => (
-                                      <div
-                                        key={nav.route}
-                                        className='menu-item'>
-                                        <NavLink
-                                          onClick={() =>
-                                            setShowMenu(() => false)
-                                          }
-                                          to={nav.route ?? ''}
-                                          className='nav-menu'>
-                                          {nav.name}
-                                          <FontAwesomeIcon
-                                            className='menu-icon'
-                                            icon={faAngleRight as IconProp}
-                                          />
-                                        </NavLink>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </>
-                              ) : (
-                                <div className='menu-item main-menus'>
-                                  <NavLink
-                                    onClick={() => setShowMenu(() => false)}
-                                    to={menu.route ?? ''}
-                                    className='nav-menu'>
-                                    {menu.name}
-                                    <FontAwesomeIcon
-                                      className='menu-icon'
-                                      icon={faAngleRight as IconProp}
-                                    />
-                                  </NavLink>
-                                </div>
-                              )}
-                            </div>
-                          ))} */}
-                        </div>
+                <div className='nav-menu-container'>
+                  <button
+                    className='nav-icon'
+                    onClick={() => setShowMenu(() => true)}>
+                    <FontAwesomeIcon icon={faBars as IconProp} />
+                  </button>
+                  <div className={'menus ' + (showMenu ? 'menu-show' : '')}>
+                    <div className='menu-item-container'>
+                      <div className='menu-item-header'>
+                        <NavLink
+                          onClick={() => setShowMenu(() => false)}
+                          to={SystemModules[0].route}
+                          className='nav-icon home-icon'>
+                          <FontAwesomeIcon icon={faHome as IconProp} />
+                        </NavLink>
+                        <button
+                          className='nav-icon close-nav-menu'
+                          onClick={() => setShowMenu(() => false)}>
+                          <FontAwesomeIcon icon={faTimes as IconProp} />
+                        </button>
                       </div>
-                      <div
-                        className='menu-content-blocker'
-                        onClick={() => setShowMenu(() => false)}></div>
+
+                      <div className='menu-container mobile-profile'>
+                        <div className='name'>
+                          <label
+                            className='nav-menu'
+                            onClick={() => {
+                              setShowProfile(true);
+                              setShowMenu(() => false);
+                            }}>
+                            {profile?.displayName}
+                            <FontAwesomeIcon
+                              className='name-icon'
+                              icon={faAngleRight as IconProp}
+                            />
+                          </label>
+                          <span className='name-subtitle'>
+                            {profile?.username}
+                          </span>
+                        </div>
+                        <button
+                          onClick={logoutUser}
+                          className='nav-menu logout'>
+                          Logout
+                        </button>
+                      </div>
+                      <div className='menus-container'>
+                        {(profile?.isAdmin
+                          ? SystemModules.filter((x) => x.display)
+                          : menus
+                        ).map((menu) => (
+                          <div className='menu-items' key={menu.pageName}>
+                            <div className='menu-item main-menus'>
+                              <NavLink
+                                onClick={() => setShowMenu(() => false)}
+                                to={menu.route ?? ''}
+                                className='nav-menu'>
+                                {menu.pageName}
+                                <FontAwesomeIcon
+                                  className='menu-icon'
+                                  icon={faAngleRight as IconProp}
+                                />
+                              </NavLink>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
+                    <div
+                      className='menu-content-blocker'
+                      onClick={() => setShowMenu(() => false)}></div>
                   </div>
-                <NavLink to={ModuleRoutes.Home} className='nav-icon'>
+                </div>
+                <NavLink to={SystemModules[0].route} className='nav-icon'>
                   <Icon />
                 </NavLink>
               </div>
@@ -170,13 +149,14 @@ export default function HomePage() {
           </header>
           <Routes>
             <Route
-              path={ModuleRoutes.Home}
-              element={<Navigate to={ModuleRoutes.Dashboard} replace />}
+              path={SystemModules[0].route}
+              element={<Navigate to={SystemModules[1].route} replace />}
             />
-            <Route path={ModuleRoutes.Dashboard} element={<Dashboard />} />
+            <Route path={SystemModules[1].route} element={<Dashboard />} />
+            <Route path={SystemModules[2].route} element={<EmployeePage />} />
             <Route
               path='*'
-              element={<Navigate to={ModuleRoutes.Home} replace />}
+              element={<Navigate to={SystemModules[0].route} replace />}
             />
           </Routes>
           <div>

@@ -38,7 +38,7 @@ export async function httpGet<Return>(
             }
             throw new Error('Unauthorized');
           case 404:
-            throw new Error('Not Data Found');
+            throw new Error('No Data Found');
           default:
             throw new Error(err.response.data);
         }

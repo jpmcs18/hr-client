@@ -4,11 +4,21 @@ export const SecurityEnd = {
 };
 
 export const UserEnd = {
-  Get: 'systemusers/get',
-  GetData: 'systemusers/getdata',
-  GetList: 'systemusers/getlist',
-  Activate: 'systemusers/activate',
-  Delete: 'systemusers/delete',
-  Save: 'systemusers/save',
-  SaveProfile: 'systemusers/saveprofile',
+  Get: 'system-users',
+  GetData: 'system-users/profile',
+  Activate: 'system-users/activate-deactivate',
+  Delete: 'system-users',
+  SaveProfile: 'system-users/profile',
+};
+
+export const UserAccessEnd = {
+  GetListByUser: 'user-accesses/user',
+};
+
+export const EmployeeEnd = {
+  Search: 'employees/search',
+};
+
+export const DesignationEnd = {
+  Search: 'designations/search',
 };

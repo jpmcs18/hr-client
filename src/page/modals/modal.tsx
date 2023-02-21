@@ -14,13 +14,17 @@ export default function Modal({
   onClose?: (() => void) | undefined;
   children: ReactNode;
 }) {
-  useEffect(() => {
-    document.body.classList.add('body-modal');
+  useEffect(
+    () => {
+      document.body.classList.add('body-modal');
 
-    return () => {
-      document.body.classList.remove('body-modal');
-    };
-  });
+      return () => {
+        document.body.classList.remove('body-modal');
+      };
+    },
+    //eslint-disable-next-line
+    []
+  );
 
   return ReactDOM.createPortal(
     <>
