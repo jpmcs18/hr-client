@@ -1128,16 +1128,6 @@ input:disabled {
   margin: 0 auto;
 }
 
-.po-item-table td,
-.po-item-table th {
-  width: 10%;
-}
-
-.po-item-table td:nth-child(3),
-.po-item-table th:nth-child(3) {
-  width: 50%;
-}
-
 .item-table {
   position: relative;
   overflow-x: auto;
@@ -1191,6 +1181,7 @@ input:disabled {
 }
 
 .item-table thead tr th {
+  text-align: start;
   font-weight: var(--demibold);
   min-width: 5em;
 }
@@ -1237,7 +1228,6 @@ input:disabled {
 }
 
 .item-table tbody tr td {
-  text-align: center;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
@@ -1998,6 +1988,9 @@ tbody tr {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
+  .modal-content {
+    width: 50%;
+  }
   .filter-container {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
@@ -2022,6 +2015,9 @@ tbody tr {
   .login-container {
     width: 100%;
     margin: 0;
+  }
+  .modal-content {
+    width: 90%;
   }
   .menu-item-container {
     width: 100% !important;

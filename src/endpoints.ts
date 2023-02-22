@@ -25,3 +25,10 @@ export const DesignationEnd = {
   Update: 'designations',
   Delete: 'designations',
 };
+
+export const OfficeEnd = {
+  Search: 'offices/search',
+  Insert: 'offices',
+  Update: 'offices',
+  Delete: 'offices',
+};

@@ -6,7 +6,7 @@ import {
   faAngleRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Pagination({
   pages,
@@ -17,20 +17,20 @@ export default function Pagination({
   currentPageNumber: number;
   goInPage: (page: number) => void;
 }) {
-  const [currentPage, setCurrentPage] = useState<number>(() => 1);
+  const currentPage = useRef<number>(currentPageNumber);
+  const pageList = useRef<number[]>([]);
   const [canGoFirst, setGoFirst] = useState<boolean>(false);
   const [canGoBefore, setGoBefore] = useState<boolean>(false);
   const [canGoAfter, setGoAfter] = useState<boolean>(false);
   const [canGoLast, setGoLast] = useState<boolean>(false);
-  const [pageList, setPageList] = useState<number[]>([]);
 
   useEffect(() => {
-    setCurrentPage(currentPageNumber);
+    currentPage.current = currentPageNumber;
     let pl: number[] = [];
     for (let i = 1; i <= pages; i++) {
       pl.push(i);
     }
-    setPageList(pl);
+    pageList.current = pl;
 
     setGoAfter(false);
     setGoLast(false);
@@ -66,17 +66,14 @@ export default function Pagination({
 
   function goToBefore() {
     if (!canGoBefore) return;
-    setCurrentPage((cp) => {
-      cp = cp - 1;
-      if (cp === 1) {
-        setGoFirst(false);
-        setGoBefore(false);
-      }
 
-      goInPage(cp);
+    currentPage.current = currentPage.current - 1;
+    if (currentPage.current === 1) {
+      setGoFirst(false);
+      setGoBefore(false);
+    }
 
-      return cp;
-    });
+    goInPage(currentPage.current);
 
     setGoAfter(true);
     setGoLast(true);
@@ -84,16 +81,14 @@ export default function Pagination({
 
   function goToAfter() {
     if (!canGoAfter) return;
-    setCurrentPage((cp) => {
-      cp = cp + 1;
-      if (cp === pages) {
-        setGoAfter(false);
-        setGoLast(false);
-      }
 
-      goInPage(cp);
-      return cp;
-    });
+    currentPage.current = currentPage.current + 1;
+    if (currentPage.current === pages) {
+      setGoAfter(false);
+      setGoLast(false);
+    }
+
+    goInPage(currentPage.current);
 
     setGoFirst(true);
     setGoBefore(true);
@@ -101,7 +96,7 @@ export default function Pagination({
 
   function goToLast() {
     if (!canGoLast) return;
-    setCurrentPage(pages);
+    currentPage.current = pages;
     setGoAfter(false);
     setGoLast(false);
 
@@ -112,7 +107,7 @@ export default function Pagination({
   }
 
   function goToPage(page: number) {
-    setCurrentPage(page);
+    currentPage.current = page;
     setGoFirst(true);
     setGoBefore(true);
     setGoAfter(true);
@@ -144,12 +139,12 @@ export default function Pagination({
         className={!canGoBefore ? 'disabled' : ''}
       />
       <div className='pages-container'>
-        <button className='current-page'>{currentPage}</button>
+        <button className='current-page'>{currentPage.current}</button>
         <div className='pages'>
-          {pageList.map((pl) => (
+          {pageList.current.map((pl) => (
             <div
               key={pl}
-              className={pl === currentPage ? 'active' : ''}
+              className={pl === currentPage.current ? 'active' : ''}
               onClick={() => {
                 goToPage(pl);
               }}>

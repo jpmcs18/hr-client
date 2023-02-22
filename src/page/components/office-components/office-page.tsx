@@ -4,18 +4,16 @@ import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
-import { searchDesignation } from '../../../repositories/designation-queries';
-import { designationActions } from '../../../state/reducers/designation-reducer';
+import { searchOffice } from '../../../repositories/office-queries';
+import { officeActions } from '../../../state/reducers/office-reducer';
 import { RootState } from '../../../state/store';
-import ManageDesignation from '../../modals/manage-designation';
+import ManageOffice from '../../modals/manage-office';
 import SearchBar from '../searchbar';
-import DesignationButtons from './designation-buttons';
-import DesignationItems from './designation-items';
+import OfficeButtons from './office-buttons';
+import OfficeItems from './office-items';
 
-export default function DesignationPage() {
-  const designationModalState = useSelector(
-    (state: RootState) => state.designationModal
-  );
+export default function OfficePage() {
+  const officeModalState = useSelector((state: RootState) => state.officeModal);
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
@@ -34,10 +32,10 @@ export default function DesignationPage() {
   async function searchDes() {
     setBusy(true);
     console.log(key, currentPage);
-    await searchDesignation(key, currentPage)
+    await searchOffice(key, currentPage)
       .then((res) => {
         if (res !== undefined) {
-          dispatch(designationActions.fill(res.results));
+          dispatch(officeActions.fill(res.results));
           setPageCount(() => res.pageCount);
         }
       })
@@ -62,16 +60,14 @@ export default function DesignationPage() {
       <section>
         <SearchBar search={search} placeholder='Search Key' value={key} />
       </section>
-      <DesignationButtons
+      <OfficeButtons
         onNextPage={nextPage}
         onDelete={onDelete}
         page={currentPage}
         pageCount={pageCount}
       />
-      <DesignationItems />
-      {designationModalState.isModalShow && (
-        <ManageDesignation onClose={onModalClose} />
-      )}
+      <OfficeItems />
+      {officeModalState.isModalShow && <ManageOffice onClose={onModalClose} />}
     </>
   );
 }
