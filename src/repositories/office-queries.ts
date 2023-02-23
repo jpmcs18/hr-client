@@ -14,16 +14,30 @@ export async function searchOffice(
   return await httpGet<SearchResult<Office>>(OfficeEnd.Search + query);
 }
 
+export async function getOffices(): Promise<Office[] | undefined> {
+  return await httpGet<Office[]>(OfficeEnd.GetList);
+}
+
 export async function insertOffice(
-  dasignation: Office
+  office: Office,
+  designationIds: number[]
 ): Promise<Office | undefined> {
-  return await httpPost<Office>(OfficeEnd.Insert, dasignation);
+  return await httpPost<Office>(OfficeEnd.Insert, {
+    ...office,
+    designationIds,
+  });
 }
 
 export async function updateOffice(
-  dasignation: Office
+  office: Office,
+  newDesignationIds: number[],
+  designationIdsToDelete: number[]
 ): Promise<boolean | undefined> {
-  return await httpPut(OfficeEnd.Update + '/' + dasignation.id, dasignation);
+  return await httpPut(OfficeEnd.Update + '/' + office.id, {
+    ...office,
+    newDesignationIds,
+    designationIdsToDelete,
+  });
 }
 
 export async function deleteOffice(id: number): Promise<boolean | undefined> {

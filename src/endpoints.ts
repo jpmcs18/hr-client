@@ -17,10 +17,15 @@ export const UserAccessEnd = {
 
 export const EmployeeEnd = {
   Search: 'employees/search',
+  GetList: 'employees',
+  Insert: 'employees',
+  Update: 'employees',
+  Delete: 'employees',
 };
 
 export const DesignationEnd = {
   Search: 'designations/search',
+  GetList: 'designations',
   Insert: 'designations',
   Update: 'designations',
   Delete: 'designations',
@@ -28,6 +33,7 @@ export const DesignationEnd = {
 
 export const OfficeEnd = {
   Search: 'offices/search',
+  GetList: 'offices',
   Insert: 'offices',
   Update: 'offices',
   Delete: 'offices',

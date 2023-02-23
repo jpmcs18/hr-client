@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useSetBusy,
@@ -13,17 +13,31 @@ import EmployeeButtons from './employee-buttons';
 import EmployeeItems from './employee-items';
 
 export default function EmployeePage() {
-  const employeeState = useSelector((state: RootState) => state.employee);
+  const employeeModalState = useSelector(
+    (state: RootState) => state.employeeModal
+  );
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
-  async function searchEmp() {
+  const [key, setKey] = useState<string>('');
+  const [pageCount, setPageCount] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  useEffect(
+    () => {
+      searchOff();
+    },
+    //eslint-disable-next-line
+    [key, currentPage]
+  );
+
+  async function searchOff() {
     setBusy(true);
-    await searchEmployee(employeeState.searchKey, employeeState.currentPage)
+    console.log(key, currentPage);
+    await searchEmployee(key, currentPage)
       .then((res) => {
         if (res !== undefined) {
           dispatch(employeeActions.fill(res.results));
-          dispatch(employeeActions.setPageCount(res.pageCount));
+          setPageCount(() => res.pageCount);
         }
       })
       .catch((err) => {
@@ -32,30 +46,33 @@ export default function EmployeePage() {
       .then(() => setBusy(false));
   }
   async function search(key: string) {
-    dispatch(employeeActions.setSearchKey(key));
-    dispatch(employeeActions.setCurrentPage(1));
-    await searchEmp();
+    setKey((x) => key);
+    setCurrentPage((x) => 1);
   }
   async function onModalClose(hasChanges: boolean) {
-    if (hasChanges) searchEmp();
-    dispatch(employeeActions.setShowModal(false));
+    if (hasChanges) searchOff();
   }
   async function nextPage(page: number) {
-    dispatch(employeeActions.setCurrentPage(page));
-    await searchEmp();
+    setCurrentPage(() => page);
+  }
+  async function onDelete() {
+    searchOff();
   }
   return (
     <>
       <section>
-        <SearchBar
-          search={search}
-          placeholder='Search Key'
-          value={employeeState.searchKey}
-        />
+        <SearchBar search={search} placeholder='Search Key' value={key} />
       </section>
-      <EmployeeButtons onNextPage={nextPage} />
+      <EmployeeButtons
+        onNextPage={nextPage}
+        onDelete={onDelete}
+        page={currentPage}
+        pageCount={pageCount}
+      />
       <EmployeeItems />
-      {employeeState.isModalShow && <ManageEmployee onClose={onModalClose} />}
+      {employeeModalState.isModalShow && (
+        <ManageEmployee onClose={onModalClose} />
+      )}
     </>
   );
 }

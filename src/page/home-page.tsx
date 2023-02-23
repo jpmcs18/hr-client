@@ -4,6 +4,7 @@ import {
   NavLink,
   Route,
   Routes,
+  useLocation,
 } from 'react-router-dom';
 import {
   useAuthorize,
@@ -30,6 +31,7 @@ import ManageProfile from './modals/manage-profile';
 import ModuleRoute from '../client-model/ModuleRoute';
 import EmployeePage from './components/employee-components/employee-page';
 import DesignationPage from './components/designation-components/designation-page';
+import OfficePage from './components/office-components/office-page';
 export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
   const authorize = useAuthorize();
@@ -148,6 +150,15 @@ export default function HomePage() {
               </div>
             </nav>
           </header>
+          <div className='title-container'>
+            <div className='title'>
+              {
+                SystemModules.filter(
+                  (x) => x.route === window.location.pathname
+                )[0].pageName
+              }
+            </div>
+          </div>
           <Routes>
             <Route
               path={SystemModules[0].route}
@@ -159,6 +170,7 @@ export default function HomePage() {
               path={SystemModules[3].route}
               element={<DesignationPage />}
             />
+            <Route path={SystemModules[4].route} element={<OfficePage />} />
             <Route
               path='*'
               element={<Navigate to={SystemModules[0].route} replace />}

@@ -12,6 +12,7 @@ export default function OfficeItems() {
         <thead>
           <tr>
             <th>Description</th>
+            <th>Abbreviation</th>
           </tr>
         </thead>
         <tbody>

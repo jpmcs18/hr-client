@@ -2,9 +2,13 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useSetBusy,
+  useSetMessage,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
-import { searchOffice } from '../../../repositories/office-queries';
+import {
+  deleteOffice,
+  searchOffice,
+} from '../../../repositories/office-queries';
 import { officeActions } from '../../../state/reducers/office-reducer';
 import { RootState } from '../../../state/store';
 import ManageOffice from '../../modals/manage-office';
@@ -14,22 +18,23 @@ import OfficeItems from './office-items';
 
 export default function OfficePage() {
   const officeModalState = useSelector((state: RootState) => state.officeModal);
+  const officeState = useSelector((state: RootState) => state.office);
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
+  const setMessage = useSetMessage();
   const [key, setKey] = useState<string>('');
   const [pageCount, setPageCount] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(
     () => {
-      console.log('call');
-      searchDes();
+      searchOff();
     },
     //eslint-disable-next-line
     [key, currentPage]
   );
 
-  async function searchDes() {
+  async function searchOff() {
     setBusy(true);
     console.log(key, currentPage);
     await searchOffice(key, currentPage)
@@ -49,12 +54,35 @@ export default function OfficePage() {
     setCurrentPage((x) => 1);
   }
   async function onModalClose(hasChanges: boolean) {
-    if (hasChanges) searchDes();
+    if (hasChanges) searchOff();
   }
   async function nextPage(page: number) {
     setCurrentPage(() => page);
   }
-  async function onDelete() {}
+  async function onDelete() {
+    if (!officeState.selectedOffice?.id) return;
+
+    setMessage({
+      message: 'Are you sure you want to delete this?',
+      action: 'YESNO',
+      onOk: async () => {
+        setBusy(true);
+        await deleteOffice(officeState.selectedOffice?.id ?? 0)
+          .then((res) => {
+            if (res) {
+              setToasterMessage({
+                content: 'Selected office has been deleted',
+              });
+              searchOff();
+            }
+          })
+          .catch((err) => {
+            setToasterMessage({ content: err.message });
+          })
+          .then(() => setBusy(false));
+      },
+    });
+  }
   return (
     <>
       <section>

@@ -16,18 +16,22 @@ export async function searchDesignation(
   );
 }
 
+export async function getDesignations(): Promise<Designation[] | undefined> {
+  return await httpGet<Designation[]>(DesignationEnd.GetList);
+}
+
 export async function insertDesignation(
-  dasignation: Designation
+  designation: Designation
 ): Promise<Designation | undefined> {
-  return await httpPost<Designation>(DesignationEnd.Insert, dasignation);
+  return await httpPost<Designation>(DesignationEnd.Insert, designation);
 }
 
 export async function updateDesignation(
-  dasignation: Designation
+  designation: Designation
 ): Promise<boolean | undefined> {
   return await httpPut(
-    DesignationEnd.Update + '/' + dasignation.id,
-    dasignation
+    DesignationEnd.Update + '/' + designation.id,
+    designation
   );
 }
 

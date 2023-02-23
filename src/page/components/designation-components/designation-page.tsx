@@ -2,9 +2,13 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useSetBusy,
+  useSetMessage,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
-import { searchDesignation } from '../../../repositories/designation-queries';
+import {
+  deleteDesignation,
+  searchDesignation,
+} from '../../../repositories/designation-queries';
 import { designationActions } from '../../../state/reducers/designation-reducer';
 import { RootState } from '../../../state/store';
 import ManageDesignation from '../../modals/manage-designation';
@@ -16,9 +20,11 @@ export default function DesignationPage() {
   const designationModalState = useSelector(
     (state: RootState) => state.designationModal
   );
+  const designationState = useSelector((state: RootState) => state.designation);
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
+  const setMessage = useSetMessage();
   const [key, setKey] = useState<string>('');
   const [pageCount, setPageCount] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -56,7 +62,30 @@ export default function DesignationPage() {
   async function nextPage(page: number) {
     setCurrentPage(() => page);
   }
-  async function onDelete() {}
+  async function onDelete() {
+    if (!designationState.selectedDesignation?.id) return;
+
+    setMessage({
+      message: 'Are you sure you want to delete this?',
+      action: 'YESNO',
+      onOk: async () => {
+        setBusy(true);
+        await deleteDesignation(designationState.selectedDesignation?.id ?? 0)
+          .then((res) => {
+            if (res) {
+              setToasterMessage({
+                content: 'Selected office has been deleted',
+              });
+              searchDes();
+            }
+          })
+          .catch((err) => {
+            setToasterMessage({ content: err.message });
+          })
+          .then(() => setBusy(false));
+      },
+    });
+  }
   return (
     <>
       <section>
