@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Guid } from 'guid-typescript';
-import Designation from '../../entities/Designation';
-import Office from '../../entities/Office';
-import OfficeDesignation from '../../entities/OfficeDesignation';
+import Designation from '../../models/entities/Designation';
+import Office from '../../models/entities/Office';
+import OfficeDesignation from '../../models/entities/OfficeDesignation';
 
 interface State {
   office: Office;
@@ -28,7 +28,6 @@ const officeModalSlice = createSlice({
   reducers: {
     setOffice(state, action: PayloadAction<Office>) {
       state.office = action.payload;
-      console.log(state.office.designations?.slice());
       state.officeDesignations =
         state.office.designations
           ?.slice()

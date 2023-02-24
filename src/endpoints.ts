@@ -31,10 +31,22 @@ export const DesignationEnd = {
   Delete: 'designations',
 };
 
+export const UserRoleEnd = {
+  Search: 'user-roles/search',
+  GetList: 'user-roles',
+  Insert: 'user-roles',
+  Update: 'user-roles',
+  Delete: 'user-roles',
+};
+
 export const OfficeEnd = {
   Search: 'offices/search',
   GetList: 'offices',
   Insert: 'offices',
   Update: 'offices',
   Delete: 'offices',
+};
+
+export const ModuleEnd = {
+  GetList: 'modules',
 };

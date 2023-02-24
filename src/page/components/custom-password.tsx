@@ -2,7 +2,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import CustomReturn from '../../client-model/CustomReturn';
+import CustomReturn from '../../models/client-model/CustomReturn';
 export default function CustomPassword({
   title,
   name,

@@ -1,6 +1,6 @@
 import { SecurityEnd } from '../endpoints';
-import TokenData from '../entities/TokenData';
-import LoginRequest from '../request-model/LoginRequest';
+import TokenData from '../models/entities/TokenData';
+import LoginRequest from '../models/request-model/LoginRequest';
 import { httpAuthenticatingPost } from './base';
 import { saveToken } from './session-managers';
 

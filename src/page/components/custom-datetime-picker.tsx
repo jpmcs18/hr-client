@@ -1,4 +1,4 @@
-import CustomReturn from '../../client-model/CustomReturn';
+import CustomReturn from '../../models/client-model/CustomReturn';
 import { toDateDisplay, toTimeDisplay } from '../../helper';
 type DateTimePickerType = 'date' | 'time' | 'datetime-local';
 export default function CustomDateTimePicker({
@@ -22,7 +22,6 @@ export default function CustomDateTimePicker({
   disabled?: boolean | false;
   onChange?: (data: CustomReturn) => void;
 }) {
-  console.log(toDateDisplay(value));
   return (
     <div className={'custom-input ' + className}>
       <label htmlFor={name}>{title}</label>

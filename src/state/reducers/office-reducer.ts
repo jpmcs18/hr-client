@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import Office from '../../entities/Office';
+import Office from '../../models/entities/Office';
 
 interface State {
   offices: Office[];

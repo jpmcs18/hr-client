@@ -1,5 +1,6 @@
 export default interface ModuleRight {
   id: number;
   moduleId: number | undefined;
-  description: string | undefined;
+  right: string | undefined;
+  isCheck?: boolean | undefined;
 }

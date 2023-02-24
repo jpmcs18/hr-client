@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import Employee from '../../entities/Employee';
+import Employee from '../../models/entities/Employee';
 
 interface State {
   employees: Employee[];

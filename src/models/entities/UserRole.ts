@@ -1,7 +1,7 @@
-import ModuleAccess from './ModuleAccess';
+import RoleAccess from './RoleAccess';
 
 export default interface UserRole {
   id: number;
   description: string | undefined;
-  ModuleAccesses: ModuleAccess | undefined;
+  accesses: RoleAccess[] | undefined;
 }

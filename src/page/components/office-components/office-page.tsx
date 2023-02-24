@@ -36,7 +36,6 @@ export default function OfficePage() {
 
   async function searchOff() {
     setBusy(true);
-    console.log(key, currentPage);
     await searchOffice(key, currentPage)
       .then((res) => {
         if (res !== undefined) {
@@ -85,6 +84,9 @@ export default function OfficePage() {
   }
   return (
     <>
+      <section className='title-container'>
+        <div className='title'>Offices</div>
+      </section>
       <section>
         <SearchBar search={search} placeholder='Search Key' value={key} />
       </section>

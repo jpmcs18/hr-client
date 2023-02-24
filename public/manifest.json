@@ -1,6 +1,6 @@
 {
-  "short_name": "HR App",
-  "name": "Create React App Sample",
+  "short_name": "App",
+  "name": "Main Application",
   "icons": [],
   "start_url": ".",
   "display": "standalone",

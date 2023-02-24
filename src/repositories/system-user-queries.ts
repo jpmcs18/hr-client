@@ -1,5 +1,5 @@
 import { UserEnd } from '../endpoints';
-import SystemUser from '../entities/SystemUser';
+import SystemUser from '../models/entities/SystemUser';
 import { httpGet, httpPut } from './base';
 
 export async function saveProfile(

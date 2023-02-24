@@ -1,4 +1,4 @@
-import ModuleRoute from './client-model/ModuleRoute';
+import ModuleRoute from './models/client-model/ModuleRoute';
 
 const SystemModules: ModuleRoute[] = [
   { pageName: 'Home', route: '/', display: false },

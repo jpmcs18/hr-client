@@ -4,7 +4,6 @@ import {
   NavLink,
   Route,
   Routes,
-  useLocation,
 } from 'react-router-dom';
 import {
   useAuthorize,
@@ -24,14 +23,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
+import ModuleRoute from '../models/client-model/ModuleRoute';
 import SystemModules from '../routes';
+import DesignationPage from './components/designation-components/designation-page';
+import EmployeePage from './components/employee-components/employee-page';
 import Icon from './components/icon';
+import OfficePage from './components/office-components/office-page';
+import UserRolePage from './components/user-role-component/user-role-page';
 import Dashboard from './dashboard';
 import ManageProfile from './modals/manage-profile';
-import ModuleRoute from '../client-model/ModuleRoute';
-import EmployeePage from './components/employee-components/employee-page';
-import DesignationPage from './components/designation-components/designation-page';
-import OfficePage from './components/office-components/office-page';
 export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
   const authorize = useAuthorize();
@@ -50,7 +50,6 @@ export default function HomePage() {
       },
     });
   }
-
   return (
     <>
       {authorize ? (
@@ -131,7 +130,7 @@ export default function HomePage() {
                       onClick={() => setShowMenu(() => false)}></div>
                   </div>
                 </div>
-                <NavLink to={SystemModules[0].route} className='nav-icon'>
+                <NavLink to={SystemModules[1].route} className='nav-icon'>
                   <Icon />
                 </NavLink>
               </div>
@@ -140,7 +139,7 @@ export default function HomePage() {
                   <label
                     className='nav-menu'
                     onClick={() => setShowProfile(true)}>
-                    {profile?.displayName ?? 'Hello'}
+                    {profile?.displayName ?? '---'}
                   </label>
                   <span className='name-subtitle'>{profile?.username}</span>
                 </div>
@@ -150,15 +149,6 @@ export default function HomePage() {
               </div>
             </nav>
           </header>
-          <div className='title-container'>
-            <div className='title'>
-              {
-                SystemModules.filter(
-                  (x) => x.route === window.location.pathname
-                )[0].pageName
-              }
-            </div>
-          </div>
           <Routes>
             <Route
               path={SystemModules[0].route}
@@ -171,6 +161,7 @@ export default function HomePage() {
               element={<DesignationPage />}
             />
             <Route path={SystemModules[4].route} element={<OfficePage />} />
+            <Route path={SystemModules[6].route} element={<UserRolePage />} />
             <Route
               path='*'
               element={<Navigate to={SystemModules[0].route} replace />}

@@ -1,6 +1,6 @@
 import { UserAccessEnd } from '../endpoints';
-import SystemUser from '../entities/SystemUser';
-import UserAccess from '../entities/UserAccess';
+import SystemUser from '../models/entities/SystemUser';
+import UserAccess from '../models/entities/UserAccess';
 import { httpGet } from './base';
 
 export async function getUserAccesses(

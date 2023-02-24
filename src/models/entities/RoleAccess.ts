@@ -1,8 +1,8 @@
 import ModuleRight from './ModuleRight';
 
-export default interface ModuleAccessRight {
+export default interface RoleAccess {
   id: number;
-  moduleAccessId: number | undefined;
+  userRoleId: number | undefined;
   moduleRightId: number | undefined;
   moduleRight: ModuleRight | undefined;
 }

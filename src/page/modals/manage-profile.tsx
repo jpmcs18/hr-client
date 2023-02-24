@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CustomReturn from '../../client-model/CustomReturn';
+import CustomReturn from '../../models/client-model/CustomReturn';
 import {
   useSetBusy,
   useSetMessage,
@@ -13,7 +13,7 @@ import {
   setTheme,
 } from '../../repositories/session-managers';
 import { saveProfile } from '../../repositories/system-user-queries';
-import UpdateUserProfile from '../../request-model/UpdateProfile';
+import UpdateUserProfile from '../../models/request-model/UpdateProfile';
 import CustomCheckBox from '../components/custom-checkbox';
 import CustomCheckBoxButton from '../components/custom-checkbox-button';
 import CustomPassword from '../components/custom-password';

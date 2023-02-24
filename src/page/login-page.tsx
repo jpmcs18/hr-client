@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import CustomReturn from '../client-model/CustomReturn';
+import CustomReturn from '../models/client-model/CustomReturn';
 import {
   useSetBusy,
   useSetToasterMessage,
@@ -9,7 +9,7 @@ import {
 import { authenticate } from '../repositories/security-queries';
 import { saveSessionProfile } from '../repositories/session-managers';
 import { getData } from '../repositories/system-user-queries';
-import LoginRequest from '../request-model/LoginRequest';
+import LoginRequest from '../models/request-model/LoginRequest';
 import CustomPassword from './components/custom-password';
 import CustomTextBox from './components/custom-textbox';
 
@@ -89,7 +89,6 @@ export default function LoginPage() {
       .finally(() => setBusy(false));
   }
   function onTextChange({ elementName, value }: CustomReturn) {
-    console.log(elementName, value);
     setUser({ ...user, [elementName]: value });
   }
   function onKeyPress(key: React.KeyboardEvent<HTMLDivElement>) {

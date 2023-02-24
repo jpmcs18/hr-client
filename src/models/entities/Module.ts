@@ -2,6 +2,8 @@ import ModuleRight from './ModuleRight';
 
 export default interface Module {
   id: number;
-  pageName: string | undefined;
+  description: string | undefined;
+  view: string | undefined;
   moduleRights: ModuleRight[] | undefined;
+  isCheck?: boolean | undefined;
 }

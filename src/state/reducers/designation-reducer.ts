@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import Designation from '../../entities/Designation';
+import Designation from '../../models/entities/Designation';
 
 interface State {
   designations: Designation[];

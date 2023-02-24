@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import CustomReturn from '../../client-model/CustomReturn';
+import CustomReturn from '../../models/client-model/CustomReturn';
 export default function CustomTextBox({
   title,
   name,

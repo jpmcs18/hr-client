@@ -1,6 +1,6 @@
 import { EmployeeEnd } from '../endpoints';
-import Employee from '../entities/Employee';
-import SearchResult from '../response-model/SearchResult';
+import Employee from '../models/entities/Employee';
+import SearchResult from '../models/response-model/SearchResult';
 import { httpDelete, httpGet, httpPost, httpPut } from './base';
 
 export async function searchEmployee(
@@ -19,15 +19,19 @@ export async function getEmployees(): Promise<Employee[] | undefined> {
 }
 
 export async function insertEmployee(
-  dasignation: Employee
+  employee: Employee
 ): Promise<Employee | undefined> {
-  return await httpPost<Employee>(EmployeeEnd.Insert, dasignation);
+  return await httpPost<Employee>(EmployeeEnd.Insert, {
+    ...employee,
+    designation: undefined,
+    office: undefined,
+  });
 }
 
 export async function updateEmployee(
-  dasignation: Employee
+  employee: Employee
 ): Promise<boolean | undefined> {
-  return await httpPut(EmployeeEnd.Update + '/' + dasignation.id, dasignation);
+  return await httpPut(EmployeeEnd.Update + '/' + employee.id, employee);
 }
 
 export async function deleteEmployee(id: number): Promise<boolean | undefined> {

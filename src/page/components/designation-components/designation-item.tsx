@@ -1,4 +1,4 @@
-import Designation from '../../../entities/Designation';
+import Designation from '../../../models/entities/Designation';
 
 export default function DesignationItem({
   designation,

@@ -6,21 +6,21 @@ import {
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
 import {
-  deleteEmployee,
-  searchEmployee,
-} from '../../../repositories/employee-queries';
-import { employeeActions } from '../../../state/reducers/employee-reducer';
+  deleteUserRole,
+  searchUserRole,
+} from '../../../repositories/user-role-queries';
+import { userRoleActions } from '../../../state/reducers/user-role-reducer';
 import { RootState } from '../../../state/store';
-import ManageEmployee from '../../modals/manage-employee';
+import ManageUserRole from '../../modals/manage-user-role';
 import SearchBar from '../searchbar';
-import EmployeeButtons from './employee-buttons';
-import EmployeeItems from './employee-items';
+import UserRoleButtons from './user-role-buttons';
+import UserRoleItems from './user-role-items';
 
-export default function EmployeePage() {
-  const employeeModalState = useSelector(
-    (state: RootState) => state.employeeModal
+export default function UserRolePage() {
+  const userRoleModalState = useSelector(
+    (state: RootState) => state.userRoleModal
   );
-  const employeeState = useSelector((state: RootState) => state.employee);
+  const userRoleState = useSelector((state: RootState) => state.userRole);
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
@@ -30,18 +30,18 @@ export default function EmployeePage() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(
     () => {
-      searchOff();
+      searchDes();
     },
     //eslint-disable-next-line
     [key, currentPage]
   );
 
-  async function searchOff() {
+  async function searchDes() {
     setBusy(true);
-    await searchEmployee(key, currentPage)
+    await searchUserRole(key, currentPage)
       .then((res) => {
         if (res !== undefined) {
-          dispatch(employeeActions.fill(res.results));
+          dispatch(userRoleActions.fill(res.results));
           setPageCount(() => res.pageCount);
         }
       })
@@ -55,26 +55,26 @@ export default function EmployeePage() {
     setCurrentPage((x) => 1);
   }
   async function onModalClose(hasChanges: boolean) {
-    if (hasChanges) searchOff();
+    if (hasChanges) searchDes();
   }
   async function nextPage(page: number) {
     setCurrentPage(() => page);
   }
   async function onDelete() {
-    if (!employeeState.selectedEmployee?.id) return;
+    if (!userRoleState.selectedUserRole?.id) return;
 
     setMessage({
       message: 'Are you sure you want to delete this?',
       action: 'YESNO',
       onOk: async () => {
         setBusy(true);
-        await deleteEmployee(employeeState.selectedEmployee?.id ?? 0)
+        await deleteUserRole(userRoleState.selectedUserRole?.id ?? 0)
           .then((res) => {
             if (res) {
               setToasterMessage({
-                content: 'Selected employee has been deleted',
+                content: 'Selected user role has been deleted',
               });
-              searchOff();
+              searchDes();
             }
           })
           .catch((err) => {
@@ -87,20 +87,20 @@ export default function EmployeePage() {
   return (
     <>
       <section className='title-container'>
-        <div className='title'>Employees</div>
+        <div className='title'>User Roles</div>
       </section>
       <section>
         <SearchBar search={search} placeholder='Search Key' value={key} />
       </section>
-      <EmployeeButtons
+      <UserRoleButtons
         onNextPage={nextPage}
         onDelete={onDelete}
         page={currentPage}
         pageCount={pageCount}
       />
-      <EmployeeItems />
-      {employeeModalState.isModalShow && (
-        <ManageEmployee onClose={onModalClose} />
+      <UserRoleItems />
+      {userRoleModalState.isModalShow && (
+        <ManageUserRole onClose={onModalClose} />
       )}
     </>
   );

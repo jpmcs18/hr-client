@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import CustomReturn from '../../client-model/CustomReturn';
-import Designation from '../../entities/Designation';
-import Employee from '../../entities/Employee';
-import Office from '../../entities/Office';
-import { officeActions } from './office-reducer';
+import CustomReturn from '../../models/client-model/CustomReturn';
+import Designation from '../../models/entities/Designation';
+import Employee from '../../models/entities/Employee';
+import Office from '../../models/entities/Office';
 
 interface State {
   employee: Employee;
@@ -12,7 +11,7 @@ interface State {
   isModalShow: boolean;
 }
 
-export const employeeInitialState: Employee = {
+const employeeInitialState: Employee = {
   id: 0,
   firstName: '',
   lastName: '',
@@ -72,6 +71,11 @@ const employeeModalSlice = createSlice({
     },
     setOffices(state, action: PayloadAction<Office[]>) {
       state.offices = action.payload;
+
+      state.designations =
+        action.payload
+          .filter((x) => x.id === state.employee.officeId)?.[0]
+          ?.designations?.map((x) => x.designation!) ?? [];
     },
   },
 });

@@ -30,7 +30,6 @@ export default function DesignationPage() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(
     () => {
-      console.log('call');
       searchDes();
     },
     //eslint-disable-next-line
@@ -39,7 +38,6 @@ export default function DesignationPage() {
 
   async function searchDes() {
     setBusy(true);
-    console.log(key, currentPage);
     await searchDesignation(key, currentPage)
       .then((res) => {
         if (res !== undefined) {
@@ -74,7 +72,7 @@ export default function DesignationPage() {
           .then((res) => {
             if (res) {
               setToasterMessage({
-                content: 'Selected office has been deleted',
+                content: 'Selected designation has been deleted',
               });
               searchDes();
             }
@@ -88,6 +86,9 @@ export default function DesignationPage() {
   }
   return (
     <>
+      <section className='title-container'>
+        <div className='title'>Designations</div>
+      </section>
       <section>
         <SearchBar search={search} placeholder='Search Key' value={key} />
       </section>

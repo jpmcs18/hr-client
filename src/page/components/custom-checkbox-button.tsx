@@ -1,4 +1,4 @@
-import CustomReturn from '../../client-model/CustomReturn';
+import CustomReturn from '../../models/client-model/CustomReturn';
 
 export default function CustomCheckBoxButton({
   CheckedTitle,

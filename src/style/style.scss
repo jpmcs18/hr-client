@@ -12,7 +12,7 @@
   --login-header-foreground-color: #b70000;
   --blocker-color: #000;
   --background-color: #efefef;
-  --primary-color: #a10101;
+  --primary-color: #8c0000;
   --primary-color2: #ce3838;
   --primary-color-accent: #fff;
   --primary-color-selected: #c70202;
@@ -354,7 +354,6 @@ section {
   cursor: pointer;
   color: var(--primary-color-accent);
   font-weight: var(--demibold);
-  font-size: vare(--normal-font-size);
   border: none;
   background: var(--primary-color);
   &:hover {
@@ -1119,6 +1118,9 @@ tbody tr {
   .office-management-table {
     height: 30vh !important;
   }
+  .user-role-modules-container {
+    height: 60vh !important;
+  }
   .concern-detail {
     width: 60%;
   }
@@ -1185,7 +1187,6 @@ tbody tr {
       }
     }
     .btn-modal {
-      font-size: var(--normal-font-size);
       border-radius: 0.3em;
       border: none;
       color: var(--primary-color-accent);
@@ -1243,6 +1244,7 @@ tbody tr {
     z-index: 8;
   }
 }
+
 .action-with-name {
   display: flex;
   align-items: center;
@@ -1257,7 +1259,13 @@ tbody tr {
     background: var(--primary-color-selected) !important;
   }
 }
-
+.module-right-container {
+  display: flex;
+  margin: 1em 0.5em;
+  .module-right {
+    margin-right: 1em;
+  }
+}
 .report-content {
   height: calc(100vh - 18em);
   overflow-y: auto;

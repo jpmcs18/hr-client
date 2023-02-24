@@ -1,6 +1,6 @@
 import { APP_SECRET } from '../constant';
-import SystemUser from '../entities/SystemUser';
-import TokenData from '../entities/TokenData';
+import SystemUser from '../models/entities/SystemUser';
+import TokenData from '../models/entities/TokenData';
 
 var CryptoJS = require('crypto-js');
 const token_add = '--pxx--';

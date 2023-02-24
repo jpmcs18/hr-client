@@ -1,6 +1,6 @@
 import { OfficeEnd } from '../endpoints';
-import Office from '../entities/Office';
-import SearchResult from '../response-model/SearchResult';
+import Office from '../models/entities/Office';
+import SearchResult from '../models/response-model/SearchResult';
 import { httpDelete, httpGet, httpPost, httpPut } from './base';
 
 export async function searchOffice(

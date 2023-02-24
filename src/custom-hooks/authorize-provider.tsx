@@ -1,8 +1,8 @@
 import { Guid } from 'guid-typescript';
 import React, { ReactNode, useContext, useState } from 'react';
-import ToasterMessage from '../client-model/ToasterMessage';
-import ToasterMessageItem from '../client-model/ToasterMessageItem';
-import SystemUser from '../entities/SystemUser';
+import ToasterMessage from '../models/client-model/ToasterMessage';
+import ToasterMessageItem from '../models/client-model/ToasterMessageItem';
+import SystemUser from '../models/entities/SystemUser';
 import Toaster from '../page/components/toaster';
 import MessageDialog from '../page/modals/message-dialog';
 import {

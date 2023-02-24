@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import Designation from '../../entities/Designation';
+import Designation from '../../models/entities/Designation';
 
 interface State {
   designation: Designation;
   isModalShow: boolean;
 }
-
+const designationInitialState = { id: 0, description: '' };
 const initialState: State = {
-  designation: { id: 0, description: '' },
+  designation: designationInitialState,
   isModalShow: false,
 };
 
@@ -15,8 +15,8 @@ const designationModalSlice = createSlice({
   name: 'designation-modal',
   initialState: initialState,
   reducers: {
-    setDesignation(state, action: PayloadAction<Designation>) {
-      state.designation = action.payload;
+    setDesignation(state, action: PayloadAction<Designation | undefined>) {
+      state.designation = action.payload ?? designationInitialState;
     },
     setShowModal(state, action: PayloadAction<boolean>) {
       state.isModalShow = action.payload;

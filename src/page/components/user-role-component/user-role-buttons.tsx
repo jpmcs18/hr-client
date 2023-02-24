@@ -1,12 +1,12 @@
 import { faAdd, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { designationModalActions } from '../../../state/reducers/designation-modal-reducer';
-import { designationActions } from '../../../state/reducers/designation-reducer';
+import { userRoleModalActions } from '../../../state/reducers/user-role-modal-reducer';
+import { userRoleActions } from '../../../state/reducers/user-role-reducer';
 import { RootState } from '../../../state/store';
 import Pagination from '../pagination';
 
-export default function DesignationButtons({
+export default function UserRoleButtons({
   onNextPage,
   onDelete,
   page,
@@ -18,19 +18,15 @@ export default function DesignationButtons({
   pageCount: number;
 }) {
   const dispatch = useDispatch();
-  const designationState = useSelector((state: RootState) => state.designation);
+  const userRoleState = useSelector((state: RootState) => state.userRole);
   function add() {
-    dispatch(designationActions.setSelected(undefined));
-    dispatch(designationModalActions.setDesignation());
-    dispatch(designationModalActions.setShowModal(true));
+    dispatch(userRoleActions.setSelected(undefined));
+    dispatch(userRoleModalActions.setUserRole());
+    dispatch(userRoleModalActions.setShowModal(true));
   }
   function edit() {
-    dispatch(
-      designationModalActions.setDesignation(
-        designationState.selectedDesignation!
-      )
-    );
-    dispatch(designationModalActions.setShowModal(true));
+    dispatch(userRoleModalActions.setUserRole(userRoleState.selectedUserRole!));
+    dispatch(userRoleModalActions.setShowModal(true));
   }
   return (
     <section className='btn-actions-group-container'>
@@ -40,14 +36,14 @@ export default function DesignationButtons({
         </button>
         <button
           className='btn-action'
-          disabled={!designationState.selectedDesignation}
+          disabled={!userRoleState.selectedUserRole}
           onClick={edit}
           title='Edit'>
           <FontAwesomeIcon icon={faEdit} />
         </button>
         <button
           className='btn-action'
-          disabled={!designationState.selectedDesignation}
+          disabled={!userRoleState.selectedUserRole}
           onClick={onDelete}
           title='Delete'>
           <FontAwesomeIcon icon={faTrash} />

@@ -1,6 +1,6 @@
 import { DesignationEnd } from '../endpoints';
-import Designation from '../entities/Designation';
-import SearchResult from '../response-model/SearchResult';
+import Designation from '../models/entities/Designation';
+import SearchResult from '../models/response-model/SearchResult';
 import { httpDelete, httpGet, httpPost, httpPut } from './base';
 
 export async function searchDesignation(

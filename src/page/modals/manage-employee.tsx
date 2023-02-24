@@ -96,7 +96,7 @@ export default function ManageEmployee({
         <CustomTextBox
           title='Middle Name'
           name='middleName'
-          value={employeeModalState.employee?.firstName}
+          value={employeeModalState.employee?.middleName}
           onChange={(ret) => {
             dispatch(employeeModalActions.updateEmployee(ret));
           }}
@@ -104,15 +104,15 @@ export default function ManageEmployee({
         <CustomTextBox
           title='Last Name'
           name='lastName'
-          value={employeeModalState.employee?.firstName}
+          value={employeeModalState.employee?.lastName}
           onChange={(ret) => {
             dispatch(employeeModalActions.updateEmployee(ret));
           }}
         />
         <CustomTextBox
-          title='Last Name'
+          title='Name Extension (ex Jr., Sr., II)'
           name='extension'
-          value={employeeModalState.employee?.firstName}
+          value={employeeModalState.employee?.extension}
           onChange={(ret) => {
             dispatch(employeeModalActions.updateEmployee(ret));
           }}
@@ -120,7 +120,10 @@ export default function ManageEmployee({
         <CustomDropdown
           title='Office'
           hasDefault={true}
-          onChange={(ret) => {}}
+          value={employeeModalState.employee.officeId}
+          onChange={(ret) => {
+            dispatch(employeeModalActions.updateOffice(ret.value));
+          }}
           itemsList={employeeModalState.offices.map((x) => {
             return {
               key: x.id.toString(),
@@ -131,7 +134,10 @@ export default function ManageEmployee({
         <CustomDropdown
           title='Designation'
           hasDefault={true}
-          onChange={(ret) => {}}
+          value={employeeModalState.employee.designationId}
+          onChange={(ret) => {
+            dispatch(employeeModalActions.updateDesignation(ret.value));
+          }}
           itemsList={employeeModalState.designations.map((x) => {
             return {
               key: x.id.toString(),

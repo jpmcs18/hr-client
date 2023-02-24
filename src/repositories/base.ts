@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { SecurityEnd } from '../endpoints';
 import { API } from '../constant';
 import { clearToken, getToken, saveToken } from './session-managers';
-import TokenData from '../entities/TokenData';
+import TokenData from '../models/entities/TokenData';
 
 export async function httpGet<Return>(
   url: string
