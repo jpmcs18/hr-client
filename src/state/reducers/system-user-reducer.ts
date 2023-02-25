@@ -1,30 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Searchable from '../../models/client-model/Searchable';
-import Designation from '../../models/entities/Designation';
+import SystemUser from '../../models/entities/SystemUser';
 
 interface State extends Searchable {
-  designations: Designation[];
-  selectedDesignation: Designation | undefined;
+  systemUsers: SystemUser[];
+  selectedSystemUser: SystemUser | undefined;
 }
 const initialState: State = {
-  designations: [],
-  selectedDesignation: undefined,
+  systemUsers: [],
+  selectedSystemUser: undefined,
   key: '',
   currentPage: 0,
   pageCount: 0,
   initiateSearch: false,
 };
 
-const designationSlice = createSlice({
-  name: 'designation',
+const systemUserSlice = createSlice({
+  name: 'system-user',
   initialState: initialState,
   reducers: {
-    fill(state, action: PayloadAction<Designation[]>) {
-      state.designations = action.payload;
-      state.selectedDesignation = undefined;
+    fill(state, action: PayloadAction<SystemUser[]>) {
+      state.systemUsers = action.payload;
+      state.selectedSystemUser = undefined;
     },
-    setSelected(state, action: PayloadAction<Designation | undefined>) {
-      state.selectedDesignation = action.payload;
+    setSelected(state, action: PayloadAction<SystemUser | undefined>) {
+      state.selectedSystemUser = action.payload;
     },
     setkey(state, action: PayloadAction<string>) {
       state.key = action.payload;
@@ -41,5 +41,5 @@ const designationSlice = createSlice({
   },
 });
 
-export default designationSlice.reducer;
-export const designationActions = designationSlice.actions;
+export default systemUserSlice.reducer;
+export const systemUserActions = systemUserSlice.actions;

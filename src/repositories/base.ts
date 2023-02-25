@@ -97,7 +97,7 @@ export async function httpPost<Return>(
     });
 }
 
-export async function httpPut(url: string, param: any): Promise<boolean> {
+export async function httpPut(url: string, param?: any): Promise<boolean> {
   const token = getToken();
   if (token?.token === undefined) {
     throw new Error('Unauthorized');

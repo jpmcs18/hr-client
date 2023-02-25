@@ -54,36 +54,6 @@ export default function UserRolePage() {
     setKey((x) => key);
     setCurrentPage((x) => 1);
   }
-  async function onModalClose(hasChanges: boolean) {
-    if (hasChanges) searchDes();
-  }
-  async function nextPage(page: number) {
-    setCurrentPage(() => page);
-  }
-  async function onDelete() {
-    if (!userRoleState.selectedUserRole?.id) return;
-
-    setMessage({
-      message: 'Are you sure you want to delete this?',
-      action: 'YESNO',
-      onOk: async () => {
-        setBusy(true);
-        await deleteUserRole(userRoleState.selectedUserRole?.id ?? 0)
-          .then((res) => {
-            if (res) {
-              setToasterMessage({
-                content: 'Selected user role has been deleted',
-              });
-              searchDes();
-            }
-          })
-          .catch((err) => {
-            setToasterMessage({ content: err.message });
-          })
-          .then(() => setBusy(false));
-      },
-    });
-  }
   return (
     <>
       <section className='title-container'>
@@ -92,16 +62,9 @@ export default function UserRolePage() {
       <section>
         <SearchBar search={search} placeholder='Search Key' value={key} />
       </section>
-      <UserRoleButtons
-        onNextPage={nextPage}
-        onDelete={onDelete}
-        page={currentPage}
-        pageCount={pageCount}
-      />
+      <UserRoleButtons />
       <UserRoleItems />
-      {userRoleModalState.isModalShow && (
-        <ManageUserRole onClose={onModalClose} />
-      )}
+      {userRoleModalState.isModalShow && <ManageUserRole />}
     </>
   );
 }

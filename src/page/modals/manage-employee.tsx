@@ -10,16 +10,13 @@ import {
 } from '../../repositories/employee-queries';
 import { getOffices } from '../../repositories/office-queries';
 import { employeeModalActions } from '../../state/reducers/employee-modal-reducer';
+import { employeeActions } from '../../state/reducers/employee-reducer';
 import { RootState } from '../../state/store';
 import CustomDropdown from '../components/custom-dropdown';
 import CustomTextBox from '../components/custom-textbox';
 import Modal from './modal';
 
-export default function ManageEmployee({
-  onClose,
-}: {
-  onClose: (hasChanges: boolean) => {};
-}) {
+export default function ManageEmployee() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
@@ -36,7 +33,7 @@ export default function ManageEmployee({
 
   function onModalClose(hasChange: boolean) {
     dispatch(employeeModalActions.setShowModal(false));
-    onClose(hasChange);
+    if (hasChange) dispatch(employeeActions.setInitiateSearch(true));
   }
   async function getOff() {
     setBusy(true);

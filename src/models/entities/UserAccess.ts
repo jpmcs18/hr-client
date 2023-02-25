@@ -5,4 +5,6 @@ export default interface UserAccess {
   userId: number | undefined;
   userRoleId: number | undefined;
   userRole: UserRole | undefined;
+  tempId?: string | undefined;
+  deleted?: boolean | undefined;
 }

@@ -24,25 +24,23 @@ export default function DesignationPage() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
-  const setMessage = useSetMessage();
-  const [key, setKey] = useState<string>('');
-  const [pageCount, setPageCount] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(
     () => {
       searchDes();
     },
     //eslint-disable-next-line
-    [key, currentPage]
+    [designationState.initiateSearch]
   );
 
   async function searchDes() {
+    if (!designationState.initiateSearch) return;
+    dispatch(designationActions.setInitiateSearch(false));
     setBusy(true);
-    await searchDesignation(key, currentPage)
+    await searchDesignation(designationState.key, designationState.currentPage)
       .then((res) => {
         if (res !== undefined) {
           dispatch(designationActions.fill(res.results));
-          setPageCount(() => res.pageCount);
+          dispatch(designationActions.setPageCount(res.pageCount));
         }
       })
       .catch((err) => {
@@ -51,38 +49,9 @@ export default function DesignationPage() {
       .then(() => setBusy(false));
   }
   async function search(key: string) {
-    setKey((x) => key);
-    setCurrentPage((x) => 1);
-  }
-  async function onModalClose(hasChanges: boolean) {
-    if (hasChanges) searchDes();
-  }
-  async function nextPage(page: number) {
-    setCurrentPage(() => page);
-  }
-  async function onDelete() {
-    if (!designationState.selectedDesignation?.id) return;
-
-    setMessage({
-      message: 'Are you sure you want to delete this?',
-      action: 'YESNO',
-      onOk: async () => {
-        setBusy(true);
-        await deleteDesignation(designationState.selectedDesignation?.id ?? 0)
-          .then((res) => {
-            if (res) {
-              setToasterMessage({
-                content: 'Selected designation has been deleted',
-              });
-              searchDes();
-            }
-          })
-          .catch((err) => {
-            setToasterMessage({ content: err.message });
-          })
-          .then(() => setBusy(false));
-      },
-    });
+    dispatch(designationActions.setkey(key));
+    dispatch(designationActions.setCurrentPage(1));
+    dispatch(designationActions.setInitiateSearch(true));
   }
   return (
     <>
@@ -90,18 +59,15 @@ export default function DesignationPage() {
         <div className='title'>Designations</div>
       </section>
       <section>
-        <SearchBar search={search} placeholder='Search Key' value={key} />
+        <SearchBar
+          search={search}
+          placeholder='Search Key'
+          value={designationState.key}
+        />
       </section>
-      <DesignationButtons
-        onNextPage={nextPage}
-        onDelete={onDelete}
-        page={currentPage}
-        pageCount={pageCount}
-      />
+      <DesignationButtons />
       <DesignationItems />
-      {designationModalState.isModalShow && (
-        <ManageDesignation onClose={onModalClose} />
-      )}
+      {designationModalState.isModalShow && <ManageDesignation />}
     </>
   );
 }

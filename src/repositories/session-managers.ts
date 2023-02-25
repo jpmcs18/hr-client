@@ -1,12 +1,13 @@
 import { APP_SECRET } from '../constant';
+import ModuleRight from '../models/entities/ModuleRight';
 import SystemUser from '../models/entities/SystemUser';
 import TokenData from '../models/entities/TokenData';
 
 var CryptoJS = require('crypto-js');
 const token_add = '--pxx--';
 const profile_add = '--pxx-xdx--';
+const access_add = '--axx-xdx--';
 const theme = '--dark-theme--';
-const navigation_add = '--nxx--';
 
 function encrypt(data: string): string {
   return CryptoJS.AES.encrypt(data, APP_SECRET).toString();
@@ -21,7 +22,6 @@ export function getTheme(): boolean | undefined {
     return undefined;
   }
 }
-
 export function setTheme(isDarkMode: boolean) {
   localStorage.setItem(theme, isDarkMode.toString());
 }
@@ -30,11 +30,9 @@ export function saveToken(auth: TokenData) {
     localStorage.setItem(token_add, encrypt(JSON.stringify(auth)));
   }
 }
-
 export function clearToken() {
   localStorage.removeItem(token_add);
 }
-
 export function getToken(): TokenData | undefined {
   try {
     return JSON.parse(decrypt(localStorage.getItem(token_add) ?? ''));
@@ -42,7 +40,6 @@ export function getToken(): TokenData | undefined {
     return undefined;
   }
 }
-
 export function getSessionProfile(): SystemUser | undefined {
   try {
     return JSON.parse(decrypt(localStorage.getItem(profile_add) ?? ''));
@@ -55,16 +52,25 @@ export function saveSessionProfile(profile: SystemUser) {
     localStorage.setItem(profile_add, encrypt(JSON.stringify(profile)));
   }
 }
-
 export function clearSessionProfile() {
   localStorage.removeItem(profile_add);
 }
-export function clearSessionMenus() {
-  localStorage.removeItem(navigation_add);
+export function getSessionAccess(): ModuleRight[] | undefined {
+  try {
+    return JSON.parse(decrypt(localStorage.getItem(access_add) ?? ''));
+  } catch {
+    return undefined;
+  }
+}
+export function saveSessionAccess(access: ModuleRight[]) {
+  if (access !== undefined) {
+    localStorage.setItem(access_add, encrypt(JSON.stringify(access)));
+  }
+}
+export function clearSessionAccess() {
+  localStorage.removeItem(access_add);
 }
 
 export function clearSession() {
-  clearSessionMenus();
-  clearSessionProfile();
-  clearToken();
+  localStorage.clear();
 }

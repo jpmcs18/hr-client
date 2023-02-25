@@ -10,17 +10,13 @@ import {
   updateUserRole,
 } from '../../repositories/user-role-queries';
 import { userRoleModalActions } from '../../state/reducers/user-role-modal-reducer';
+import { userRoleActions } from '../../state/reducers/user-role-reducer';
 import { RootState } from '../../state/store';
-import CollapsibleContainer from '../components/collapsible-container';
-import CustomCheckBox from '../components/custom-checkbox';
 import CustomTextBox from '../components/custom-textbox';
+import ManageUserRoleAccess from './manage-user-role-access';
 import Modal from './modal';
 
-export default function ManageUserRole({
-  onClose,
-}: {
-  onClose: (hasChanges: boolean) => {};
-}) {
+export default function ManageUserRole() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
@@ -37,7 +33,7 @@ export default function ManageUserRole({
 
   function onModalClose(hasChange: boolean) {
     dispatch(userRoleModalActions.setShowModal(false));
-    onClose(hasChange);
+    if (hasChange) dispatch(userRoleActions.setInitiateSearch(true));
   }
   async function getMod() {
     setBusy(true);
@@ -119,59 +115,7 @@ export default function ManageUserRole({
             );
           }}
         />
-        <div className='table-container user-role-modules-container'>
-          <table className='item-table'>
-            <thead>
-              <tr>
-                <th>Modules</th>
-              </tr>
-            </thead>
-            <tbody>
-              {userRoleModalState.modules.map((module) => (
-                <tr key={module.id}>
-                  <td>
-                    <CollapsibleContainer
-                      header={
-                        <div>
-                          <CustomCheckBox
-                            text={module.description}
-                            id={'module' + module.id}
-                            checkChange={() => {
-                              dispatch(
-                                userRoleModalActions.checkModule(module.id)
-                              );
-                            }}
-                            isCheck={module.isCheck ?? false}
-                          />
-                        </div>
-                      }
-                      content={
-                        <div className='module-right-container'>
-                          {module.moduleRights?.map((moduleRight) => (
-                            <div key={moduleRight.id} className='module-right'>
-                              <CustomCheckBox
-                                text={moduleRight.right}
-                                id={'module-right' + moduleRight.id}
-                                checkChange={() => {
-                                  dispatch(
-                                    userRoleModalActions.checkModuleRight({
-                                      moduleId: module.id,
-                                      moduleRightId: moduleRight.id,
-                                    })
-                                  );
-                                }}
-                                isCheck={moduleRight.isCheck ?? false}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      }></CollapsibleContainer>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ManageUserRoleAccess />
       </div>
       <div className='modal-footer'>
         <button onClick={saveData} className='btn-modal btn-primary'>

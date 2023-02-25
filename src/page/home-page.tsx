@@ -5,12 +5,7 @@ import {
   Route,
   Routes,
 } from 'react-router-dom';
-import {
-  useAuthorize,
-  useSetMessage,
-  useUpdateAuthorize,
-  useUserProfile,
-} from '../custom-hooks/authorize-provider';
+import { useSetMessage } from '../custom-hooks/authorize-provider';
 import LoginPage from './login-page';
 
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
@@ -32,27 +27,31 @@ import OfficePage from './components/office-components/office-page';
 import UserRolePage from './components/user-role-component/user-role-page';
 import Dashboard from './dashboard';
 import ManageProfile from './modals/manage-profile';
+import SystemUserPage from './components/system-user-component/system-user-page';
+import { useDispatch } from 'react-redux';
+import { userProfileAction } from '../state/reducers/user-profile-reducer';
+import { useSelector } from 'react-redux';
+import { RootState } from '../state/store';
 export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
-  const authorize = useAuthorize();
-  const profile = useUserProfile();
-  const updateAuthorize = useUpdateAuthorize();
   const setMessage = useSetMessage();
   const [showMenu, setShowMenu] = useState(false);
   const [menus, setMenus] = useState<ModuleRoute[]>([]);
+  const dispatch = useDispatch();
+  const userProfileState = useSelector((state: RootState) => state.userProfile);
   function logoutUser() {
     setMessage({
       message: 'Continue to logout?',
       action: 'YESNO',
       onOk: () => {
-        updateAuthorize(false);
+        dispatch(userProfileAction.clearProfile());
         setShowProfile(false);
       },
     });
   }
   return (
     <>
-      {authorize ? (
+      {userProfileState.authorize ? (
         <BrowserRouter>
           <header>
             <nav>
@@ -87,14 +86,14 @@ export default function HomePage() {
                               setShowProfile(true);
                               setShowMenu(() => false);
                             }}>
-                            {profile?.displayName}
+                            {userProfileState.systemUser?.displayName}
                             <FontAwesomeIcon
                               className='name-icon'
                               icon={faAngleRight as IconProp}
                             />
                           </label>
                           <span className='name-subtitle'>
-                            {profile?.username}
+                            {userProfileState.systemUser?.username}
                           </span>
                         </div>
                         <button
@@ -104,7 +103,7 @@ export default function HomePage() {
                         </button>
                       </div>
                       <div className='menus-container'>
-                        {(profile?.isAdmin
+                        {(userProfileState.systemUser?.isAdmin
                           ? SystemModules.filter((x) => x.display)
                           : menus
                         ).map((menu) => (
@@ -139,9 +138,11 @@ export default function HomePage() {
                   <label
                     className='nav-menu'
                     onClick={() => setShowProfile(true)}>
-                    {profile?.displayName ?? '---'}
+                    {userProfileState.systemUser?.displayName ?? '---'}
                   </label>
-                  <span className='name-subtitle'>{profile?.username}</span>
+                  <span className='name-subtitle'>
+                    {userProfileState.systemUser?.username}
+                  </span>
                 </div>
                 <button onClick={logoutUser} className='nav-icon'>
                   <FontAwesomeIcon icon={faPowerOff as IconProp} />
@@ -161,6 +162,7 @@ export default function HomePage() {
               element={<DesignationPage />}
             />
             <Route path={SystemModules[4].route} element={<OfficePage />} />
+            <Route path={SystemModules[5].route} element={<SystemUserPage />} />
             <Route path={SystemModules[6].route} element={<UserRolePage />} />
             <Route
               path='*'

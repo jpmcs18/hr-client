@@ -1,24 +1,23 @@
 import { faAdd, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  useSetBusy,
+  useSetMessage,
+  useSetToasterMessage,
+} from '../../../custom-hooks/authorize-provider';
+import { deleteDesignation } from '../../../repositories/designation-queries';
 import { designationModalActions } from '../../../state/reducers/designation-modal-reducer';
 import { designationActions } from '../../../state/reducers/designation-reducer';
 import { RootState } from '../../../state/store';
 import Pagination from '../pagination';
 
-export default function DesignationButtons({
-  onNextPage,
-  onDelete,
-  page,
-  pageCount,
-}: {
-  onNextPage: (page: number) => {};
-  onDelete: () => {};
-  page: number;
-  pageCount: number;
-}) {
+export default function DesignationButtons() {
   const dispatch = useDispatch();
   const designationState = useSelector((state: RootState) => state.designation);
+  const setToasterMessage = useSetToasterMessage();
+  const setMessage = useSetMessage();
+  const setBusy = useSetBusy();
   function add() {
     dispatch(designationActions.setSelected(undefined));
     dispatch(designationModalActions.setDesignation());
@@ -31,6 +30,34 @@ export default function DesignationButtons({
       )
     );
     dispatch(designationModalActions.setShowModal(true));
+  }
+  async function nextPage(page: number) {
+    dispatch(designationActions.setCurrentPage(page));
+    dispatch(designationActions.setInitiateSearch(true));
+  }
+  async function onDelete() {
+    if (!designationState.selectedDesignation?.id) return;
+
+    setMessage({
+      message: 'Are you sure you want to delete this?',
+      action: 'YESNO',
+      onOk: async () => {
+        setBusy(true);
+        await deleteDesignation(designationState.selectedDesignation?.id ?? 0)
+          .then((res) => {
+            if (res) {
+              setToasterMessage({
+                content: 'Selected designation has been deleted',
+              });
+              dispatch(designationActions.setInitiateSearch(true));
+            }
+          })
+          .catch((err) => {
+            setToasterMessage({ content: err.message });
+          })
+          .then(() => setBusy(false));
+      },
+    });
   }
   return (
     <section className='btn-actions-group-container'>
@@ -55,9 +82,9 @@ export default function DesignationButtons({
       </div>
 
       <Pagination
-        pages={pageCount}
-        currentPageNumber={page}
-        goInPage={onNextPage}></Pagination>
+        pages={designationState.pageCount}
+        currentPageNumber={designationState.currentPage}
+        goInPage={nextPage}></Pagination>
     </section>
   );
 }

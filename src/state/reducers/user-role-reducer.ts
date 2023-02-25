@@ -1,13 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import Searchable from '../../models/client-model/Searchable';
 import UserRole from '../../models/entities/UserRole';
 
-interface State {
+interface State extends Searchable {
   userRoles: UserRole[];
   selectedUserRole: UserRole | undefined;
 }
 const initialState: State = {
   userRoles: [],
   selectedUserRole: undefined,
+  key: '',
+  currentPage: 0,
+  pageCount: 0,
+  initiateSearch: false,
 };
 
 const userRoleSlice = createSlice({
@@ -20,6 +25,18 @@ const userRoleSlice = createSlice({
     },
     setSelected(state, action: PayloadAction<UserRole | undefined>) {
       state.selectedUserRole = action.payload;
+    },
+    setkey(state, action: PayloadAction<string>) {
+      state.key = action.payload;
+    },
+    setCurrentPage(state, action: PayloadAction<number>) {
+      state.currentPage = action.payload;
+    },
+    setPageCount(state, action: PayloadAction<number>) {
+      state.pageCount = action.payload;
+    },
+    setInitiateSearch(state, action: PayloadAction<boolean>) {
+      state.initiateSearch = action.payload;
     },
   },
 });

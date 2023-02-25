@@ -31,16 +31,18 @@ export default function OfficePage() {
       searchOff();
     },
     //eslint-disable-next-line
-    [key, currentPage]
+    [officeState.initiateSearch]
   );
 
   async function searchOff() {
+    if (!officeState.initiateSearch) return;
+    dispatch(officeActions.setInitiateSearch(false));
     setBusy(true);
-    await searchOffice(key, currentPage)
+    await searchOffice(officeState.key, officeState.currentPage)
       .then((res) => {
         if (res !== undefined) {
           dispatch(officeActions.fill(res.results));
-          setPageCount(() => res.pageCount);
+          dispatch(officeActions.setPageCount(res.pageCount));
         }
       })
       .catch((err) => {
@@ -49,38 +51,9 @@ export default function OfficePage() {
       .then(() => setBusy(false));
   }
   async function search(key: string) {
-    setKey((x) => key);
-    setCurrentPage((x) => 1);
-  }
-  async function onModalClose(hasChanges: boolean) {
-    if (hasChanges) searchOff();
-  }
-  async function nextPage(page: number) {
-    setCurrentPage(() => page);
-  }
-  async function onDelete() {
-    if (!officeState.selectedOffice?.id) return;
-
-    setMessage({
-      message: 'Are you sure you want to delete this?',
-      action: 'YESNO',
-      onOk: async () => {
-        setBusy(true);
-        await deleteOffice(officeState.selectedOffice?.id ?? 0)
-          .then((res) => {
-            if (res) {
-              setToasterMessage({
-                content: 'Selected office has been deleted',
-              });
-              searchOff();
-            }
-          })
-          .catch((err) => {
-            setToasterMessage({ content: err.message });
-          })
-          .then(() => setBusy(false));
-      },
-    });
+    dispatch(officeActions.setkey(key));
+    dispatch(officeActions.setCurrentPage(1));
+    dispatch(officeActions.setInitiateSearch(true));
   }
   return (
     <>
@@ -88,16 +61,15 @@ export default function OfficePage() {
         <div className='title'>Offices</div>
       </section>
       <section>
-        <SearchBar search={search} placeholder='Search Key' value={key} />
+        <SearchBar
+          search={search}
+          placeholder='Search Key'
+          value={officeState.key}
+        />
       </section>
-      <OfficeButtons
-        onNextPage={nextPage}
-        onDelete={onDelete}
-        page={currentPage}
-        pageCount={pageCount}
-      />
+      <OfficeButtons />
       <OfficeItems />
-      {officeModalState.isModalShow && <ManageOffice onClose={onModalClose} />}
+      {officeModalState.isModalShow && <ManageOffice />}
     </>
   );
 }

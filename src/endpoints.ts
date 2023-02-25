@@ -3,12 +3,14 @@ export const SecurityEnd = {
   Login: 'securities/log',
 };
 
-export const UserEnd = {
-  Get: 'system-users',
+export const SystemUserEnd = {
   GetData: 'system-users/profile',
-  Activate: 'system-users/activate-deactivate',
-  Delete: 'system-users',
   SaveProfile: 'system-users/profile',
+  Search: 'system-users/search',
+  ResetPassword: 'system-users/reset-password',
+  Insert: 'system-users',
+  Update: 'system-users',
+  Delete: 'system-users',
 };
 
 export const UserAccessEnd = {
@@ -49,4 +51,7 @@ export const OfficeEnd = {
 
 export const ModuleEnd = {
   GetList: 'modules',
+};
+export const ModuleRightEnd = {
+  GetUserAccess: 'module-rights/access',
 };

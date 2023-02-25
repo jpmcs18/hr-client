@@ -1,6 +1,4 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   useSetBusy,
   useSetToasterMessage,
@@ -10,25 +8,21 @@ import {
   updateDesignation,
 } from '../../repositories/designation-queries';
 import { designationModalActions } from '../../state/reducers/designation-modal-reducer';
+import { designationActions } from '../../state/reducers/designation-reducer';
 import { RootState } from '../../state/store';
 import CustomTextBox from '../components/custom-textbox';
 import Modal from './modal';
 
-export default function ManageDesignation({
-  onClose,
-}: {
-  onClose: (hasChanges: boolean) => {};
-}) {
+export default function ManageDesignation() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
   const designationModalState = useSelector(
     (state: RootState) => state.designationModal
   );
-  const designationState = useSelector((state: RootState) => state.designation);
   function onModalClose(hasChange: boolean) {
     dispatch(designationModalActions.setShowModal(false));
-    onClose(hasChange);
+    if (hasChange) dispatch(designationActions.setInitiateSearch(true));
   }
   async function saveData() {
     setBusy(true);

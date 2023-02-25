@@ -4,14 +4,8 @@ import {
   useSetBusy,
   useSetMessage,
   useSetToasterMessage,
-  useUpdateUserProfile,
-  useUserProfile,
 } from '../../custom-hooks/authorize-provider';
-import {
-  getTheme,
-  saveSessionProfile,
-  setTheme,
-} from '../../repositories/session-managers';
+import { getTheme, setTheme } from '../../repositories/session-managers';
 import { saveProfile } from '../../repositories/system-user-queries';
 import UpdateUserProfile from '../../models/request-model/UpdateProfile';
 import CustomCheckBox from '../components/custom-checkbox';
@@ -19,15 +13,19 @@ import CustomCheckBoxButton from '../components/custom-checkbox-button';
 import CustomPassword from '../components/custom-password';
 import CustomTextBox from '../components/custom-textbox';
 import Modal from './modal';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../state/store';
+import { useDispatch } from 'react-redux';
+import { userProfileAction } from '../../state/reducers/user-profile-reducer';
 
 export default function ManageProfile({ onClose }: { onClose: () => void }) {
-  const profile = useUserProfile();
-  const updateProfileInfo = useUpdateUserProfile();
   const [darkMode, setdarkMode] = useState(() => !!getTheme());
   const [changePassword, setChangePassword] = useState(false);
+  const userProfileState = useSelector((state: RootState) => state.userProfile);
+  const dispatch = useDispatch();
   const [user, setUser] = useState<UpdateUserProfile>(() => {
     return {
-      username: profile?.username ?? '',
+      username: userProfileState.systemUser?.username ?? '',
       password: '',
       confirmNewPassword: '',
       newPassword: '',
@@ -52,14 +50,12 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
         setMessage({
           message: 'User Information Saved',
           onOk: () => {
-            saveSessionProfile({
-              ...profile!,
-              username: user.username,
-            });
-            updateProfileInfo({
-              ...profile!,
-              username: user.username,
-            });
+            dispatch(
+              userProfileAction.setProfile({
+                ...userProfileState.systemUser!,
+                username: user.username,
+              })
+            );
             onClose();
           },
         });
@@ -98,7 +94,7 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
           <CustomTextBox
             title='Name'
             readonly={true}
-            value={profile?.displayName}
+            value={userProfileState.systemUser?.displayName}
           />
           <CustomTextBox
             title='Username'

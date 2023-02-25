@@ -1115,6 +1115,9 @@ tbody tr {
   left: 0;
   right: 0;
   bottom: 0;
+  .systemUser-management-table {
+    height: 30vh !important;
+  }
   .office-management-table {
     height: 30vh !important;
   }
@@ -1477,9 +1480,6 @@ tbody tr {
   .table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-  }
-  .modal-content {
-    width: 50%;
   }
   .filter-container {
     flex-direction: column;

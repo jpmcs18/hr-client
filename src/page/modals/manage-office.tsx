@@ -7,17 +7,14 @@ import {
 import { getDesignations } from '../../repositories/designation-queries';
 import { insertOffice, updateOffice } from '../../repositories/office-queries';
 import { officeModalActions } from '../../state/reducers/office-modal-reducer';
+import { officeActions } from '../../state/reducers/office-reducer';
 import { RootState } from '../../state/store';
 import CustomDropdown from '../components/custom-dropdown';
 import CustomTextBox from '../components/custom-textbox';
-import ManageOfficeDesignationsTable from './manage-office-designations-table';
+import ManageOfficeDesignationsTable from './manage-system-user-access-table';
 import Modal from './modal';
 
-export default function ManageOffice({
-  onClose,
-}: {
-  onClose: (hasChanges: boolean) => {};
-}) {
+export default function ManageOffice() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
@@ -32,7 +29,7 @@ export default function ManageOffice({
 
   function onModalClose(hasChange: boolean) {
     dispatch(officeModalActions.setShowModal(false));
-    onClose(hasChange);
+    if (hasChange) dispatch(officeActions.setInitiateSearch(true));
   }
   async function getDes() {
     setBusy(true);

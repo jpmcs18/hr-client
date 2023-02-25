@@ -5,10 +5,14 @@ import employeeModalReducer from './reducers/employee-modal-reducer';
 import employeeReducer from './reducers/employee-reducer';
 import officeModalReducer from './reducers/office-modal-reducer';
 import officeReducer from './reducers/office-reducer';
+import systemUserModalReducer from './reducers/system-user-modal-reducer';
+import systemUserReducer from './reducers/system-user-reducer';
+import userProfileReducer from './reducers/user-profile-reducer';
 import userRoleModalReducer from './reducers/user-role-modal-reducer';
 import userRoleReducer from './reducers/user-role-reducer';
 const store = configureStore({
   reducer: {
+    userProfile: userProfileReducer,
     employee: employeeReducer,
     employeeModal: employeeModalReducer,
     designation: designationReducer,
@@ -17,6 +21,8 @@ const store = configureStore({
     officeModal: officeModalReducer,
     userRole: userRoleReducer,
     userRoleModal: userRoleModalReducer,
+    systemUser: systemUserReducer,
+    systemUserModal: systemUserModalReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });

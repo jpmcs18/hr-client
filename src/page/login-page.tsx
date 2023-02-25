@@ -3,32 +3,32 @@ import CustomReturn from '../models/client-model/CustomReturn';
 import {
   useSetBusy,
   useSetToasterMessage,
-  useUpdateAuthorize,
-  useUpdateUserProfile,
 } from '../custom-hooks/authorize-provider';
 import { authenticate } from '../repositories/security-queries';
-import { saveSessionProfile } from '../repositories/session-managers';
 import { getData } from '../repositories/system-user-queries';
 import LoginRequest from '../models/request-model/LoginRequest';
 import CustomPassword from './components/custom-password';
 import CustomTextBox from './components/custom-textbox';
+import { getDistinctModuleRights } from '../repositories/module-right-queries';
+import { useDispatch } from 'react-redux';
+import { userProfileAction } from '../state/reducers/user-profile-reducer';
 
 export default function LoginPage() {
   const [user, setUser] = useState<LoginRequest>({
     username: '',
     password: '',
   });
-  const updateProfile = useUpdateUserProfile();
-  const updateAuthorize = useUpdateAuthorize();
   const setToasterMessage = useSetToasterMessage();
   const setBusy = useSetBusy();
+  const dispatch = useDispatch();
   async function signIn() {
     setBusy(true);
     await authenticate(user)
       .then(async (res) => {
         if (res) {
           await getProfile();
-          updateAuthorize(res);
+          await getDistinctAccess();
+          dispatch(userProfileAction.setAuthorize(res));
         }
       })
       .catch((err) => {
@@ -36,51 +36,25 @@ export default function LoginPage() {
       })
       .finally(() => setBusy(false));
   }
-
-  // async function getListOfModule(user: SystemUser) {
-  //   setBusy(true);
-  //   await getModuleListOfMains()
-  //     .then(async (res) => {
-  //       if (res !== undefined) {
-  //         const menuItems: MenuItem[] = [];
-
-  //         for (const module of res.filter(
-  //           (x) =>
-  //             user.systemUserAccess?.some(
-  //               (y) => y.moduleRight.moduleId === x.id && y.granted
-  //             ) || user.isAdmin
-  //         )) {
-  //           if (module.description === 'Lookups') {
-  //             var data = {
-  //               isHead: true,
-  //               name: module.description,
-  //               menus: await getLookups(),
-  //             };
-  //             menuItems.push(data);
-  //           } else {
-  //             menuItems.push({
-  //               name: module.description,
-  //               route: module.route,
-  //             });
-  //           }
-  //         }
-
-  //         saveSessionMenus(menuItems);
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       setToasterMessage({ content: err.message });
-  //     })
-  //     .finally(() => setBusy(false));
-  // }
-
+  async function getDistinctAccess() {
+    setBusy(true);
+    await getDistinctModuleRights()
+      .then(async (res) => {
+        if (res !== undefined) {
+          dispatch(userProfileAction.setAccess(res));
+        }
+      })
+      .catch((err) => {
+        setToasterMessage({ content: err.message });
+      })
+      .finally(() => setBusy(false));
+  }
   async function getProfile() {
     setBusy(true);
     await getData()
       .then(async (res) => {
         if (res !== undefined) {
-          saveSessionProfile(res);
-          updateProfile(res);
+          dispatch(userProfileAction.setProfile(res));
         }
       })
       .catch((err) => {

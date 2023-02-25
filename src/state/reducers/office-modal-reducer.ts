@@ -13,8 +13,15 @@ interface State {
   isModalShow: boolean;
 }
 
+const officeInitialState: Office = {
+  id: 0,
+  abbreviation: '',
+  description: '',
+  designations: [],
+};
+
 const initialState: State = {
-  office: { id: 0, abbreviation: '', description: '', designations: [] },
+  office: officeInitialState,
   designations: [],
   newDesignation: [],
   deletedDesignation: [],
@@ -26,8 +33,8 @@ const officeModalSlice = createSlice({
   name: 'office-modal',
   initialState: initialState,
   reducers: {
-    setOffice(state, action: PayloadAction<Office>) {
-      state.office = action.payload;
+    setOffice(state, action: PayloadAction<Office | undefined>) {
+      state.office = action.payload ?? officeInitialState;
       state.officeDesignations =
         state.office.designations
           ?.slice()

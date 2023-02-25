@@ -1,24 +1,23 @@
 import { faAdd, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  useSetToasterMessage,
+  useSetMessage,
+  useSetBusy,
+} from '../../../custom-hooks/authorize-provider';
+import { deleteUserRole } from '../../../repositories/user-role-queries';
 import { userRoleModalActions } from '../../../state/reducers/user-role-modal-reducer';
 import { userRoleActions } from '../../../state/reducers/user-role-reducer';
 import { RootState } from '../../../state/store';
 import Pagination from '../pagination';
 
-export default function UserRoleButtons({
-  onNextPage,
-  onDelete,
-  page,
-  pageCount,
-}: {
-  onNextPage: (page: number) => {};
-  onDelete: () => {};
-  page: number;
-  pageCount: number;
-}) {
+export default function UserRoleButtons() {
   const dispatch = useDispatch();
   const userRoleState = useSelector((state: RootState) => state.userRole);
+  const setToasterMessage = useSetToasterMessage();
+  const setMessage = useSetMessage();
+  const setBusy = useSetBusy();
   function add() {
     dispatch(userRoleActions.setSelected(undefined));
     dispatch(userRoleModalActions.setUserRole());
@@ -27,6 +26,34 @@ export default function UserRoleButtons({
   function edit() {
     dispatch(userRoleModalActions.setUserRole(userRoleState.selectedUserRole!));
     dispatch(userRoleModalActions.setShowModal(true));
+  }
+  async function nextPage(page: number) {
+    dispatch(userRoleActions.setCurrentPage(page));
+    dispatch(userRoleActions.setInitiateSearch(true));
+  }
+  async function onDelete() {
+    if (!userRoleState.selectedUserRole?.id) return;
+
+    setMessage({
+      message: 'Are you sure you want to delete this?',
+      action: 'YESNO',
+      onOk: async () => {
+        setBusy(true);
+        await deleteUserRole(userRoleState.selectedUserRole?.id ?? 0)
+          .then((res) => {
+            if (res) {
+              setToasterMessage({
+                content: 'Selected user role has been deleted',
+              });
+              dispatch(userRoleActions.setInitiateSearch(true));
+            }
+          })
+          .catch((err) => {
+            setToasterMessage({ content: err.message });
+          })
+          .then(() => setBusy(false));
+      },
+    });
   }
   return (
     <section className='btn-actions-group-container'>
@@ -51,9 +78,9 @@ export default function UserRoleButtons({
       </div>
 
       <Pagination
-        pages={pageCount}
-        currentPageNumber={page}
-        goInPage={onNextPage}></Pagination>
+        pages={userRoleState.pageCount}
+        currentPageNumber={userRoleState.currentPage}
+        goInPage={nextPage}></Pagination>
     </section>
   );
 }

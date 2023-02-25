@@ -24,65 +24,36 @@ export default function EmployeePage() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
-  const setMessage = useSetMessage();
-  const [key, setKey] = useState<string>('');
-  const [pageCount, setPageCount] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(
     () => {
-      searchOff();
+      searchEmp();
     },
     //eslint-disable-next-line
-    [key, currentPage]
+    [employeeState.initiateSearch]
   );
 
-  async function searchOff() {
+  async function searchEmp() {
+    if (!employeeState.initiateSearch) return;
     setBusy(true);
-    await searchEmployee(key, currentPage)
+    dispatch(employeeActions.setInitiateSearch(false));
+    await searchEmployee(employeeState.key, employeeState.currentPage)
       .then((res) => {
         if (res !== undefined) {
           dispatch(employeeActions.fill(res.results));
-          setPageCount(() => res.pageCount);
+          dispatch(employeeActions.setPageCount(res.pageCount));
         }
       })
       .catch((err) => {
         setToasterMessage({ content: err.message });
       })
-      .then(() => setBusy(false));
+      .then(() => {
+        setBusy(false);
+      });
   }
   async function search(key: string) {
-    setKey((x) => key);
-    setCurrentPage((x) => 1);
-  }
-  async function onModalClose(hasChanges: boolean) {
-    if (hasChanges) searchOff();
-  }
-  async function nextPage(page: number) {
-    setCurrentPage(() => page);
-  }
-  async function onDelete() {
-    if (!employeeState.selectedEmployee?.id) return;
-
-    setMessage({
-      message: 'Are you sure you want to delete this?',
-      action: 'YESNO',
-      onOk: async () => {
-        setBusy(true);
-        await deleteEmployee(employeeState.selectedEmployee?.id ?? 0)
-          .then((res) => {
-            if (res) {
-              setToasterMessage({
-                content: 'Selected employee has been deleted',
-              });
-              searchOff();
-            }
-          })
-          .catch((err) => {
-            setToasterMessage({ content: err.message });
-          })
-          .then(() => setBusy(false));
-      },
-    });
+    dispatch(employeeActions.setkey(key));
+    dispatch(employeeActions.setCurrentPage(1));
+    dispatch(employeeActions.setInitiateSearch(true));
   }
   return (
     <>
@@ -90,18 +61,15 @@ export default function EmployeePage() {
         <div className='title'>Employees</div>
       </section>
       <section>
-        <SearchBar search={search} placeholder='Search Key' value={key} />
+        <SearchBar
+          search={search}
+          placeholder='Search Key'
+          value={employeeState.key}
+        />
       </section>
-      <EmployeeButtons
-        onNextPage={nextPage}
-        onDelete={onDelete}
-        page={currentPage}
-        pageCount={pageCount}
-      />
+      <EmployeeButtons />
       <EmployeeItems />
-      {employeeModalState.isModalShow && (
-        <ManageEmployee onClose={onModalClose} />
-      )}
+      {employeeModalState.isModalShow && <ManageEmployee />}
     </>
   );
 }

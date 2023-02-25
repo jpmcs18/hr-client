@@ -27,6 +27,7 @@ export default function SearchBar({
   }
 
   function searchClick() {
+    console.log(searchKey);
     search(searchKey);
   }
   return (
@@ -37,7 +38,7 @@ export default function SearchBar({
         placeholder={placeholder ?? 'Search...'}
         value={searchKey}
         onChange={searchKeyChange}
-        onKeyPress={onKeyPress}
+        onKeyUp={onKeyPress}
       />
       <FontAwesomeIcon
         className='search-icon'

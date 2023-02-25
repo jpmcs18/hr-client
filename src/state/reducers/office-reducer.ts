@@ -1,13 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import Searchable from '../../models/client-model/Searchable';
 import Office from '../../models/entities/Office';
 
-interface State {
+interface State extends Searchable {
   offices: Office[];
   selectedOffice: Office | undefined;
 }
 const initialState: State = {
   offices: [],
   selectedOffice: undefined,
+  key: '',
+  currentPage: 0,
+  pageCount: 0,
+  initiateSearch: false,
 };
 
 const officeSlice = createSlice({
@@ -20,6 +25,18 @@ const officeSlice = createSlice({
     },
     setSelected(state, action: PayloadAction<Office | undefined>) {
       state.selectedOffice = action.payload;
+    },
+    setkey(state, action: PayloadAction<string>) {
+      state.key = action.payload;
+    },
+    setCurrentPage(state, action: PayloadAction<number>) {
+      state.currentPage = action.payload;
+    },
+    setPageCount(state, action: PayloadAction<number>) {
+      state.pageCount = action.payload;
+    },
+    setInitiateSearch(state, action: PayloadAction<boolean>) {
+      state.initiateSearch = action.payload;
     },
   },
 });
