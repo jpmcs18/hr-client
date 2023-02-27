@@ -35,6 +35,8 @@ const officeModalSlice = createSlice({
   reducers: {
     setOffice(state, action: PayloadAction<Office | undefined>) {
       state.office = action.payload ?? officeInitialState;
+      state.newDesignation = [];
+      state.deletedDesignation = [];
       state.officeDesignations =
         state.office.designations
           ?.slice()

@@ -1456,6 +1456,7 @@ tbody tr {
     }
     .icon {
       background-color: transparent;
+      color: var(--color);
       border: none;
       cursor: pointer;
       transition: transform ease-in-out 0.3s;

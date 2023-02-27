@@ -12,10 +12,12 @@ import {
   useSetMessage,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
+import { hasAccess } from '../../../helper';
 import {
   deleteSystemUser,
   resetPassword,
 } from '../../../repositories/system-user-queries';
+import SystemModules from '../../../routes';
 import { systemUserModalActions } from '../../../state/reducers/system-user-modal-reducer';
 import { systemUserActions } from '../../../state/reducers/system-user-reducer';
 import { RootState } from '../../../state/store';
@@ -24,6 +26,7 @@ import Pagination from '../pagination';
 export default function SystemUserButtons() {
   const dispatch = useDispatch();
   const systemUserState = useSelector((state: RootState) => state.systemUser);
+  const userProfileState = useSelector((state: RootState) => state.userProfile);
   const setMessage = useSetMessage();
   const setToasterMessage = useSetToasterMessage();
   const setBusy = useSetBusy();
@@ -92,31 +95,59 @@ export default function SystemUserButtons() {
   return (
     <section className='btn-actions-group-container'>
       <div className='btn-actions-group'>
-        <button className='btn-action' title='Add' onClick={add}>
-          <FontAwesomeIcon icon={faAdd} />
-        </button>
-        <button
-          className='btn-action'
-          disabled={!systemUserState.selectedSystemUser}
-          onClick={edit}
-          title='Edit'>
-          <FontAwesomeIcon icon={faEdit} />
-        </button>
-        <button
-          className='btn-action'
-          disabled={!systemUserState.selectedSystemUser}
-          onClick={onDelete}
-          title='Delete'>
-          <FontAwesomeIcon icon={faTrash} />
-        </button>
-        <button
-          className='btn-action'
-          disabled={!systemUserState.selectedSystemUser}
-          onClick={resetPass}
-          title='Reset Password'>
-          <FontAwesomeIcon icon={faRepeat} />
-          <FontAwesomeIcon icon={faKey} />
-        </button>
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[5].id,
+          'Add',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button className='btn-action' title='Add' onClick={add}>
+            <FontAwesomeIcon icon={faAdd} />
+          </button>
+        )}
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[5].id,
+          'Edit',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button
+            className='btn-action'
+            disabled={!systemUserState.selectedSystemUser}
+            onClick={edit}
+            title='Edit'>
+            <FontAwesomeIcon icon={faEdit} />
+          </button>
+        )}
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[5].id,
+          'Delete',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button
+            className='btn-action'
+            disabled={!systemUserState.selectedSystemUser}
+            onClick={onDelete}
+            title='Delete'>
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        )}
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[5].id,
+          'Reset Password',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button
+            className='btn-action'
+            disabled={!systemUserState.selectedSystemUser}
+            onClick={resetPass}
+            title='Reset Password'>
+            <FontAwesomeIcon icon={faRepeat} />
+            <FontAwesomeIcon icon={faKey} />
+          </button>
+        )}
       </div>
 
       <Pagination

@@ -6,6 +6,7 @@ import {
   useSetMessage,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
+import { hasAccess } from '../../../helper';
 import { deleteDesignation } from '../../../repositories/designation-queries';
 import SystemModules from '../../../routes';
 import { designationModalActions } from '../../../state/reducers/designation-modal-reducer';
@@ -63,18 +64,22 @@ export default function DesignationButtons() {
   return (
     <section className='btn-actions-group-container'>
       <div className='btn-actions-group'>
-        {(!!userProfileState.moduleRights
-          .filter((x) => x.moduleId === SystemModules[3].id)
-          ?.filter((x) => x.right === 'Add').length ||
-          userProfileState.systemUser?.isAdmin) && (
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[3].id,
+          'Add',
+          userProfileState.systemUser?.isAdmin
+        ) && (
           <button className='btn-action' title='Add' onClick={add}>
             <FontAwesomeIcon icon={faAdd} />
           </button>
         )}
-        {(!!userProfileState.moduleRights
-          .filter((x) => x.moduleId === SystemModules[3].id)
-          ?.filter((x) => x.right === 'Edit').length ||
-          userProfileState.systemUser?.isAdmin) && (
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[3].id,
+          'Edit',
+          userProfileState.systemUser?.isAdmin
+        ) && (
           <button
             className='btn-action'
             disabled={!designationState.selectedDesignation}
@@ -83,13 +88,20 @@ export default function DesignationButtons() {
             <FontAwesomeIcon icon={faEdit} />
           </button>
         )}
-        <button
-          className='btn-action'
-          disabled={!designationState.selectedDesignation}
-          onClick={onDelete}
-          title='Delete'>
-          <FontAwesomeIcon icon={faTrash} />
-        </button>
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[3].id,
+          'Delete',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button
+            className='btn-action'
+            disabled={!designationState.selectedDesignation}
+            onClick={onDelete}
+            title='Delete'>
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        )}
       </div>
 
       <Pagination

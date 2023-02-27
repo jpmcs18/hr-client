@@ -6,6 +6,7 @@ import {
   useSetMessage,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
+import { hasAccess } from '../../../helper';
 import { deleteEmployee } from '../../../repositories/employee-queries';
 import SystemModules from '../../../routes';
 import { employeeModalActions } from '../../../state/reducers/employee-modal-reducer';
@@ -59,18 +60,22 @@ export default function EmployeeButtons() {
   return (
     <section className='btn-actions-group-container'>
       <div className='btn-actions-group'>
-        {(!!userProfileState.moduleRights
-          .filter((x) => x.moduleId === SystemModules[2].id)
-          ?.filter((x) => x.right === 'Add').length ||
-          userProfileState.systemUser?.isAdmin) && (
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[2].id,
+          'Add',
+          userProfileState.systemUser?.isAdmin
+        ) && (
           <button className='btn-action' title='Add' onClick={add}>
             <FontAwesomeIcon icon={faAdd} />
           </button>
         )}
-        {(!!userProfileState.moduleRights
-          .filter((x) => x.moduleId === SystemModules[2].id)
-          ?.filter((x) => x.right === 'Edit').length ||
-          userProfileState.systemUser?.isAdmin) && (
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[2].id,
+          'Edit',
+          userProfileState.systemUser?.isAdmin
+        ) && (
           <button
             className='btn-action'
             disabled={!employeeState.selectedEmployee}
@@ -79,10 +84,12 @@ export default function EmployeeButtons() {
             <FontAwesomeIcon icon={faEdit} />
           </button>
         )}
-        {(!!userProfileState.moduleRights
-          .filter((x) => x.moduleId === SystemModules[2].id)
-          ?.filter((x) => x.right === 'Delete').length ||
-          userProfileState.systemUser?.isAdmin) && (
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[2].id,
+          'Delete',
+          userProfileState.systemUser?.isAdmin
+        ) && (
           <button
             className='btn-action'
             disabled={!employeeState.selectedEmployee}

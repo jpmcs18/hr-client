@@ -11,7 +11,9 @@ export default function SystemUserItems() {
       <table className='item-table'>
         <thead>
           <tr>
-            <th>Description</th>
+            <th>Username</th>
+            <th>Employee</th>
+            <th>Type</th>
           </tr>
         </thead>
         <tbody>

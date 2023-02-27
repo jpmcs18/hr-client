@@ -1,4 +1,4 @@
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactNode, useState } from 'react';
 
@@ -16,12 +16,10 @@ export default function CollapsibleContainer({
   const [collapse, setCollapse] = useState(true);
   return (
     <div className='collapsible-container'>
-      <div className='header'>
+      <div className='header' onClick={() => setCollapse((x) => !x)}>
         <div className='title'>
           {title && (
-            <div
-              onClick={() => setCollapse((x) => !x)}
-              className={'title-text' + (isBoldTitle ? ' title-bold' : '')}>
+            <div className={'title-text' + (isBoldTitle ? ' title-bold' : '')}>
               <label>{title}</label>
             </div>
           )}

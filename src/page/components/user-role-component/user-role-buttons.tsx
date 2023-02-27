@@ -6,7 +6,9 @@ import {
   useSetMessage,
   useSetBusy,
 } from '../../../custom-hooks/authorize-provider';
+import { hasAccess } from '../../../helper';
 import { deleteUserRole } from '../../../repositories/user-role-queries';
+import SystemModules from '../../../routes';
 import { userRoleModalActions } from '../../../state/reducers/user-role-modal-reducer';
 import { userRoleActions } from '../../../state/reducers/user-role-reducer';
 import { RootState } from '../../../state/store';
@@ -15,6 +17,7 @@ import Pagination from '../pagination';
 export default function UserRoleButtons() {
   const dispatch = useDispatch();
   const userRoleState = useSelector((state: RootState) => state.userRole);
+  const userProfileState = useSelector((state: RootState) => state.userProfile);
   const setToasterMessage = useSetToasterMessage();
   const setMessage = useSetMessage();
   const setBusy = useSetBusy();
@@ -58,25 +61,45 @@ export default function UserRoleButtons() {
   return (
     <section className='btn-actions-group-container'>
       <div className='btn-actions-group'>
-        <button className='btn-action' title='Add' onClick={add}>
-          <FontAwesomeIcon icon={faAdd} />
-        </button>
-        <button
-          className='btn-action'
-          disabled={!userRoleState.selectedUserRole}
-          onClick={edit}
-          title='Edit'>
-          <FontAwesomeIcon icon={faEdit} />
-        </button>
-        <button
-          className='btn-action'
-          disabled={!userRoleState.selectedUserRole}
-          onClick={onDelete}
-          title='Delete'>
-          <FontAwesomeIcon icon={faTrash} />
-        </button>
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[6].id,
+          'Add',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button className='btn-action' title='Add' onClick={add}>
+            <FontAwesomeIcon icon={faAdd} />
+          </button>
+        )}
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[6].id,
+          'Edit',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button
+            className='btn-action'
+            disabled={!userRoleState.selectedUserRole}
+            onClick={edit}
+            title='Edit'>
+            <FontAwesomeIcon icon={faEdit} />
+          </button>
+        )}
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[6].id,
+          'Delete',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button
+            className='btn-action'
+            disabled={!userRoleState.selectedUserRole}
+            onClick={onDelete}
+            title='Delete'>
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        )}
       </div>
-
       <Pagination
         pages={userRoleState.pageCount}
         currentPageNumber={userRoleState.currentPage}

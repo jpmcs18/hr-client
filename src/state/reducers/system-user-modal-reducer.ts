@@ -22,7 +22,7 @@ const systemUserInitialState: SystemUser = {
   isActive: true,
   isAdmin: false,
   displayName: '',
-  employeeId: 0,
+  employeeId: undefined,
   employee: undefined,
   userAccesses: [],
 };
@@ -43,6 +43,8 @@ const systemUserModalSlice = createSlice({
   reducers: {
     setSystemUser(state, action: PayloadAction<SystemUser | undefined>) {
       state.systemUser = action.payload ?? systemUserInitialState;
+      state.newUserRole = [];
+      state.deletedUserAccess = [];
       state.userAccesses =
         state.systemUser.userAccesses
           ?.slice()

@@ -1,3 +1,18 @@
+import ModuleRight from './models/entities/ModuleRight';
+
+export function hasAccess(
+  moduleRight: ModuleRight[],
+  moduleId: number,
+  access: string,
+  isAdmin?: boolean
+) {
+  return (
+    !!moduleRight
+      .filter((x) => x.moduleId === moduleId)
+      ?.filter((x) => x.right === access).length || isAdmin
+  );
+}
+
 export function downloadFile(file: string, fileName: string) {
   let link = document.createElement('a');
   link.href = file;

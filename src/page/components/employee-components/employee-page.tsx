@@ -1,14 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useSetBusy,
-  useSetMessage,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
-import {
-  deleteEmployee,
-  searchEmployee,
-} from '../../../repositories/employee-queries';
+import { searchEmployee } from '../../../repositories/employee-queries';
 import { employeeActions } from '../../../state/reducers/employee-reducer';
 import { RootState } from '../../../state/store';
 import ManageEmployee from '../../modals/manage-employee';

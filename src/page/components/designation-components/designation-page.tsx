@@ -1,14 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useSetBusy,
-  useSetMessage,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
-import {
-  deleteDesignation,
-  searchDesignation,
-} from '../../../repositories/designation-queries';
+import { searchDesignation } from '../../../repositories/designation-queries';
 import { designationActions } from '../../../state/reducers/designation-reducer';
 import { RootState } from '../../../state/store';
 import ManageDesignation from '../../modals/manage-designation';

@@ -6,7 +6,9 @@ import {
   useSetMessage,
   useSetBusy,
 } from '../../../custom-hooks/authorize-provider';
+import { hasAccess } from '../../../helper';
 import { deleteOffice } from '../../../repositories/office-queries';
+import SystemModules from '../../../routes';
 import { officeModalActions } from '../../../state/reducers/office-modal-reducer';
 import { officeActions } from '../../../state/reducers/office-reducer';
 import { RootState } from '../../../state/store';
@@ -15,6 +17,7 @@ import Pagination from '../pagination';
 export default function OfficeButtons() {
   const dispatch = useDispatch();
   const officeState = useSelector((state: RootState) => state.office);
+  const userProfileState = useSelector((state: RootState) => state.userProfile);
   const setToasterMessage = useSetToasterMessage();
   const setMessage = useSetMessage();
   const setBusy = useSetBusy();
@@ -58,23 +61,44 @@ export default function OfficeButtons() {
   return (
     <section className='btn-actions-group-container'>
       <div className='btn-actions-group'>
-        <button className='btn-action' title='Add' onClick={add}>
-          <FontAwesomeIcon icon={faAdd} />
-        </button>
-        <button
-          className='btn-action'
-          disabled={!officeState.selectedOffice}
-          onClick={edit}
-          title='Edit'>
-          <FontAwesomeIcon icon={faEdit} />
-        </button>
-        <button
-          className='btn-action'
-          disabled={!officeState.selectedOffice}
-          onClick={onDelete}
-          title='Delete'>
-          <FontAwesomeIcon icon={faTrash} />
-        </button>
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[4].id,
+          'Add',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button className='btn-action' title='Add' onClick={add}>
+            <FontAwesomeIcon icon={faAdd} />
+          </button>
+        )}
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[4].id,
+          'Edit',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button
+            className='btn-action'
+            disabled={!officeState.selectedOffice}
+            onClick={edit}
+            title='Edit'>
+            <FontAwesomeIcon icon={faEdit} />
+          </button>
+        )}
+        {hasAccess(
+          userProfileState.moduleRights,
+          SystemModules[4].id,
+          'Delete',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button
+            className='btn-action'
+            disabled={!officeState.selectedOffice}
+            onClick={onDelete}
+            title='Delete'>
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        )}
       </div>
 
       <Pagination

@@ -18,20 +18,18 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import ModuleRoute from '../models/client-model/ModuleRoute';
+import { useDispatch, useSelector } from 'react-redux';
 import SystemModules from '../routes';
+import { userProfileAction } from '../state/reducers/user-profile-reducer';
+import { RootState } from '../state/store';
 import DesignationPage from './components/designation-components/designation-page';
 import EmployeePage from './components/employee-components/employee-page';
 import Icon from './components/icon';
 import OfficePage from './components/office-components/office-page';
+import SystemUserPage from './components/system-user-component/system-user-page';
 import UserRolePage from './components/user-role-component/user-role-page';
 import Dashboard from './dashboard';
 import ManageProfile from './modals/manage-profile';
-import SystemUserPage from './components/system-user-component/system-user-page';
-import { useDispatch } from 'react-redux';
-import { userProfileAction } from '../state/reducers/user-profile-reducer';
-import { useSelector } from 'react-redux';
-import { RootState } from '../state/store';
 export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
   const setMessage = useSetMessage();

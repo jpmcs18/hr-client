@@ -7,7 +7,9 @@ export default function SystemUserItem({
 }) {
   return (
     <>
+      <td>{systemUser.displayName}</td>
       <td>{systemUser.username}</td>
+      <td>{systemUser.isAdmin ? 'Administrator' : 'User'}</td>
     </>
   );
 }
