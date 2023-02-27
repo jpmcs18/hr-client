@@ -4,7 +4,6 @@ import {
   faKey,
   faRepeat,
   faTrash,
-  faUndo,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,23 +12,16 @@ import {
   useSetMessage,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
-import { resetPassword } from '../../../repositories/system-user-queries';
+import {
+  deleteSystemUser,
+  resetPassword,
+} from '../../../repositories/system-user-queries';
 import { systemUserModalActions } from '../../../state/reducers/system-user-modal-reducer';
 import { systemUserActions } from '../../../state/reducers/system-user-reducer';
 import { RootState } from '../../../state/store';
 import Pagination from '../pagination';
 
-export default function SystemUserButtons({
-  onNextPage,
-  onDelete,
-  page,
-  pageCount,
-}: {
-  onNextPage: (page: number) => {};
-  onDelete: () => {};
-  page: number;
-  pageCount: number;
-}) {
+export default function SystemUserButtons() {
   const dispatch = useDispatch();
   const systemUserState = useSelector((state: RootState) => state.systemUser);
   const setMessage = useSetMessage();
@@ -60,6 +52,34 @@ export default function SystemUserButtons({
               setToasterMessage({
                 content: 'Password reset successful.',
               });
+            }
+          })
+          .catch((err) => {
+            setToasterMessage({ content: err.message });
+          })
+          .then(() => setBusy(false));
+      },
+    });
+  }
+  async function nextPage(page: number) {
+    dispatch(systemUserActions.setCurrentPage(page));
+    dispatch(systemUserActions.setInitiateSearch(true));
+  }
+  async function onDelete() {
+    if (!systemUserState.selectedSystemUser?.id) return;
+
+    setMessage({
+      message: 'Are you sure you want to delete this?',
+      action: 'YESNO',
+      onOk: async () => {
+        setBusy(true);
+        await deleteSystemUser(systemUserState.selectedSystemUser?.id ?? 0)
+          .then((res) => {
+            if (res) {
+              setToasterMessage({
+                content: 'Selected user has been deleted',
+              });
+              dispatch(systemUserActions.setInitiateSearch(true));
             }
           })
           .catch((err) => {
@@ -100,9 +120,9 @@ export default function SystemUserButtons({
       </div>
 
       <Pagination
-        pages={pageCount}
-        currentPageNumber={page}
-        goInPage={onNextPage}></Pagination>
+        pages={systemUserState.pageCount}
+        currentPageNumber={systemUserState.pageCount}
+        goInPage={nextPage}></Pagination>
     </section>
   );
 }

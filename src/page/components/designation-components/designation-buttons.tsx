@@ -7,14 +7,16 @@ import {
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
 import { deleteDesignation } from '../../../repositories/designation-queries';
+import SystemModules from '../../../routes';
 import { designationModalActions } from '../../../state/reducers/designation-modal-reducer';
 import { designationActions } from '../../../state/reducers/designation-reducer';
 import { RootState } from '../../../state/store';
 import Pagination from '../pagination';
 
 export default function DesignationButtons() {
-  const dispatch = useDispatch();
   const designationState = useSelector((state: RootState) => state.designation);
+  const userProfileState = useSelector((state: RootState) => state.userProfile);
+  const dispatch = useDispatch();
   const setToasterMessage = useSetToasterMessage();
   const setMessage = useSetMessage();
   const setBusy = useSetBusy();
@@ -37,7 +39,6 @@ export default function DesignationButtons() {
   }
   async function onDelete() {
     if (!designationState.selectedDesignation?.id) return;
-
     setMessage({
       message: 'Are you sure you want to delete this?',
       action: 'YESNO',
@@ -62,16 +63,26 @@ export default function DesignationButtons() {
   return (
     <section className='btn-actions-group-container'>
       <div className='btn-actions-group'>
-        <button className='btn-action' title='Add' onClick={add}>
-          <FontAwesomeIcon icon={faAdd} />
-        </button>
-        <button
-          className='btn-action'
-          disabled={!designationState.selectedDesignation}
-          onClick={edit}
-          title='Edit'>
-          <FontAwesomeIcon icon={faEdit} />
-        </button>
+        {(!!userProfileState.moduleRights
+          .filter((x) => x.moduleId === SystemModules[3].id)
+          ?.filter((x) => x.right === 'Add').length ||
+          userProfileState.systemUser?.isAdmin) && (
+          <button className='btn-action' title='Add' onClick={add}>
+            <FontAwesomeIcon icon={faAdd} />
+          </button>
+        )}
+        {(!!userProfileState.moduleRights
+          .filter((x) => x.moduleId === SystemModules[3].id)
+          ?.filter((x) => x.right === 'Edit').length ||
+          userProfileState.systemUser?.isAdmin) && (
+          <button
+            className='btn-action'
+            disabled={!designationState.selectedDesignation}
+            onClick={edit}
+            title='Edit'>
+            <FontAwesomeIcon icon={faEdit} />
+          </button>
+        )}
         <button
           className='btn-action'
           disabled={!designationState.selectedDesignation}

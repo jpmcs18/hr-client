@@ -28,7 +28,8 @@ export default function OfficeButtons() {
     dispatch(officeModalActions.setShowModal(true));
   }
   async function nextPage(page: number) {
-    setCurrentPage(() => page);
+    dispatch(officeActions.setCurrentPage(page));
+    dispatch(officeActions.setInitiateSearch(true));
   }
   async function onDelete() {
     if (!officeState.selectedOffice?.id) return;
@@ -44,7 +45,7 @@ export default function OfficeButtons() {
               setToasterMessage({
                 content: 'Selected office has been deleted',
               });
-              searchOff();
+              dispatch(officeActions.setInitiateSearch(true));
             }
           })
           .catch((err) => {
@@ -77,9 +78,9 @@ export default function OfficeButtons() {
       </div>
 
       <Pagination
-        pages={pageCount}
-        currentPageNumber={page}
-        goInPage={onNextPage}></Pagination>
+        pages={officeState.pageCount}
+        currentPageNumber={officeState.currentPage}
+        goInPage={nextPage}></Pagination>
     </section>
   );
 }

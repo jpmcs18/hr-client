@@ -10,9 +10,9 @@ const initialState: State = {
   designations: [],
   selectedDesignation: undefined,
   key: '',
-  currentPage: 0,
+  currentPage: 1,
   pageCount: 0,
-  initiateSearch: false,
+  initiateSearch: true,
 };
 
 const designationSlice = createSlice({

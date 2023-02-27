@@ -1,14 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useSetBusy,
-  useSetMessage,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
-import {
-  deleteUserRole,
-  searchUserRole,
-} from '../../../repositories/user-role-queries';
+import { searchUserRole } from '../../../repositories/user-role-queries';
 import { userRoleActions } from '../../../state/reducers/user-role-reducer';
 import { RootState } from '../../../state/store';
 import ManageUserRole from '../../modals/manage-user-role';
@@ -24,25 +20,23 @@ export default function UserRolePage() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
-  const setMessage = useSetMessage();
-  const [key, setKey] = useState<string>('');
-  const [pageCount, setPageCount] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(
     () => {
       searchDes();
     },
     //eslint-disable-next-line
-    [key, currentPage]
+    [userRoleState.initiateSearch]
   );
 
   async function searchDes() {
+    if (!userRoleState.initiateSearch) return true;
     setBusy(true);
-    await searchUserRole(key, currentPage)
+    dispatch(userRoleActions.setInitiateSearch(false));
+    await searchUserRole(userRoleState.key, userRoleState.currentPage)
       .then((res) => {
         if (res !== undefined) {
           dispatch(userRoleActions.fill(res.results));
-          setPageCount(() => res.pageCount);
+          dispatch(userRoleActions.setPageCount(res.pageCount));
         }
       })
       .catch((err) => {
@@ -51,8 +45,9 @@ export default function UserRolePage() {
       .then(() => setBusy(false));
   }
   async function search(key: string) {
-    setKey((x) => key);
-    setCurrentPage((x) => 1);
+    dispatch(userRoleActions.setkey(key));
+    dispatch(userRoleActions.setCurrentPage(1));
+    dispatch(userRoleActions.setInitiateSearch(true));
   }
   return (
     <>
@@ -60,7 +55,11 @@ export default function UserRolePage() {
         <div className='title'>User Roles</div>
       </section>
       <section>
-        <SearchBar search={search} placeholder='Search Key' value={key} />
+        <SearchBar
+          search={search}
+          placeholder='Search Key'
+          value={userRoleState.key}
+        />
       </section>
       <UserRoleButtons />
       <UserRoleItems />

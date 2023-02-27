@@ -36,7 +36,6 @@ export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
   const setMessage = useSetMessage();
   const [showMenu, setShowMenu] = useState(false);
-  const [menus, setMenus] = useState<ModuleRoute[]>([]);
   const dispatch = useDispatch();
   const userProfileState = useSelector((state: RootState) => state.userProfile);
   function logoutUser() {
@@ -103,9 +102,13 @@ export default function HomePage() {
                         </button>
                       </div>
                       <div className='menus-container'>
-                        {(userProfileState.systemUser?.isAdmin
-                          ? SystemModules.filter((x) => x.display)
-                          : menus
+                        {SystemModules.filter(
+                          (x) =>
+                            x.display &&
+                            (userProfileState.systemUser?.isAdmin ||
+                              !!userProfileState.module.filter(
+                                (y) => y === x.id
+                              ).length)
                         ).map((menu) => (
                           <div className='menu-items' key={menu.pageName}>
                             <div className='menu-item main-menus'>
@@ -156,14 +159,41 @@ export default function HomePage() {
               element={<Navigate to={SystemModules[1].route} replace />}
             />
             <Route path={SystemModules[1].route} element={<Dashboard />} />
-            <Route path={SystemModules[2].route} element={<EmployeePage />} />
-            <Route
-              path={SystemModules[3].route}
-              element={<DesignationPage />}
-            />
-            <Route path={SystemModules[4].route} element={<OfficePage />} />
-            <Route path={SystemModules[5].route} element={<SystemUserPage />} />
-            <Route path={SystemModules[6].route} element={<UserRolePage />} />
+
+            {(!!userProfileState.module.filter((x) => x === SystemModules[2].id)
+              .length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route path={SystemModules[2].route} element={<EmployeePage />} />
+            )}
+            {(!!userProfileState.module.filter((x) => x === SystemModules[3].id)
+              .length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route
+                path={SystemModules[3].route}
+                element={<DesignationPage />}
+              />
+            )}
+
+            {(!!userProfileState.module.filter((x) => x === SystemModules[4].id)
+              .length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route path={SystemModules[4].route} element={<OfficePage />} />
+            )}
+
+            {(!!userProfileState.module.filter((x) => x === SystemModules[5].id)
+              .length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route
+                path={SystemModules[5].route}
+                element={<SystemUserPage />}
+              />
+            )}
+
+            {(!!userProfileState.module.filter((x) => x === SystemModules[6].id)
+              .length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route path={SystemModules[6].route} element={<UserRolePage />} />
+            )}
             <Route
               path='*'
               element={<Navigate to={SystemModules[0].route} replace />}

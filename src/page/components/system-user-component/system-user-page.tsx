@@ -1,14 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useSetBusy,
-  useSetMessage,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
-import {
-  deleteSystemUser,
-  searchSystemUser,
-} from '../../../repositories/system-user-queries';
+import { searchSystemUser } from '../../../repositories/system-user-queries';
 import { systemUserActions } from '../../../state/reducers/system-user-reducer';
 import { RootState } from '../../../state/store';
 import ManageSystemUser from '../../modals/manage-system-user';
@@ -24,25 +20,23 @@ export default function SystemUserPage() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
-  const setMessage = useSetMessage();
-  const [key, setKey] = useState<string>('');
-  const [pageCount, setPageCount] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(
     () => {
       searchUsr();
     },
     //eslint-disable-next-line
-    [key, currentPage]
+    [systemUserState.initiateSearch]
   );
 
   async function searchUsr() {
+    if (!systemUserState.initiateSearch) return;
+    dispatch(systemUserActions.setInitiateSearch(false));
     setBusy(true);
-    await searchSystemUser(key, currentPage)
+    await searchSystemUser(systemUserState.key, systemUserState.currentPage)
       .then((res) => {
         if (res !== undefined) {
           dispatch(systemUserActions.fill(res.results));
-          setPageCount(() => res.pageCount);
+          dispatch(systemUserActions.setPageCount(res.pageCount));
         }
       })
       .catch((err) => {
@@ -51,38 +45,9 @@ export default function SystemUserPage() {
       .then(() => setBusy(false));
   }
   async function search(key: string) {
-    setKey((x) => key);
-    setCurrentPage((x) => 1);
-  }
-  async function onModalClose(hasChanges: boolean) {
-    if (hasChanges) searchUsr();
-  }
-  async function nextPage(page: number) {
-    setCurrentPage(() => page);
-  }
-  async function onDelete() {
-    if (!systemUserState.selectedSystemUser?.id) return;
-
-    setMessage({
-      message: 'Are you sure you want to delete this?',
-      action: 'YESNO',
-      onOk: async () => {
-        setBusy(true);
-        await deleteSystemUser(systemUserState.selectedSystemUser?.id ?? 0)
-          .then((res) => {
-            if (res) {
-              setToasterMessage({
-                content: 'Selected user has been deleted',
-              });
-              searchUsr();
-            }
-          })
-          .catch((err) => {
-            setToasterMessage({ content: err.message });
-          })
-          .then(() => setBusy(false));
-      },
-    });
+    dispatch(systemUserActions.setkey(key));
+    dispatch(systemUserActions.setCurrentPage(1));
+    dispatch(systemUserActions.setInitiateSearch(true));
   }
   return (
     <>
@@ -90,18 +55,15 @@ export default function SystemUserPage() {
         <div className='title'>Users</div>
       </section>
       <section>
-        <SearchBar search={search} placeholder='Search Key' value={key} />
+        <SearchBar
+          search={search}
+          placeholder='Search Key'
+          value={systemUserState.key}
+        />
       </section>
-      <SystemUserButtons
-        onNextPage={nextPage}
-        onDelete={onDelete}
-        page={currentPage}
-        pageCount={pageCount}
-      />
+      <SystemUserButtons />
       <SystemUserItems />
-      {systemUserModalState.isModalShow && (
-        <ManageSystemUser onClose={onModalClose} />
-      )}
+      {systemUserModalState.isModalShow && <ManageSystemUser />}
     </>
   );
 }

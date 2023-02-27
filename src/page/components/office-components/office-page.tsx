@@ -1,14 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useSetBusy,
-  useSetMessage,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
-import {
-  deleteOffice,
-  searchOffice,
-} from '../../../repositories/office-queries';
+import { searchOffice } from '../../../repositories/office-queries';
 import { officeActions } from '../../../state/reducers/office-reducer';
 import { RootState } from '../../../state/store';
 import ManageOffice from '../../modals/manage-office';
@@ -22,10 +18,6 @@ export default function OfficePage() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
-  const setMessage = useSetMessage();
-  const [key, setKey] = useState<string>('');
-  const [pageCount, setPageCount] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(
     () => {
       searchOff();

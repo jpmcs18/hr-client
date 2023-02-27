@@ -10,9 +10,9 @@ const initialState: State = {
   systemUsers: [],
   selectedSystemUser: undefined,
   key: '',
-  currentPage: 0,
+  currentPage: 1,
   pageCount: 0,
-  initiateSearch: false,
+  initiateSearch: true,
 };
 
 const systemUserSlice = createSlice({

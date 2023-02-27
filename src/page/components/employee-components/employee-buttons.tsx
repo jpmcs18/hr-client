@@ -7,14 +7,16 @@ import {
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
 import { deleteEmployee } from '../../../repositories/employee-queries';
+import SystemModules from '../../../routes';
 import { employeeModalActions } from '../../../state/reducers/employee-modal-reducer';
 import { employeeActions } from '../../../state/reducers/employee-reducer';
 import { RootState } from '../../../state/store';
 import Pagination from '../pagination';
 
 export default function EmployeeButtons() {
-  const dispatch = useDispatch();
   const employeeState = useSelector((state: RootState) => state.employee);
+  const userProfileState = useSelector((state: RootState) => state.userProfile);
+  const dispatch = useDispatch();
   const setToasterMessage = useSetToasterMessage();
   const setMessage = useSetMessage();
   const setBusy = useSetBusy();
@@ -29,7 +31,6 @@ export default function EmployeeButtons() {
   }
   async function onDelete() {
     if (!employeeState.selectedEmployee?.id) return;
-
     setMessage({
       message: 'Are you sure you want to delete this?',
       action: 'YESNO',
@@ -58,23 +59,38 @@ export default function EmployeeButtons() {
   return (
     <section className='btn-actions-group-container'>
       <div className='btn-actions-group'>
-        <button className='btn-action' title='Add' onClick={add}>
-          <FontAwesomeIcon icon={faAdd} />
-        </button>
-        <button
-          className='btn-action'
-          disabled={!employeeState.selectedEmployee}
-          onClick={edit}
-          title='Edit'>
-          <FontAwesomeIcon icon={faEdit} />
-        </button>
-        <button
-          className='btn-action'
-          disabled={!employeeState.selectedEmployee}
-          onClick={onDelete}
-          title='Delete'>
-          <FontAwesomeIcon icon={faTrash} />
-        </button>
+        {(!!userProfileState.moduleRights
+          .filter((x) => x.moduleId === SystemModules[2].id)
+          ?.filter((x) => x.right === 'Add').length ||
+          userProfileState.systemUser?.isAdmin) && (
+          <button className='btn-action' title='Add' onClick={add}>
+            <FontAwesomeIcon icon={faAdd} />
+          </button>
+        )}
+        {(!!userProfileState.moduleRights
+          .filter((x) => x.moduleId === SystemModules[2].id)
+          ?.filter((x) => x.right === 'Edit').length ||
+          userProfileState.systemUser?.isAdmin) && (
+          <button
+            className='btn-action'
+            disabled={!employeeState.selectedEmployee}
+            onClick={edit}
+            title='Edit'>
+            <FontAwesomeIcon icon={faEdit} />
+          </button>
+        )}
+        {(!!userProfileState.moduleRights
+          .filter((x) => x.moduleId === SystemModules[2].id)
+          ?.filter((x) => x.right === 'Delete').length ||
+          userProfileState.systemUser?.isAdmin) && (
+          <button
+            className='btn-action'
+            disabled={!employeeState.selectedEmployee}
+            onClick={onDelete}
+            title='Delete'>
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        )}
       </div>
 
       <Pagination
