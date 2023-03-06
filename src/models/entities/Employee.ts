@@ -1,5 +1,13 @@
+import BloodType from './BloodType';
+import CivilStatus from './CivilStatus';
 import Designation from './Designation';
+import EducationalAttainment from './EducationalAttainment';
+import EmployeeAttachment from './EmployeeAttachment';
+import EmployeeEligibility from './EmployeeEligibility';
+import Gender from './Gender';
+import NatureOfEmployment from './NatureOfEmployment';
 import Office from './Office';
+import VaccinationStatus from './VaccinationStatus';
 
 export default interface Employee {
   id: number;
@@ -8,8 +16,38 @@ export default interface Employee {
   lastName: string | undefined;
   extension: string | undefined;
   fullName: string | undefined;
+  natureOfEmploymentId: number | undefined;
+  employmentDate: Date | undefined;
+  yearsInService: string | undefined;
+  birthDate: Date | undefined;
+  age: number | undefined;
+  genderId: number | undefined;
+  bloodTypeId: number | undefined;
   officeId: number | undefined;
   designationId: number | undefined;
+  residenceAddress: string | undefined;
+  contactNumber: string | undefined;
+  emailAddress: string | undefined;
+  gsisNo: string | undefined;
+  sssNo: string | undefined;
+  philHealthNo: string | undefined;
+  pagIbigNo: string | undefined;
+  tinNo: string | undefined;
+  isActive: boolean | undefined;
+  educationalAttainmentId: number | undefined;
+  skills: string | undefined;
+  vaccinationStatusId: number | undefined;
+  civilStatusId: number | undefined;
+  height: string | undefined;
+  weight: string | undefined;
   office?: Office | undefined;
   designation?: Designation | undefined;
+  natureOfEmployment?: NatureOfEmployment | undefined;
+  bloodType?: BloodType | undefined;
+  civilStatus?: CivilStatus | undefined;
+  gender?: Gender | undefined;
+  educationalAttainment?: EducationalAttainment | undefined;
+  vaccinationStatus?: VaccinationStatus | undefined;
+  employeeEligibilities?: EmployeeEligibility[] | undefined;
+  employeeAttachments?: EmployeeAttachment[] | undefined;
 }

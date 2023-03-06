@@ -97,6 +97,56 @@ export async function httpPost<Return>(
     });
 }
 
+export async function httpPostMultiPart<Return>(
+  url: string,
+  param: FormData
+): Promise<Return | undefined> {
+  const token = getToken();
+  if (token?.token === undefined) {
+    throw new Error('Unauthorized');
+  }
+  return await axios
+    .post(url, param, {
+      headers: {
+        Authorization: 'Bearer ' + token?.token,
+        'content-type': 'multipart/form-data',
+      },
+      baseURL: API,
+    } as AxiosRequestConfig)
+    .then(async (res) => {
+      switch (res.status) {
+        case 200:
+          return res.data;
+        case 201:
+          return res.data;
+        case 204:
+          return true;
+        default:
+          throw new Error('Unknown Error');
+      }
+    })
+    .catch(async (err) => {
+      if (err.response) {
+        switch (err.response.status) {
+          case 400:
+            throw new Error(err.response.data);
+          case 403:
+            throw new Error('Access denied');
+          case 401:
+            if (await refreshTokenAuthentication()) {
+              return await httpPost<Return>(url, param);
+            }
+            throw new Error('Unauthorized');
+          case 404:
+            throw new Error('No Data Found');
+          default:
+            throw new Error(err.response.data);
+        }
+      }
+      throw new Error(err);
+    });
+}
+
 export async function httpPut(url: string, param?: any): Promise<boolean> {
   const token = getToken();
   if (token?.token === undefined) {

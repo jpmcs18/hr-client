@@ -30,6 +30,8 @@ import SystemUserPage from './components/system-user-component/system-user-page'
 import UserRolePage from './components/user-role-component/user-role-page';
 import Dashboard from './dashboard';
 import ManageProfile from './modals/manage-profile';
+import { getPage } from '../helper';
+import { Pages } from '../constant';
 export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
   const setMessage = useSetMessage();
@@ -158,39 +160,53 @@ export default function HomePage() {
             />
             <Route path={SystemModules[1].route} element={<Dashboard />} />
 
-            {(!!userProfileState.module.filter((x) => x === SystemModules[2].id)
-              .length ||
-              userProfileState.systemUser?.isAdmin) && (
-              <Route path={SystemModules[2].route} element={<EmployeePage />} />
-            )}
-            {(!!userProfileState.module.filter((x) => x === SystemModules[3].id)
-              .length ||
+            {(!!userProfileState.module.filter(
+              (x) => x === getPage(Pages.Employees).id
+            ).length ||
               userProfileState.systemUser?.isAdmin) && (
               <Route
-                path={SystemModules[3].route}
+                path={getPage(Pages.Employees).route}
+                element={<EmployeePage />}
+              />
+            )}
+            {(!!userProfileState.module.filter(
+              (x) => x === getPage(Pages.Designations).id
+            ).length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route
+                path={getPage(Pages.Designations).route}
                 element={<DesignationPage />}
               />
             )}
 
-            {(!!userProfileState.module.filter((x) => x === SystemModules[4].id)
-              .length ||
-              userProfileState.systemUser?.isAdmin) && (
-              <Route path={SystemModules[4].route} element={<OfficePage />} />
-            )}
-
-            {(!!userProfileState.module.filter((x) => x === SystemModules[5].id)
-              .length ||
+            {(!!userProfileState.module.filter(
+              (x) => x === getPage(Pages.Offices).id
+            ).length ||
               userProfileState.systemUser?.isAdmin) && (
               <Route
-                path={SystemModules[5].route}
+                path={getPage(Pages.Offices).route}
+                element={<OfficePage />}
+              />
+            )}
+
+            {(!!userProfileState.module.filter(
+              (x) => x === getPage(Pages.Users).id
+            ).length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route
+                path={getPage(Pages.Users).route}
                 element={<SystemUserPage />}
               />
             )}
 
-            {(!!userProfileState.module.filter((x) => x === SystemModules[6].id)
-              .length ||
+            {(!!userProfileState.module.filter(
+              (x) => x === getPage(Pages.UserRoles).id
+            ).length ||
               userProfileState.systemUser?.isAdmin) && (
-              <Route path={SystemModules[6].route} element={<UserRolePage />} />
+              <Route
+                path={getPage(Pages.UserRoles).route}
+                element={<UserRolePage />}
+              />
             )}
             <Route
               path='*'

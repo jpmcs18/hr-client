@@ -1,6 +1,7 @@
 import { faAdd, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
+import { Pages } from '../../../constant';
 import {
   useSetBusy,
   useSetMessage,
@@ -8,7 +9,6 @@ import {
 } from '../../../custom-hooks/authorize-provider';
 import { hasAccess } from '../../../helper';
 import { deleteDesignation } from '../../../repositories/designation-queries';
-import SystemModules from '../../../routes';
 import { designationModalActions } from '../../../state/reducers/designation-modal-reducer';
 import { designationActions } from '../../../state/reducers/designation-reducer';
 import { RootState } from '../../../state/store';
@@ -66,7 +66,7 @@ export default function DesignationButtons() {
       <div className='btn-actions-group'>
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[3].id,
+          Pages.Designations,
           'Add',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -76,7 +76,7 @@ export default function DesignationButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[3].id,
+          Pages.Designations,
           'Edit',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -90,7 +90,7 @@ export default function DesignationButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[3].id,
+          Pages.Designations,
           'Delete',
           userProfileState.systemUser?.isAdmin
         ) && (

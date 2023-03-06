@@ -7,6 +7,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
+import { Pages } from '../../../constant';
 import {
   useSetBusy,
   useSetMessage,
@@ -17,7 +18,6 @@ import {
   deleteSystemUser,
   resetPassword,
 } from '../../../repositories/system-user-queries';
-import SystemModules from '../../../routes';
 import { systemUserModalActions } from '../../../state/reducers/system-user-modal-reducer';
 import { systemUserActions } from '../../../state/reducers/system-user-reducer';
 import { RootState } from '../../../state/store';
@@ -97,7 +97,7 @@ export default function SystemUserButtons() {
       <div className='btn-actions-group'>
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[5].id,
+          Pages.Users,
           'Add',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -107,7 +107,7 @@ export default function SystemUserButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[5].id,
+          Pages.Users,
           'Edit',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -121,7 +121,7 @@ export default function SystemUserButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[5].id,
+          Pages.Users,
           'Delete',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -135,7 +135,7 @@ export default function SystemUserButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[5].id,
+          Pages.Users,
           'Reset Password',
           userProfileState.systemUser?.isAdmin
         ) && (

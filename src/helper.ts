@@ -1,14 +1,17 @@
+import ModuleRoute from './models/client-model/ModuleRoute';
 import ModuleRight from './models/entities/ModuleRight';
+import SystemModules from './routes';
 
 export function hasAccess(
   moduleRight: ModuleRight[],
-  moduleId: number,
+  page: string,
   access: string,
   isAdmin?: boolean
 ) {
+  var module = getPage(page);
   return (
     !!moduleRight
-      .filter((x) => x.moduleId === moduleId)
+      .filter((x) => x.moduleId === module.id)
       ?.filter((x) => x.right === access).length || isAdmin
   );
 }
@@ -80,4 +83,8 @@ export function toAmount(amount?: number | null): string {
   return amount?.toLocaleString('en-US', {
     maximumFractionDigits: 2,
   });
+}
+
+export function getPage(page: string): ModuleRoute {
+  return SystemModules.filter((x) => x.pageName === page)[0];
 }

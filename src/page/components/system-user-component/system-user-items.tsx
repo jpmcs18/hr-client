@@ -7,7 +7,7 @@ export default function SystemUserItems() {
   const dispatch = useDispatch();
   const systemUserState = useSelector((state: RootState) => state.systemUser);
   return (
-    <section>
+    <section className='table-container'>
       <table className='item-table'>
         <thead>
           <tr>

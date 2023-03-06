@@ -30,7 +30,6 @@ const userProfileSlice = createSlice({
   reducers: {
     initializeState(state) {
       var token = getToken();
-      console.log(token);
       if (token?.token !== undefined) {
         state.authorize = true;
         state.systemUser = getSessionProfile();

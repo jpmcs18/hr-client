@@ -1,13 +1,16 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Pages } from '../../../constant';
 import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
 import { searchEmployee } from '../../../repositories/employee-queries';
+import { employeeAttachmentModalActions } from '../../../state/reducers/employee-attachment-modal-reducer';
 import { employeeActions } from '../../../state/reducers/employee-reducer';
 import { RootState } from '../../../state/store';
 import ManageEmployee from '../../modals/manage-employee';
+import ManageEmployeeAttachments from '../../modals/manage-employee-attachments';
 import SearchBar from '../searchbar';
 import EmployeeButtons from './employee-buttons';
 import EmployeeItems from './employee-items';
@@ -15,6 +18,9 @@ import EmployeeItems from './employee-items';
 export default function EmployeePage() {
   const employeeModalState = useSelector(
     (state: RootState) => state.employeeModal
+  );
+  const employeeAttachmentModalState = useSelector(
+    (state: RootState) => state.employeeAttachmentModal
   );
   const employeeState = useSelector((state: RootState) => state.employee);
   const dispatch = useDispatch();
@@ -54,7 +60,7 @@ export default function EmployeePage() {
   return (
     <>
       <section className='title-container'>
-        <div className='title'>Employees</div>
+        <div className='title'>{Pages.Employees}</div>
       </section>
       <section>
         <SearchBar
@@ -66,6 +72,9 @@ export default function EmployeePage() {
       <EmployeeButtons />
       <EmployeeItems />
       {employeeModalState.isModalShow && <ManageEmployee />}
+      {employeeAttachmentModalState.isModalShow && (
+        <ManageEmployeeAttachments />
+      )}
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import designationModalReducer from './reducers/designation-modal-reducer';
 import designationReducer from './reducers/designation-reducer';
+import employeeAttachmentModalReducer from './reducers/employee-attachment-modal-reducer';
 import employeeModalReducer from './reducers/employee-modal-reducer';
 import employeeReducer from './reducers/employee-reducer';
 import officeModalReducer from './reducers/office-modal-reducer';
@@ -23,8 +24,12 @@ const store = configureStore({
     userRoleModal: userRoleModalReducer,
     systemUser: systemUserReducer,
     systemUserModal: systemUserModalReducer,
+    employeeAttachmentModal: employeeAttachmentModalReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store;

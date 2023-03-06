@@ -30,10 +30,6 @@
   --table-selected-color: #c70202;
   --table-selected-color-accent: #fff;
   --table-background-color: #eee;
-  --loading-color-4: black;
-  --loading-color-1: rgb(119, 9, 9);
-  --loading-color-2: rgb(6, 74, 6);
-  --loading-color-3: rgb(12, 12, 146);
   --label-size: 0.6rem;
   --normal-font-size: 0.8rem;
   --banner-font-size: 1rem;
@@ -303,48 +299,45 @@ header {
   }
 }
 section {
-  width: 100%;
   margin: 0 auto;
 }
 
 .login-container {
   position: relative;
-  background: var(--backgroud-color);
-  margin: 3em auto;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  width: 40em;
+  background: white;
+  margin: 10em auto;
+  width: 30em;
   padding-bottom: 0.2em;
   border-radius: 0.5em;
+  box-shadow: 0em 0em 0.5em 0em #ccc;
   text-align: center;
 
+  &:focus-within {
+    box-shadow: 0em 0em 1em 0.2em #ccc;
+  }
+
   .login-header {
-    border-bottom: 0.1em solid var(--shadow-color);
-    font-weight: var(--bold);
-    width: 100%;
-    padding: 2em;
-    .login-title {
+    border-radius: 0.5em 0.5em 0 0;
+    padding: 1em 2em;
+    box-shadow: 0em 0.1em 0.2em 0em #ccc;
+
+    h1 {
       font-size: var(--login-header-font-size);
-      color: var(--login-header-foreground-color);
+      font-weight: var(--bold);
+      color: var(--primary-color);
     }
   }
-  .custom-input {
-    margin-bottom: 1em;
-  }
-  .forgot-password {
-    width: fit-content;
-    text-decoration: underline;
-    cursor: pointer;
-    color: var(--color);
-    margin: 0.3em 0.2em 0.2em 0.2em;
-  }
+
   .login-content {
-    width: 70%;
-    margin: 3em;
+    margin: 1.5em;
+    gap: 0.5em;
     display: flex;
     flex-direction: column;
+    .btn {
+      margin: 1em 0.2em 0.2em 0.2em;
+      width: 10em;
+      align-self: flex-end;
+    }
   }
 }
 .btn {
@@ -411,10 +404,14 @@ input {
   position: relative;
   label {
     font-size: var(--label-size);
-    font-weight: var(--regular);
+    font-weight: var(--demibold);
     user-select: none;
-    opacity: 0.6;
-    margin-bottom: 0.3em;
+    opacity: 0.8;
+    margin: 0.4em 0em 0.25em 0em;
+  }
+  input,
+  select {
+    min-height: 2.5em;
   }
   select {
     text-overflow: ellipsis;
@@ -469,6 +466,8 @@ input {
     width: 100%;
     display: flex;
     border-radius: 0.3em;
+    margin: 1.35em 0em 0.1em 0em;
+    height: 2.5em;
     cursor: pointer;
     box-sizing: border-box;
     .check-true {
@@ -487,7 +486,7 @@ input {
       padding: 0.5em;
     }
     .unchecked {
-      box-shadow: inset 0em 0em 0.2 em 0.1em var(--shadow-color);
+      box-shadow: inset 0em 0em 1em 0em var(--shadow-color);
     }
     .checked {
       background-color: var(--primary-color);
@@ -656,52 +655,13 @@ input {
     align-items: center;
     div {
       position: relative;
-      border: 0.5em solid var(--primary-color2);
       border-radius: 50%;
+      border: 0.5em solid var(--primary-color);
       border-left-color: transparent;
-      border-right-color: transparent;
       height: 3em;
       width: 3em;
-      animation: rotate 2s infinite;
-      &:after {
-        content: '';
-        position: absolute;
-        border: 0.4em solid var(--primary-color2);
-        box-sizing: border-box;
-        margin: 0.3em;
-        top: 0em;
-        left: 0em;
-        right: 0em;
-        bottom: 0em;
-        border-radius: 50%;
-        border-top-color: transparent;
-        border-bottom-color: transparent;
-        animation: rotate-back 2.5s infinite;
-      }
-      &:before {
-        content: '';
-        position: absolute;
-        border: 0.4em solid var(--primary-color2);
-        box-sizing: border-box;
-        margin: 0.3em;
-        top: 0em;
-        left: 0em;
-        right: 0em;
-        bottom: 0em;
-        border-radius: 50%;
-        border-top-color: transparent;
-        border-bottom-color: transparent;
-        animation: rotate 2.5s infinite;
-      }
+      animation: rotate 1s infinite;
     }
-  }
-}
-@keyframes rotate-back {
-  from {
-    rotate: 360deg;
-  }
-  to {
-    rotate: 0deg;
   }
 }
 @keyframes rotate {
@@ -1029,6 +989,9 @@ input {
       z-index: 1;
       box-shadow: 0em 0em 0.2em var(--shadow-color);
     }
+    &:focus {
+      outline: none;
+    }
     &:disabled {
       background-color: var(--primary-color-disable);
       transform: scale(1);
@@ -1105,6 +1068,45 @@ tbody tr {
   margin: 1em;
 }
 
+.loading-block-attachment {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  .loading-blocker {
+    z-index: 999999;
+    background-color: #aaa;
+    overflow: hidden;
+    position: absolute;
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .loading {
+    position: absolute;
+    z-index: 9999999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    div {
+      position: relative;
+      border-radius: 50%;
+      border: 0.5em solid var(--primary-color);
+      border-left-color: transparent;
+      height: 3em;
+      width: 3em;
+      animation: rotate 1s infinite;
+    }
+  }
+}
 .modal-container {
   z-index: 1000;
   position: fixed;
@@ -1115,6 +1117,108 @@ tbody tr {
   left: 0;
   right: 0;
   bottom: 0;
+  .employee-attachment-modal {
+    width: 80vw !important;
+    .employee-attachment-content-body {
+      height: 70vh !important;
+      display: flex;
+      flex-wrap: wrap;
+      overflow-y: scroll;
+      line-height: 0.5em !important;
+      padding: 1em;
+      .attachment-deleted {
+        opacity: 0.5;
+      }
+      .attachment {
+        border-radius: 0.5em;
+        box-sizing: border-box;
+        position: relative;
+        margin: 0.5em;
+        padding: 0.5em;
+        height: 15em;
+        width: 15em;
+        box-shadow: 0em 0em 0.3em 0em var(--shadow-color);
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: contain;
+        }
+        .attachment-control {
+          position: absolute;
+          right: 0;
+          top: 0;
+          background-color: var(--shadow-color);
+          border-radius: 0.5em;
+        }
+        .documents {
+          box-sizing: border-box;
+          padding: 1em;
+          height: 100%;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          .icon {
+            height: 5em;
+            width: 5em;
+          }
+          p {
+            line-height: 1em;
+            .file-name {
+              font-weight: var(--demibold);
+            }
+          }
+        }
+      }
+      .attachment-add {
+        box-sizing: border-box;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 0.3em dashed var(--shadow-color);
+        &:before {
+          content: '';
+          background-color: var(--shadow-color);
+          height: 0.3em;
+          width: 8em;
+          font-size: var(--regular);
+          border-radius: 0.3em;
+        }
+        &:after {
+          content: '';
+          border-radius: 0.3em;
+          position: absolute;
+          background-color: var(--shadow-color);
+          height: 8em;
+          width: 0.3em;
+          font-size: var(--regular);
+        }
+        &:hover {
+          border: 0.3em dashed var(--primary-color);
+          &:after,
+          &:before {
+            background-color: var(--primary-color);
+          }
+        }
+      }
+    }
+  }
+  .employee-modal {
+    width: 90% !important;
+    .manage-employee-body {
+      overflow-y: auto !important;
+      max-height: 80vh;
+      flex-direction: row !important;
+      .manage-container {
+        width: 100%;
+      }
+    }
+  }
+  .eligibility-management-table {
+    height: 86.5% !important;
+  }
   .systemUser-management-table {
     height: 30vh !important;
   }
@@ -1122,7 +1226,7 @@ tbody tr {
     height: 30vh !important;
   }
   .user-role-modules-container {
-    height: 60vh !important;
+    height: 40vh !important;
   }
   .concern-detail {
     width: 60%;
@@ -1185,8 +1289,13 @@ tbody tr {
         -webkit-overflow-scrolling: touch;
       }
       .table-container {
-        height: 100vh;
         overflow: auto;
+        box-shadow: 0em 0em 0.2em 0em var(--shadow-color);
+        margin: 0.5em;
+        .item-table {
+          margin: 0;
+          width: 100%;
+        }
       }
     }
     .btn-modal {
@@ -1493,10 +1602,6 @@ tbody tr {
   }
 }
 @media screen and (max-width: 720px) {
-  .login-container {
-    width: 100%;
-    margin: 0;
-  }
   .modal-content {
     width: 90%;
   }

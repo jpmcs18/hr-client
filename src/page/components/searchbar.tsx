@@ -27,7 +27,6 @@ export default function SearchBar({
   }
 
   function searchClick() {
-    console.log(searchKey);
     search(searchKey);
   }
   return (

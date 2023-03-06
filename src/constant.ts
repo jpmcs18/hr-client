@@ -6,3 +6,11 @@ export const API =
     : process.env.REACT_APP_SECURED_PROD;
 export const AppName = 'App';
 export const APP_SECRET = process.env.REACT_APP_SECRET_KEY;
+
+export const Pages = {
+  Employees: 'Employees',
+  Designations: 'Designations',
+  Offices: 'Offices',
+  Users: 'Users',
+  UserRoles: 'User Roles',
+};

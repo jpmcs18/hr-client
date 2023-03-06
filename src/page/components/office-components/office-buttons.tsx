@@ -1,14 +1,14 @@
 import { faAdd, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
+import { Pages } from '../../../constant';
 import {
-  useSetToasterMessage,
-  useSetMessage,
   useSetBusy,
+  useSetMessage,
+  useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
 import { hasAccess } from '../../../helper';
 import { deleteOffice } from '../../../repositories/office-queries';
-import SystemModules from '../../../routes';
 import { officeModalActions } from '../../../state/reducers/office-modal-reducer';
 import { officeActions } from '../../../state/reducers/office-reducer';
 import { RootState } from '../../../state/store';
@@ -63,7 +63,7 @@ export default function OfficeButtons() {
       <div className='btn-actions-group'>
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[4].id,
+          Pages.Offices,
           'Add',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -73,7 +73,7 @@ export default function OfficeButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[4].id,
+          Pages.Offices,
           'Edit',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -87,7 +87,7 @@ export default function OfficeButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[4].id,
+          Pages.Offices,
           'Delete',
           userProfileState.systemUser?.isAdmin
         ) && (

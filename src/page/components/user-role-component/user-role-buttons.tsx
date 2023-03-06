@@ -1,14 +1,14 @@
 import { faAdd, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
+import { Pages } from '../../../constant';
 import {
-  useSetToasterMessage,
-  useSetMessage,
   useSetBusy,
+  useSetMessage,
+  useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
 import { hasAccess } from '../../../helper';
 import { deleteUserRole } from '../../../repositories/user-role-queries';
-import SystemModules from '../../../routes';
 import { userRoleModalActions } from '../../../state/reducers/user-role-modal-reducer';
 import { userRoleActions } from '../../../state/reducers/user-role-reducer';
 import { RootState } from '../../../state/store';
@@ -63,7 +63,7 @@ export default function UserRoleButtons() {
       <div className='btn-actions-group'>
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[6].id,
+          Pages.UserRoles,
           'Add',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -73,7 +73,7 @@ export default function UserRoleButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[6].id,
+          Pages.UserRoles,
           'Edit',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -87,7 +87,7 @@ export default function UserRoleButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[6].id,
+          Pages.UserRoles,
           'Delete',
           userProfileState.systemUser?.isAdmin
         ) && (

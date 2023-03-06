@@ -1,9 +1,4 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { employeeActions } from '../../../state/reducers/employee-reducer';
 import { RootState } from '../../../state/store';
 import EmployeeItem from './employee-item';
@@ -12,13 +7,20 @@ export default function EmployeeItems() {
   const dispatch = useDispatch();
   const employeeState = useSelector((state: RootState) => state.employee);
   return (
-    <section>
+    <section className='table-container'>
       <table className='item-table'>
         <thead>
           <tr>
             <th>Full Name</th>
+            <th>Nature of Employment</th>
+            <th>Gender</th>
+            <th>Birth Date</th>
+            <th>Age</th>
+            <th>Date of Employment</th>
+            <th>Years in Service</th>
             <th>Office</th>
             <th>Designation</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>

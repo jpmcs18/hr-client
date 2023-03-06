@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Pages } from '../../../constant';
 import {
   useSetBusy,
   useSetToasterMessage,
@@ -50,7 +51,7 @@ export default function OfficePage() {
   return (
     <>
       <section className='title-container'>
-        <div className='title'>Offices</div>
+        <div className='title'>{Pages.Offices}</div>
       </section>
       <section>
         <SearchBar

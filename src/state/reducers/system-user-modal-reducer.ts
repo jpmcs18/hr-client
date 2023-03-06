@@ -103,7 +103,6 @@ const systemUserModalSlice = createSlice({
           (x) => x !== action.payload.userRoleId
         );
       }
-      console.log(state.newUserRole.slice());
       state.userRoles.push(action.payload.userRole!);
       state.userRoles = state.userRoles
         .slice()

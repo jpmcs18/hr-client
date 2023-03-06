@@ -7,7 +7,7 @@ export default function DesignationItems() {
   const dispatch = useDispatch();
   const designationState = useSelector((state: RootState) => state.designation);
   return (
-    <section>
+    <section className='table-container'>
       <table className='item-table'>
         <thead>
           <tr>

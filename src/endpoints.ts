@@ -55,3 +55,25 @@ export const ModuleEnd = {
 export const ModuleRightEnd = {
   GetUserAccess: 'module-rights/access',
 };
+export const NatureOfEmploymentEnd = {
+  GetList: 'nature-of-employments',
+};
+export const GenderEnd = {
+  GetList: 'genders',
+};
+export const CivilStatusEnd = {
+  GetList: 'civil-statuses',
+};
+export const BloodTypeEnd = {
+  GetList: 'blood-types',
+};
+export const VaccinationStatusEnd = {
+  GetList: 'vaccination-statuses',
+};
+export const EligibilityEnd = {
+  GetList: 'eligibilities',
+};
+
+export const EmployeeAttachmentEnd = {
+  Upload: 'employee-attachments/upload',
+};

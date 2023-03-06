@@ -19,19 +19,29 @@ export async function getEmployees(): Promise<Employee[] | undefined> {
 }
 
 export async function insertEmployee(
-  employee: Employee
+  employee: Employee,
+  eligibilityIds: number[]
 ): Promise<Employee | undefined> {
   return await httpPost<Employee>(EmployeeEnd.Insert, {
-    ...employee,
-    designation: undefined,
-    office: undefined,
+    employee: {
+      ...employee,
+      designation: undefined,
+      office: undefined,
+    },
+    eligibilityIds,
   });
 }
 
 export async function updateEmployee(
-  employee: Employee
+  employee: Employee,
+  newEligibilityIds: number[],
+  employeeEligibilityIdsToDelete: number[]
 ): Promise<boolean | undefined> {
-  return await httpPut(EmployeeEnd.Update + '/' + employee.id, employee);
+  return await httpPut(EmployeeEnd.Update + '/' + employee.id, {
+    employee,
+    newEligibilityIds,
+    employeeEligibilityIdsToDelete,
+  });
 }
 
 export async function deleteEmployee(id: number): Promise<boolean | undefined> {

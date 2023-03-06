@@ -30,10 +30,6 @@
   --table-selected-color: #c70202;
   --table-selected-color-accent: #fff;
   --table-background-color: #eee;
-  --loading-color-4: black;
-  --loading-color-1: rgb(119, 9, 9);
-  --loading-color-2: rgb(6, 74, 6);
-  --loading-color-3: rgb(12, 12, 146);
   --label-size: 0.6rem;
   --normal-font-size: 0.8rem;
   --banner-font-size: 1rem;
@@ -390,62 +386,42 @@ header nav .active {
 }
 
 section {
-  width: 100%;
   margin: 0 auto;
 }
 
 .login-container {
   position: relative;
-  background: var(--backgroud-color);
-  margin: 3em auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  width: 40em;
+  background: white;
+  margin: 10em auto;
+  width: 30em;
   padding-bottom: 0.2em;
   border-radius: 0.5em;
+  -webkit-box-shadow: 0em 0em 0.5em 0em #ccc;
+          box-shadow: 0em 0em 0.5em 0em #ccc;
   text-align: center;
 }
 
+.login-container:focus-within {
+  -webkit-box-shadow: 0em 0em 1em 0.2em #ccc;
+          box-shadow: 0em 0em 1em 0.2em #ccc;
+}
+
 .login-container .login-header {
-  border-bottom: 0.1em solid var(--shadow-color);
-  font-weight: var(--bold);
-  width: 100%;
-  padding: 2em;
+  border-radius: 0.5em 0.5em 0 0;
+  padding: 1em 2em;
+  -webkit-box-shadow: 0em 0.1em 0.2em 0em #ccc;
+          box-shadow: 0em 0.1em 0.2em 0em #ccc;
 }
 
-.login-container .login-header .login-title {
+.login-container .login-header h1 {
   font-size: var(--login-header-font-size);
-  color: var(--login-header-foreground-color);
-}
-
-.login-container .custom-input {
-  margin-bottom: 1em;
-}
-
-.login-container .forgot-password {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  text-decoration: underline;
-  cursor: pointer;
-  color: var(--color);
-  margin: 0.3em 0.2em 0.2em 0.2em;
+  font-weight: var(--bold);
+  color: var(--primary-color);
 }
 
 .login-container .login-content {
-  width: 70%;
-  margin: 3em;
+  margin: 1.5em;
+  gap: 0.5em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -453,6 +429,13 @@ section {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+}
+
+.login-container .login-content .btn {
+  margin: 1em 0.2em 0.2em 0.2em;
+  width: 10em;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
 }
 
 .btn {
@@ -554,13 +537,18 @@ input:disabled {
 
 .custom-input label {
   font-size: var(--label-size);
-  font-weight: var(--regular);
+  font-weight: var(--demibold);
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  opacity: 0.6;
-  margin-bottom: 0.3em;
+  opacity: 0.8;
+  margin: 0.4em 0em 0.25em 0em;
+}
+
+.custom-input input,
+.custom-input select {
+  min-height: 2.5em;
 }
 
 .custom-input select {
@@ -637,6 +625,8 @@ input:disabled {
   display: -ms-flexbox;
   display: flex;
   border-radius: 0.3em;
+  margin: 1.35em 0em 0.1em 0em;
+  height: 2.5em;
   cursor: pointer;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -662,8 +652,8 @@ input:disabled {
 }
 
 .custom-input .checkbox-button .unchecked {
-  -webkit-box-shadow: inset 0em 0em 0.2 em 0.1em var(--shadow-color);
-          box-shadow: inset 0em 0em 0.2 em 0.1em var(--shadow-color);
+  -webkit-box-shadow: inset 0em 0em 1em 0em var(--shadow-color);
+          box-shadow: inset 0em 0em 1em 0em var(--shadow-color);
 }
 
 .custom-input .checkbox-button .checked {
@@ -854,68 +844,13 @@ input:disabled {
 
 .loading-block .loading div {
   position: relative;
-  border: 0.5em solid var(--primary-color2);
   border-radius: 50%;
+  border: 0.5em solid var(--primary-color);
   border-left-color: transparent;
-  border-right-color: transparent;
   height: 3em;
   width: 3em;
-  -webkit-animation: rotate 2s infinite;
-          animation: rotate 2s infinite;
-}
-
-.loading-block .loading div:after {
-  content: '';
-  position: absolute;
-  border: 0.4em solid var(--primary-color2);
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  margin: 0.3em;
-  top: 0em;
-  left: 0em;
-  right: 0em;
-  bottom: 0em;
-  border-radius: 50%;
-  border-top-color: transparent;
-  border-bottom-color: transparent;
-  -webkit-animation: rotate-back 2.5s infinite;
-          animation: rotate-back 2.5s infinite;
-}
-
-.loading-block .loading div:before {
-  content: '';
-  position: absolute;
-  border: 0.4em solid var(--primary-color2);
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  margin: 0.3em;
-  top: 0em;
-  left: 0em;
-  right: 0em;
-  bottom: 0em;
-  border-radius: 50%;
-  border-top-color: transparent;
-  border-bottom-color: transparent;
-  -webkit-animation: rotate 2.5s infinite;
-          animation: rotate 2.5s infinite;
-}
-
-@-webkit-keyframes rotate-back {
-  from {
-    rotate: 360deg;
-  }
-  to {
-    rotate: 0deg;
-  }
-}
-
-@keyframes rotate-back {
-  from {
-    rotate: 360deg;
-  }
-  to {
-    rotate: 0deg;
-  }
+  -webkit-animation: rotate 1s infinite;
+          animation: rotate 1s infinite;
 }
 
 @-webkit-keyframes rotate {
@@ -1358,6 +1293,10 @@ input:disabled {
           box-shadow: 0em 0em 0.2em var(--shadow-color);
 }
 
+.btn-actions-group .btn-action:focus {
+  outline: none;
+}
+
 .btn-actions-group .btn-action:disabled {
   background-color: var(--primary-color-disable);
   -webkit-transform: scale(1);
@@ -1451,6 +1390,56 @@ tbody tr {
   margin: 1em;
 }
 
+.loading-block-attachment {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+}
+
+.loading-block-attachment .loading-blocker {
+  z-index: 999999;
+  background-color: #aaa;
+  overflow: hidden;
+  position: absolute;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.loading-block-attachment .loading {
+  position: absolute;
+  z-index: 9999999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.loading-block-attachment .loading div {
+  position: relative;
+  border-radius: 50%;
+  border: 0.5em solid var(--primary-color);
+  border-left-color: transparent;
+  height: 3em;
+  width: 3em;
+  -webkit-animation: rotate 1s infinite;
+          animation: rotate 1s infinite;
+}
+
 .modal-container {
   z-index: 1000;
   position: fixed;
@@ -1468,6 +1457,152 @@ tbody tr {
   bottom: 0;
 }
 
+.modal-container .employee-attachment-modal {
+  width: 80vw !important;
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body {
+  height: 70vh !important;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  overflow-y: scroll;
+  line-height: 0.5em !important;
+  padding: 1em;
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment-deleted {
+  opacity: 0.5;
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment {
+  border-radius: 0.5em;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  position: relative;
+  margin: 0.5em;
+  padding: 0.5em;
+  height: 15em;
+  width: 15em;
+  -webkit-box-shadow: 0em 0em 0.3em 0em var(--shadow-color);
+          box-shadow: 0em 0em 0.3em 0em var(--shadow-color);
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment img {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment .attachment-control {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: var(--shadow-color);
+  border-radius: 0.5em;
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment .documents {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 1em;
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment .documents .icon {
+  height: 5em;
+  width: 5em;
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment .documents p {
+  line-height: 1em;
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment .documents p .file-name {
+  font-weight: var(--demibold);
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment-add {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: 0.3em dashed var(--shadow-color);
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment-add:before {
+  content: '';
+  background-color: var(--shadow-color);
+  height: 0.3em;
+  width: 8em;
+  font-size: var(--regular);
+  border-radius: 0.3em;
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment-add:after {
+  content: '';
+  border-radius: 0.3em;
+  position: absolute;
+  background-color: var(--shadow-color);
+  height: 8em;
+  width: 0.3em;
+  font-size: var(--regular);
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment-add:hover {
+  border: 0.3em dashed var(--primary-color);
+}
+
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment-add:hover:after, .modal-container .employee-attachment-modal .employee-attachment-content-body .attachment-add:hover:before {
+  background-color: var(--primary-color);
+}
+
+.modal-container .employee-modal {
+  width: 90% !important;
+}
+
+.modal-container .employee-modal .manage-employee-body {
+  overflow-y: auto !important;
+  max-height: 80vh;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: normal !important;
+      -ms-flex-direction: row !important;
+          flex-direction: row !important;
+}
+
+.modal-container .employee-modal .manage-employee-body .manage-container {
+  width: 100%;
+}
+
+.modal-container .eligibility-management-table {
+  height: 86.5% !important;
+}
+
 .modal-container .systemUser-management-table {
   height: 30vh !important;
 }
@@ -1477,7 +1612,7 @@ tbody tr {
 }
 
 .modal-container .user-role-modules-container {
-  height: 60vh !important;
+  height: 40vh !important;
 }
 
 .modal-container .concern-detail {
@@ -1568,8 +1703,15 @@ tbody tr {
 }
 
 .modal-container .modal-content .modal-content-body .table-container {
-  height: 100vh;
   overflow: auto;
+  -webkit-box-shadow: 0em 0em 0.2em 0em var(--shadow-color);
+          box-shadow: 0em 0em 0.2em 0em var(--shadow-color);
+  margin: 0.5em;
+}
+
+.modal-container .modal-content .modal-content-body .table-container .item-table {
+  margin: 0;
+  width: 100%;
 }
 
 .modal-container .modal-content .btn-modal {
@@ -1994,10 +2136,6 @@ tbody tr {
 }
 
 @media screen and (max-width: 720px) {
-  .login-container {
-    width: 100%;
-    margin: 0;
-  }
   .modal-content {
     width: 90%;
   }

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Pages } from '../../../constant';
 import {
   useSetBusy,
   useSetToasterMessage,
@@ -52,7 +53,7 @@ export default function SystemUserPage() {
   return (
     <>
       <section className='title-container'>
-        <div className='title'>Users</div>
+        <div className='title'>{Pages.UserRoles}</div>
       </section>
       <section>
         <SearchBar

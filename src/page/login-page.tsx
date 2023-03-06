@@ -83,13 +83,14 @@ export default function LoginPage() {
     <section>
       <div className='login-container'>
         <div className='login-header'>
-          <label className='login-title'>Login</label>
+          <h1>Authentication</h1>
         </div>
         <div className='login-content'>
           <CustomTextBox
             title='Username'
             name='username'
             id='username'
+            className='username'
             value={user.username}
             onChange={onTextChange}
             onKeyPress={onKeyPress}
@@ -98,11 +99,12 @@ export default function LoginPage() {
             title='Password'
             name='password'
             id='password'
+            className='password'
             value={user.password}
             onChange={onTextChange}
             onKeyPress={onKeyPress}
           />
-          <button onClick={signIn} className='btn'>
+          <button onClick={signIn} className='btn btn-signin'>
             Login
           </button>
         </div>

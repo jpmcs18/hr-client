@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { officeModalActions } from '../../state/reducers/office-modal-reducer';
 import { RootState } from '../../state/store';
 
-export default function ManageOfficeDesignationsTable() {
+export default function ManageEmployeeEligibilitiesTable() {
   const dispatch = useDispatch();
   const officeModalState = useSelector((state: RootState) => state.officeModal);
   return (

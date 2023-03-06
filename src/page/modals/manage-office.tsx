@@ -11,7 +11,7 @@ import { officeActions } from '../../state/reducers/office-reducer';
 import { RootState } from '../../state/store';
 import CustomDropdown from '../components/custom-dropdown';
 import CustomTextBox from '../components/custom-textbox';
-import ManageOfficeDesignationsTable from './manage-system-user-access-table';
+import ManageOfficeDesignationsTable from './manage-office-designations-table';
 import Modal from './modal';
 
 export default function ManageOffice() {

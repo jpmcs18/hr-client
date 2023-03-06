@@ -1,6 +1,12 @@
-import { faAdd, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAdd,
+  faEdit,
+  faFileArrowUp,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
+import { Pages } from '../../../constant';
 import {
   useSetBusy,
   useSetMessage,
@@ -8,7 +14,7 @@ import {
 } from '../../../custom-hooks/authorize-provider';
 import { hasAccess } from '../../../helper';
 import { deleteEmployee } from '../../../repositories/employee-queries';
-import SystemModules from '../../../routes';
+import { employeeAttachmentModalActions } from '../../../state/reducers/employee-attachment-modal-reducer';
 import { employeeModalActions } from '../../../state/reducers/employee-modal-reducer';
 import { employeeActions } from '../../../state/reducers/employee-reducer';
 import { RootState } from '../../../state/store';
@@ -29,6 +35,14 @@ export default function EmployeeButtons() {
   function edit() {
     dispatch(employeeModalActions.setEmployee(employeeState.selectedEmployee!));
     dispatch(employeeModalActions.setShowModal(true));
+  }
+  function attach() {
+    dispatch(
+      employeeAttachmentModalActions.setEmployee(
+        employeeState.selectedEmployee!
+      )
+    );
+    dispatch(employeeAttachmentModalActions.setShowModal(true));
   }
   async function onDelete() {
     if (!employeeState.selectedEmployee?.id) return;
@@ -62,7 +76,7 @@ export default function EmployeeButtons() {
       <div className='btn-actions-group'>
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[2].id,
+          Pages.Employees,
           'Add',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -72,7 +86,7 @@ export default function EmployeeButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[2].id,
+          Pages.Employees,
           'Edit',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -86,7 +100,7 @@ export default function EmployeeButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          SystemModules[2].id,
+          Pages.Employees,
           'Delete',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -96,6 +110,20 @@ export default function EmployeeButtons() {
             onClick={onDelete}
             title='Delete'>
             <FontAwesomeIcon icon={faTrash} />
+          </button>
+        )}
+        {hasAccess(
+          userProfileState.moduleRights,
+          Pages.Employees,
+          'Attach Files',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button
+            className='btn-action'
+            disabled={!employeeState.selectedEmployee}
+            onClick={attach}
+            title='Attach Files'>
+            <FontAwesomeIcon icon={faFileArrowUp} />
           </button>
         )}
       </div>

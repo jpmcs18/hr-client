@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Pages } from '../../../constant';
 import {
   useSetBusy,
   useSetToasterMessage,
@@ -52,7 +53,7 @@ export default function DesignationPage() {
   return (
     <>
       <section className='title-container'>
-        <div className='title'>Designations</div>
+        <div className='title'>{Pages.Designations}</div>
       </section>
       <section>
         <SearchBar
