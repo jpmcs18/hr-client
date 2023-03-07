@@ -7,8 +7,8 @@ const SystemModules: ModuleRoute[] = [
   { id: 1, pageName: Pages.Employees, route: '/employees', display: true }, //2
   {
     id: 2,
-    pageName: Pages.Designations,
-    route: '/designations',
+    pageName: Pages.Positions,
+    route: '/positions',
     display: true,
   }, //3
   { id: 3, pageName: Pages.Offices, route: '/offices', display: true }, //4

@@ -8,56 +8,52 @@ import {
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
 import { hasAccess } from '../../../helper';
-import { deleteDesignation } from '../../../repositories/designation-queries';
-import { designationModalActions } from '../../../state/reducers/designation-modal-reducer';
-import { designationActions } from '../../../state/reducers/designation-reducer';
+import { deletePosition } from '../../../repositories/position-queries';
+import { positionModalActions } from '../../../state/reducers/position-modal-reducer';
+import { positionActions } from '../../../state/reducers/position-reducer';
 import { RootState } from '../../../state/store';
 import Pagination from '../pagination';
 
-export default function DesignationButtons() {
-  const designationState = useSelector((state: RootState) => state.designation);
+export default function PositionButtons() {
+  const positionState = useSelector((state: RootState) => state.position);
   const userProfileState = useSelector((state: RootState) => state.userProfile);
   const dispatch = useDispatch();
   const setToasterMessage = useSetToasterMessage();
   const setMessage = useSetMessage();
   const setBusy = useSetBusy();
   function add() {
-    dispatch(designationActions.setSelected(undefined));
-    dispatch(designationModalActions.setDesignation());
-    dispatch(designationModalActions.setShowModal(true));
+    dispatch(positionActions.setSelected(undefined));
+    dispatch(positionModalActions.setPosition(undefined));
+    dispatch(positionModalActions.setShowModal(true));
   }
   function edit() {
-    dispatch(
-      designationModalActions.setDesignation(
-        designationState.selectedDesignation!
-      )
-    );
-    dispatch(designationModalActions.setShowModal(true));
+    dispatch(positionModalActions.setPosition(positionState.selectedPosition!));
+    dispatch(positionModalActions.setShowModal(true));
   }
   async function nextPage(page: number) {
-    dispatch(designationActions.setCurrentPage(page));
-    dispatch(designationActions.setInitiateSearch(true));
+    dispatch(positionActions.setCurrentPage(page));
+    dispatch(positionActions.setInitiateSearch(true));
   }
   async function onDelete() {
-    if (!designationState.selectedDesignation?.id) return;
+    if (!positionState.selectedPosition?.id) return;
     setMessage({
       message: 'Are you sure you want to delete this?',
       action: 'YESNO',
       onOk: async () => {
         setBusy(true);
-        await deleteDesignation(designationState.selectedDesignation?.id ?? 0)
+        await deletePosition(positionState.selectedPosition?.id ?? 0)
           .then((res) => {
             if (res) {
               setToasterMessage({
-                content: 'Selected designation has been deleted',
+                content: 'Selected position has been deleted',
               });
-              dispatch(designationActions.setInitiateSearch(true));
+              dispatch(positionActions.setInitiateSearch(true));
             }
           })
           .catch((err) => {
             setToasterMessage({ content: err.message });
           })
-          .then(() => setBusy(false));
+          .finally(() => setBusy(false));
       },
     });
   }
@@ -66,7 +62,7 @@ export default function DesignationButtons() {
       <div className='btn-actions-group'>
         {hasAccess(
           userProfileState.moduleRights,
-          Pages.Designations,
+          Pages.Positions,
           'Add',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -76,13 +72,13 @@ export default function DesignationButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          Pages.Designations,
+          Pages.Positions,
           'Edit',
           userProfileState.systemUser?.isAdmin
         ) && (
           <button
             className='btn-action'
-            disabled={!designationState.selectedDesignation}
+            disabled={!positionState.selectedPosition}
             onClick={edit}
             title='Edit'>
             <FontAwesomeIcon icon={faEdit} />
@@ -90,13 +86,13 @@ export default function DesignationButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          Pages.Designations,
+          Pages.Positions,
           'Delete',
           userProfileState.systemUser?.isAdmin
         ) && (
           <button
             className='btn-action'
-            disabled={!designationState.selectedDesignation}
+            disabled={!positionState.selectedPosition}
             onClick={onDelete}
             title='Delete'>
             <FontAwesomeIcon icon={faTrash} />
@@ -105,8 +101,8 @@ export default function DesignationButtons() {
       </div>
 
       <Pagination
-        pages={designationState.pageCount}
-        currentPageNumber={designationState.currentPage}
+        pages={positionState.pageCount}
+        currentPageNumber={positionState.currentPage}
         goInPage={nextPage}></Pagination>
     </section>
   );

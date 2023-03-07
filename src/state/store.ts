@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import designationModalReducer from './reducers/designation-modal-reducer';
-import designationReducer from './reducers/designation-reducer';
+import positionModalReducer from './reducers/position-modal-reducer';
+import positionReducer from './reducers/position-reducer';
 import employeeAttachmentModalReducer from './reducers/employee-attachment-modal-reducer';
 import employeeModalReducer from './reducers/employee-modal-reducer';
 import employeeReducer from './reducers/employee-reducer';
@@ -16,8 +16,8 @@ const store = configureStore({
     userProfile: userProfileReducer,
     employee: employeeReducer,
     employeeModal: employeeModalReducer,
-    designation: designationReducer,
-    designationModal: designationModalReducer,
+    position: positionReducer,
+    positionModal: positionModalReducer,
     office: officeReducer,
     officeModal: officeModalReducer,
     userRole: userRoleReducer,

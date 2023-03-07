@@ -1,6 +1,6 @@
 import BloodType from './BloodType';
 import CivilStatus from './CivilStatus';
-import Designation from './Designation';
+import Position from './Position';
 import EducationalAttainment from './EducationalAttainment';
 import EmployeeAttachment from './EmployeeAttachment';
 import EmployeeEligibility from './EmployeeEligibility';
@@ -24,7 +24,7 @@ export default interface Employee {
   genderId: number | undefined;
   bloodTypeId: number | undefined;
   officeId: number | undefined;
-  designationId: number | undefined;
+  positionId: number | undefined;
   residenceAddress: string | undefined;
   contactNumber: string | undefined;
   emailAddress: string | undefined;
@@ -41,7 +41,7 @@ export default interface Employee {
   height: string | undefined;
   weight: string | undefined;
   office?: Office | undefined;
-  designation?: Designation | undefined;
+  position?: Position | undefined;
   natureOfEmployment?: NatureOfEmployment | undefined;
   bloodType?: BloodType | undefined;
   civilStatus?: CivilStatus | undefined;

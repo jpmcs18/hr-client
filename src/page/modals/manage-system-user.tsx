@@ -16,7 +16,7 @@ import { RootState } from '../../state/store';
 import CustomCheckBoxButton from '../components/custom-checkbox-button';
 import CustomDropdown from '../components/custom-dropdown';
 import CustomTextBox from '../components/custom-textbox';
-import ManageSystemUserDesignationsTable from './manage-system-user-access-table';
+import ManageSystemUserPositionsTable from './manage-system-user-access-table';
 import Modal from './modal';
 
 export default function ManageSystemUser() {
@@ -159,7 +159,7 @@ export default function ManageSystemUser() {
                 };
               })}
             />
-            <ManageSystemUserDesignationsTable />
+            <ManageSystemUserPositionsTable />
           </div>
         )}
       </div>

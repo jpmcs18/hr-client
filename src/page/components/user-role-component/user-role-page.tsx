@@ -43,7 +43,7 @@ export default function UserRolePage() {
       .catch((err) => {
         setToasterMessage({ content: err.message });
       })
-      .then(() => setBusy(false));
+      .finally(() => setBusy(false));
   }
   async function search(key: string) {
     dispatch(userRoleActions.setkey(key));

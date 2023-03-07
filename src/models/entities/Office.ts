@@ -1,8 +1,8 @@
-import OfficeDesignation from './OfficeDesignation';
+import OfficePosition from './OfficePosition';
 
 export default interface Office {
   id: number;
   abbreviation: string | undefined;
   description: string | undefined;
-  designations: OfficeDesignation[] | undefined;
+  positions: OfficePosition[] | undefined;
 }

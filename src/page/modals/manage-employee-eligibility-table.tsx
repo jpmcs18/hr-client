@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { employeeModalActions } from '../../state/reducers/employee-modal-reducer';
 import { RootState } from '../../state/store';
 
-export default function ManageOfficeDesignationsTable() {
+export default function ManageOfficePositionsTable() {
   const dispatch = useDispatch();
   const employeeModalState = useSelector(
     (state: RootState) => state.employeeModal

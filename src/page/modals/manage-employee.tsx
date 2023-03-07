@@ -224,13 +224,13 @@ export default function ManageEmployee() {
             })}
           />
           <CustomDropdown
-            title='Designation'
+            title='Position'
             hasDefault={true}
-            value={employeeModalState.employee.designationId}
+            value={employeeModalState.employee.positionId}
             onChange={(ret) => {
-              dispatch(employeeModalActions.updateDesignation(ret.value));
+              dispatch(employeeModalActions.updatePosition(ret.value));
             }}
-            itemsList={employeeModalState.designations.map((x) => {
+            itemsList={employeeModalState.positions.map((x) => {
               return {
                 key: x.id.toString(),
                 value: x.description,

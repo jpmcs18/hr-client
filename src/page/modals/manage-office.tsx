@@ -4,14 +4,14 @@ import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
-import { getDesignations } from '../../repositories/designation-queries';
+import { getPositions } from '../../repositories/position-queries';
 import { insertOffice, updateOffice } from '../../repositories/office-queries';
 import { officeModalActions } from '../../state/reducers/office-modal-reducer';
 import { officeActions } from '../../state/reducers/office-reducer';
 import { RootState } from '../../state/store';
 import CustomDropdown from '../components/custom-dropdown';
 import CustomTextBox from '../components/custom-textbox';
-import ManageOfficeDesignationsTable from './manage-office-designations-table';
+import ManageOfficePositionsTable from './manage-office-positions-table';
 import Modal from './modal';
 
 export default function ManageOffice() {
@@ -33,10 +33,10 @@ export default function ManageOffice() {
   }
   async function getDes() {
     setBusy(true);
-    await getDesignations()
+    await getPositions()
       .then((res) => {
         if (res) {
-          dispatch(officeModalActions.setDesignations(res));
+          dispatch(officeModalActions.setPositions(res));
         }
       })
       .catch((err) => {
@@ -49,8 +49,8 @@ export default function ManageOffice() {
     if (officeModalState.office.id > 0) {
       await updateOffice(
         officeModalState.office,
-        officeModalState.newDesignation,
-        officeModalState.deletedDesignation
+        officeModalState.newPosition,
+        officeModalState.deletedPosition
       )
         .then((res) => {
           if (res) {
@@ -63,10 +63,7 @@ export default function ManageOffice() {
         })
         .finally(() => setBusy(false));
     } else {
-      await insertOffice(
-        officeModalState.office,
-        officeModalState.newDesignation
-      )
+      await insertOffice(officeModalState.office, officeModalState.newPosition)
         .then((res) => {
           if (res !== undefined) {
             setToasterMessage({ content: 'New office has been added.' });
@@ -110,19 +107,19 @@ export default function ManageOffice() {
           }}
         />
         <CustomDropdown
-          title='Designation'
+          title='Position'
           hasDefault={true}
           onChange={(ret) => {
-            dispatch(officeModalActions.addNewDesignation(ret.value));
+            dispatch(officeModalActions.addNewPosition(ret.value));
           }}
-          itemsList={officeModalState.designations.map((x) => {
+          itemsList={officeModalState.positions.map((x) => {
             return {
               key: x.id.toString(),
               value: x.description,
             };
           })}
         />
-        <ManageOfficeDesignationsTable />
+        <ManageOfficePositionsTable />
       </div>
       <div className='modal-footer'>
         <button onClick={saveData} className='btn-modal btn-primary'>

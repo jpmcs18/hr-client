@@ -4,33 +4,33 @@ import {
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
 import {
-  insertDesignation,
-  updateDesignation,
-} from '../../repositories/designation-queries';
-import { designationModalActions } from '../../state/reducers/designation-modal-reducer';
-import { designationActions } from '../../state/reducers/designation-reducer';
+  insertPosition,
+  updatePosition,
+} from '../../repositories/position-queries';
+import { positionModalActions } from '../../state/reducers/position-modal-reducer';
+import { positionActions } from '../../state/reducers/position-reducer';
 import { RootState } from '../../state/store';
 import CustomTextBox from '../components/custom-textbox';
 import Modal from './modal';
 
-export default function ManageDesignation() {
+export default function ManagePosition() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
-  const designationModalState = useSelector(
-    (state: RootState) => state.designationModal
+  const positionModalState = useSelector(
+    (state: RootState) => state.positionModal
   );
   function onModalClose(hasChange: boolean) {
-    dispatch(designationModalActions.setShowModal(false));
-    if (hasChange) dispatch(designationActions.setInitiateSearch(true));
+    dispatch(positionModalActions.setShowModal(false));
+    if (hasChange) dispatch(positionActions.setInitiateSearch(true));
   }
   async function saveData() {
     setBusy(true);
-    if (designationModalState.designation.id > 0) {
-      await updateDesignation(designationModalState.designation)
+    if (positionModalState.position.id > 0) {
+      await updatePosition(positionModalState.position)
         .then((res) => {
           if (res) {
-            setToasterMessage({ content: 'Designation has been updated.' });
+            setToasterMessage({ content: 'Position has been updated.' });
             onModalClose(true);
           }
         })
@@ -39,10 +39,10 @@ export default function ManageDesignation() {
         })
         .finally(() => setBusy(false));
     } else {
-      await insertDesignation(designationModalState.designation)
+      await insertPosition(positionModalState.position)
         .then((res) => {
           if (res !== undefined) {
-            setToasterMessage({ content: 'New designation has been added.' });
+            setToasterMessage({ content: 'New position has been added.' });
             onModalClose(true);
           }
         })
@@ -54,17 +54,17 @@ export default function ManageDesignation() {
   }
   return (
     <Modal
-      className='designation-modal'
+      className='position-modal'
       onClose={() => onModalClose(false)}
-      title='Manage Designation'>
+      title='Manage Position'>
       <div className='modal-content-body'>
         <CustomTextBox
           title='Description'
-          value={designationModalState.designation?.description}
+          value={positionModalState.position?.description}
           onChange={(ret) => {
             dispatch(
-              designationModalActions.setDesignation({
-                ...designationModalState.designation!,
+              positionModalActions.setPosition({
+                ...positionModalState.position!,
                 description: ret.value,
               })
             );

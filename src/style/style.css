@@ -1484,13 +1484,14 @@ tbody tr {
   position: relative;
   margin: 0.5em;
   padding: 0.5em;
-  height: 15em;
-  width: 15em;
+  height: 20em;
+  width: 23%;
   -webkit-box-shadow: 0em 0em 0.3em 0em var(--shadow-color);
           box-shadow: 0em 0em 0.3em 0em var(--shadow-color);
 }
 
-.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment img {
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment img,
+.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment iframe {
   height: 100%;
   width: 100%;
   -o-object-fit: contain;
@@ -1503,40 +1504,6 @@ tbody tr {
   top: 0;
   background-color: var(--shadow-color);
   border-radius: 0.5em;
-}
-
-.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment .documents {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  padding: 1em;
-  height: 100%;
-  width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment .documents .icon {
-  height: 5em;
-  width: 5em;
-}
-
-.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment .documents p {
-  line-height: 1em;
-}
-
-.modal-container .employee-attachment-modal .employee-attachment-content-body .attachment .documents p .file-name {
-  font-weight: var(--demibold);
 }
 
 .modal-container .employee-attachment-modal .employee-attachment-content-body .attachment-add {

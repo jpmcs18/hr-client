@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SystemModules from '../routes';
 import { userProfileAction } from '../state/reducers/user-profile-reducer';
 import { RootState } from '../state/store';
-import DesignationPage from './components/designation-components/designation-page';
+import PositionPage from './components/position-components/position-page';
 import EmployeePage from './components/employee-components/employee-page';
 import Icon from './components/icon';
 import OfficePage from './components/office-components/office-page';
@@ -170,12 +170,12 @@ export default function HomePage() {
               />
             )}
             {(!!userProfileState.module.filter(
-              (x) => x === getPage(Pages.Designations).id
+              (x) => x === getPage(Pages.Positions).id
             ).length ||
               userProfileState.systemUser?.isAdmin) && (
               <Route
-                path={getPage(Pages.Designations).route}
-                element={<DesignationPage />}
+                path={getPage(Pages.Positions).route}
+                element={<PositionPage />}
               />
             )}
 

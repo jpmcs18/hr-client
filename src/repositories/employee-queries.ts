@@ -25,7 +25,7 @@ export async function insertEmployee(
   return await httpPost<Employee>(EmployeeEnd.Insert, {
     employee: {
       ...employee,
-      designation: undefined,
+      position: undefined,
       office: undefined,
     },
     eligibilityIds,

@@ -60,7 +60,7 @@ export default function SystemUserButtons() {
           .catch((err) => {
             setToasterMessage({ content: err.message });
           })
-          .then(() => setBusy(false));
+          .finally(() => setBusy(false));
       },
     });
   }
@@ -88,7 +88,7 @@ export default function SystemUserButtons() {
           .catch((err) => {
             setToasterMessage({ content: err.message });
           })
-          .then(() => setBusy(false));
+          .finally(() => setBusy(false));
       },
     });
   }

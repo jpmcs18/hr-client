@@ -41,7 +41,7 @@ export default function OfficePage() {
       .catch((err) => {
         setToasterMessage({ content: err.message });
       })
-      .then(() => setBusy(false));
+      .finally(() => setBusy(false));
   }
   async function search(key: string) {
     dispatch(officeActions.setkey(key));

@@ -19,7 +19,7 @@ export default function EmployeeItems() {
             <th>Date of Employment</th>
             <th>Years in Service</th>
             <th>Office</th>
-            <th>Designation</th>
+            <th>Position</th>
             <th>Status</th>
           </tr>
         </thead>

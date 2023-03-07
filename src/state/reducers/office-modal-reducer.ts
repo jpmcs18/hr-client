@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Guid } from 'guid-typescript';
-import Designation from '../../models/entities/Designation';
+import Position from '../../models/entities/Position';
 import Office from '../../models/entities/Office';
-import OfficeDesignation from '../../models/entities/OfficeDesignation';
+import OfficePosition from '../../models/entities/OfficePosition';
 
 interface State {
   office: Office;
-  designations: Designation[];
-  newDesignation: number[];
-  deletedDesignation: number[];
-  officeDesignations: OfficeDesignation[];
+  positions: Position[];
+  newPosition: number[];
+  deletedPosition: number[];
+  officePositions: OfficePosition[];
   isModalShow: boolean;
 }
 
@@ -17,15 +17,15 @@ const officeInitialState: Office = {
   id: 0,
   abbreviation: '',
   description: '',
-  designations: [],
+  positions: [],
 };
 
 const initialState: State = {
   office: officeInitialState,
-  designations: [],
-  newDesignation: [],
-  deletedDesignation: [],
-  officeDesignations: [],
+  positions: [],
+  newPosition: [],
+  deletedPosition: [],
+  officePositions: [],
   isModalShow: false,
 };
 
@@ -35,68 +35,63 @@ const officeModalSlice = createSlice({
   reducers: {
     setOffice(state, action: PayloadAction<Office | undefined>) {
       state.office = action.payload ?? officeInitialState;
-      state.newDesignation = [];
-      state.deletedDesignation = [];
-      state.officeDesignations =
-        state.office.designations
+      state.newPosition = [];
+      state.deletedPosition = [];
+      state.officePositions =
+        state.office.positions
           ?.slice()
           ?.map((x) => {
             return { ...x, tempId: Guid.create().toString(), deleted: false };
           })
           .sort((a, b) =>
-            a.designation!.description! < b.designation!.description! ? -1 : 1
+            a.position!.description! < b.position!.description! ? -1 : 1
           ) ?? [];
     },
     setShowModal(state, action: PayloadAction<boolean>) {
       state.isModalShow = action.payload;
     },
-    setDesignations(state, action: PayloadAction<Designation[]>) {
-      state.designations = action.payload.filter((x) => {
-        return !state.office.designations?.filter(
-          (y) => y.designationId === x.id
-        ).length;
+    setPositions(state, action: PayloadAction<Position[]>) {
+      state.positions = action.payload.filter((x) => {
+        return !state.office.positions?.filter((y) => y.positionId === x.id)
+          .length;
       });
     },
-    addNewDesignation(state, action: PayloadAction<string>) {
-      state.newDesignation.push(+action.payload);
-      state.officeDesignations.push({
+    addNewPosition(state, action: PayloadAction<string>) {
+      state.newPosition.push(+action.payload);
+      state.officePositions.push({
         officeId: state.office.id,
-        designation: state.designations.filter(
-          (x) => x.id === +action.payload
-        )[0],
-        designationId: +action.payload,
+        position: state.positions.filter((x) => x.id === +action.payload)[0],
+        positionId: +action.payload,
         id: 0,
         tempId: Guid.create().toString(),
         deleted: false,
       });
-      state.designations = state.designations.filter(
-        (x) => x.id !== +action.payload
-      );
+      state.positions = state.positions.filter((x) => x.id !== +action.payload);
     },
-    deleteDesignation(state, action: PayloadAction<OfficeDesignation>) {
+    deletePosition(state, action: PayloadAction<OfficePosition>) {
       if (action.payload.id > 0) {
-        state.deletedDesignation.push(action.payload.id);
-        state.officeDesignations = state.officeDesignations.map((x) => {
+        state.deletedPosition.push(action.payload.id);
+        state.officePositions = state.officePositions.map((x) => {
           if (x.id === action.payload.id) {
             x.deleted = true;
           }
           return x;
         });
       } else {
-        state.officeDesignations = state.officeDesignations.filter(
+        state.officePositions = state.officePositions.filter(
           (x) => x.tempId !== action.payload.tempId
         );
-        state.newDesignation = state.newDesignation.filter(
-          (x) => x !== action.payload.designationId
+        state.newPosition = state.newPosition.filter(
+          (x) => x !== action.payload.positionId
         );
       }
-      state.designations.push(action.payload.designation!);
-      state.designations = state.designations
+      state.positions.push(action.payload.position!);
+      state.positions = state.positions
         .slice()
         .sort((a, b) => (a.description! < b.description! ? -1 : 1));
     },
-    undoDeleteDesignation(state, action: PayloadAction<number>) {
-      state.officeDesignations = state.officeDesignations.map((x) => {
+    undoDeletePosition(state, action: PayloadAction<number>) {
+      state.officePositions = state.officePositions.map((x) => {
         if (x.id === action.payload) {
           x.deleted = false;
         }

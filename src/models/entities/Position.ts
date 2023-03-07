@@ -1,4 +1,4 @@
-export default interface Designation {
+export default interface Position {
   id: number;
   description: string | undefined;
 }

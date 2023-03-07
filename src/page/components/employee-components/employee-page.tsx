@@ -6,7 +6,6 @@ import {
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
 import { searchEmployee } from '../../../repositories/employee-queries';
-import { employeeAttachmentModalActions } from '../../../state/reducers/employee-attachment-modal-reducer';
 import { employeeActions } from '../../../state/reducers/employee-reducer';
 import { RootState } from '../../../state/store';
 import ManageEmployee from '../../modals/manage-employee';
@@ -48,7 +47,7 @@ export default function EmployeePage() {
       .catch((err) => {
         setToasterMessage({ content: err.message });
       })
-      .then(() => {
+      .finally(() => {
         setBusy(false);
       });
   }

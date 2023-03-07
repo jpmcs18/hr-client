@@ -1,30 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Searchable from '../../models/client-model/Searchable';
-import Designation from '../../models/entities/Designation';
+import Position from '../../models/entities/Position';
 
 interface State extends Searchable {
-  designations: Designation[];
-  selectedDesignation: Designation | undefined;
+  positions: Position[];
+  selectedPosition: Position | undefined;
 }
 const initialState: State = {
-  designations: [],
-  selectedDesignation: undefined,
+  positions: [],
+  selectedPosition: undefined,
   key: '',
   currentPage: 1,
   pageCount: 0,
   initiateSearch: true,
 };
 
-const designationSlice = createSlice({
-  name: 'designation',
+const positionSlice = createSlice({
+  name: 'position',
   initialState: initialState,
   reducers: {
-    fill(state, action: PayloadAction<Designation[]>) {
-      state.designations = action.payload;
-      state.selectedDesignation = undefined;
+    fill(state, action: PayloadAction<Position[]>) {
+      state.positions = action.payload;
+      state.selectedPosition = undefined;
     },
-    setSelected(state, action: PayloadAction<Designation | undefined>) {
-      state.selectedDesignation = action.payload;
+    setSelected(state, action: PayloadAction<Position | undefined>) {
+      state.selectedPosition = action.payload;
     },
     setkey(state, action: PayloadAction<string>) {
       state.key = action.payload;
@@ -41,5 +41,5 @@ const designationSlice = createSlice({
   },
 });
 
-export default designationSlice.reducer;
-export const designationActions = designationSlice.actions;
+export default positionSlice.reducer;
+export const positionActions = positionSlice.actions;

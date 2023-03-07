@@ -25,12 +25,12 @@ export const EmployeeEnd = {
   Delete: 'employees',
 };
 
-export const DesignationEnd = {
-  Search: 'designations/search',
-  GetList: 'designations',
-  Insert: 'designations',
-  Update: 'designations',
-  Delete: 'designations',
+export const PositionEnd = {
+  Search: 'positions/search',
+  GetList: 'positions',
+  Insert: 'positions',
+  Update: 'positions',
+  Delete: 'positions',
 };
 
 export const UserRoleEnd = {
@@ -76,4 +76,7 @@ export const EligibilityEnd = {
 
 export const EmployeeAttachmentEnd = {
   Upload: 'employee-attachments/upload',
+  GetList: 'employee-attachments',
+  Delete: 'employee-attachments',
+  UndoDelete: 'employee-attachments/undo-delete',
 };

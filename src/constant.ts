@@ -9,7 +9,7 @@ export const APP_SECRET = process.env.REACT_APP_SECRET_KEY;
 
 export const Pages = {
   Employees: 'Employees',
-  Designations: 'Designations',
+  Positions: 'Positions',
   Offices: 'Offices',
   Users: 'Users',
   UserRoles: 'User Roles',

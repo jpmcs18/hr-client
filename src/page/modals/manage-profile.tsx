@@ -46,7 +46,7 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
       changePassword ? user.password : null,
       changePassword ? user.confirmNewPassword : null
     )
-      .then(() => {
+      .finally(() => {
         setMessage({
           message: 'User Information Saved',
           onOk: () => {

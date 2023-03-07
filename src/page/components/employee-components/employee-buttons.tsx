@@ -43,6 +43,7 @@ export default function EmployeeButtons() {
       )
     );
     dispatch(employeeAttachmentModalActions.setShowModal(true));
+    dispatch(employeeAttachmentModalActions.setInitiateSearch(true));
   }
   async function onDelete() {
     if (!employeeState.selectedEmployee?.id) return;
@@ -63,7 +64,7 @@ export default function EmployeeButtons() {
           .catch((err) => {
             setToasterMessage({ content: err.message });
           })
-          .then(() => setBusy(false));
+          .finally(() => setBusy(false));
       },
     });
   }

@@ -1135,10 +1135,11 @@ tbody tr {
         position: relative;
         margin: 0.5em;
         padding: 0.5em;
-        height: 15em;
-        width: 15em;
+        height: 20em;
+        width: 23%;
         box-shadow: 0em 0em 0.3em 0em var(--shadow-color);
-        img {
+        img,
+        iframe {
           height: 100%;
           width: 100%;
           object-fit: contain;
@@ -1149,26 +1150,6 @@ tbody tr {
           top: 0;
           background-color: var(--shadow-color);
           border-radius: 0.5em;
-        }
-        .documents {
-          box-sizing: border-box;
-          padding: 1em;
-          height: 100%;
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          .icon {
-            height: 5em;
-            width: 5em;
-          }
-          p {
-            line-height: 1em;
-            .file-name {
-              font-weight: var(--demibold);
-            }
-          }
         }
       }
       .attachment-add {

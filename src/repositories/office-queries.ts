@@ -20,23 +20,23 @@ export async function getOffices(): Promise<Office[] | undefined> {
 
 export async function insertOffice(
   office: Office,
-  designationIds: number[]
+  positionIds: number[]
 ): Promise<Office | undefined> {
   return await httpPost<Office>(OfficeEnd.Insert, {
     ...office,
-    designationIds,
+    positionIds,
   });
 }
 
 export async function updateOffice(
   office: Office,
-  newDesignationIds: number[],
-  designationIdsToDelete: number[]
+  newPositionIds: number[],
+  positionIdsToDelete: number[]
 ): Promise<boolean | undefined> {
   return await httpPut(OfficeEnd.Update + '/' + office.id, {
     ...office,
-    newDesignationIds,
-    designationIdsToDelete,
+    newPositionIds,
+    positionIdsToDelete,
   });
 }
 

@@ -54,7 +54,7 @@ export default function OfficeButtons() {
           .catch((err) => {
             setToasterMessage({ content: err.message });
           })
-          .then(() => setBusy(false));
+          .finally(() => setBusy(false));
       },
     });
   }

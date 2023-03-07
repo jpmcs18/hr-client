@@ -13,38 +13,38 @@ export default function ManageEmployeeEligibilitiesTable() {
       <table className='item-table'>
         <thead>
           <tr>
-            <th>Designations</th>
+            <th>Positions</th>
             <th style={{ width: '10%' }}></th>
           </tr>
         </thead>
         <tbody>
-          {officeModalState.officeDesignations?.map((officeDesignations) => (
+          {officeModalState.officePositions?.map((officePositions) => (
             <tr
-              key={officeDesignations.tempId}
-              className={officeDesignations.deleted ? 'deleted' : ''}>
-              <td>{officeDesignations.designation?.description}</td>
+              key={officePositions.tempId}
+              className={officePositions.deleted ? 'deleted' : ''}>
+              <td>{officePositions.position?.description}</td>
               <td className='table-actions'>
-                {officeDesignations.deleted && (
+                {officePositions.deleted && (
                   <FontAwesomeIcon
                     icon={faUndo}
                     className='action-icon table-icon-button'
                     onClick={() => {
                       dispatch(
-                        officeModalActions.undoDeleteDesignation(
-                          officeDesignations.id
+                        officeModalActions.undoDeletePosition(
+                          officePositions.id
                         )
                       );
                     }}
                     title='Undo'
                   />
                 )}
-                {!officeDesignations.deleted && (
+                {!officePositions.deleted && (
                   <FontAwesomeIcon
                     icon={faTrash}
                     className='action-icon table-icon-button'
                     onClick={() => {
                       dispatch(
-                        officeModalActions.deleteDesignation(officeDesignations)
+                        officeModalActions.deletePosition(officePositions)
                       );
                     }}
                     title='Delete'

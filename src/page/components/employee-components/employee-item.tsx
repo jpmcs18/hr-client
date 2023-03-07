@@ -13,7 +13,7 @@ export default function EmployeeItem({ employee }: { employee: Employee }) {
       <td>{toDate(employee.employmentDate)}</td>
       <td>{employee.yearsInService}</td>
       <td>{employee.office?.description}</td>
-      <td>{employee.designation?.description}</td>
+      <td>{employee.position?.description}</td>
       <td>{employee.isActive ? 'Active' : 'Resigned'}</td>
     </>
   );
