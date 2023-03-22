@@ -14,6 +14,7 @@ import {
 import { getGenders } from '../../repositories/gender-queries';
 import { getNatureOfEmployments } from '../../repositories/nature-of-employment-queries';
 import { getOffices } from '../../repositories/office-queries';
+import { getPositions } from '../../repositories/position-queries';
 import { getVaccinationStatuses } from '../../repositories/vaccination-status-queries';
 import { employeeModalActions } from '../../state/reducers/employee-modal-reducer';
 import { employeeActions } from '../../state/reducers/employee-reducer';
@@ -21,6 +22,7 @@ import { RootState } from '../../state/store';
 import CustomCheckBoxButton from '../components/custom-checkbox-button';
 import CustomDateTimePicker from '../components/custom-datetime-picker';
 import CustomDropdown from '../components/custom-dropdown';
+import CustomNumber from '../components/custom-number';
 import CustomTextArea from '../components/custom-textarea';
 import CustomTextBox from '../components/custom-textbox';
 import ManageEmployeeEligibilitiesTable from './manage-employee-eligibility-table';
@@ -49,6 +51,7 @@ export default function ManageEmployee() {
     await getGen();
     await getVC();
     await getElg();
+    await getPos();
   }
 
   async function getNOE() {
@@ -57,6 +60,16 @@ export default function ManageEmployee() {
       .then((res) => {
         if (res) {
           dispatch(employeeModalActions.setNatureOfEmployments(res));
+        }
+      })
+      .finally(() => setBusy(false));
+  }
+  async function getPos() {
+    setBusy(true);
+    await getPositions()
+      .then((res) => {
+        if (res) {
+          dispatch(employeeModalActions.setAllPositions(res));
         }
       })
       .finally(() => setBusy(false));
@@ -126,8 +139,11 @@ export default function ManageEmployee() {
     if (employeeModalState.employee.id > 0) {
       await updateEmployee(
         employeeModalState.employee,
-        employeeModalState.newEligibilities,
-        employeeModalState.deletedEmployeeEligibility
+        employeeModalState.employeeEligibilities.filter((x) => x.added),
+        employeeModalState.employeeEligibilities.filter((x) => x.updated),
+        employeeModalState.employeeEligibilities
+          .filter((x) => x.deleted)
+          .map((x) => x.id)
       )
         .then((res) => {
           if (res) {
@@ -142,7 +158,7 @@ export default function ManageEmployee() {
     } else {
       await insertEmployee(
         employeeModalState.employee,
-        employeeModalState.newEligibilities
+        employeeModalState.employeeEligibilities.filter((x) => x.added)
       )
         .then((res) => {
           if (res !== undefined) {
@@ -166,16 +182,55 @@ export default function ManageEmployee() {
       onClose={() => onModalClose(false)}
       title='Manage Employee'>
       <div className='modal-content-body manage-employee-body'>
-        <div className='manage-container'>
+        <div className='details-container'>
           <CustomCheckBoxButton
             CheckedTitle='Active'
-            UncheckedTitle='Resign'
+            UncheckedTitle='Separated'
             id='isActive'
             name='isActive'
             onChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
             isCheck={employeeModalState.employee.isActive ?? false}
+          />
+          {!employeeModalState.employee.isActive && (
+            <>
+              <CustomDateTimePicker
+                title='Date of Separation'
+                type='date'
+                className='resigned-fields'
+                name='resignationDate'
+                value={employeeModalState.employee.resignationDate}
+                onChange={(ret) => {
+                  dispatch(employeeModalActions.updateEmployee(ret));
+                }}
+              />
+              <CustomDropdown
+                title='Mode of Separation'
+                hasDefault={true}
+                className='resigned-fields'
+                name='modeOfResignationId'
+                value={employeeModalState.employee.modeOfResignationId}
+                onChange={(ret) => {
+                  dispatch(employeeModalActions.updateEmployee(ret));
+                }}
+                itemsList={employeeModalState.modeOfResignations.map((x) => {
+                  return {
+                    key: x.id.toString(),
+                    value: x.description,
+                  };
+                })}
+              />
+            </>
+          )}
+          <CustomTextBox
+            title='ID Number'
+            name='idNumber'
+            placeholder='Leave it blank, to auto generate ID'
+            value={employeeModalState.employee?.idNumber}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+            }}
           />
           <CustomTextBox
             title='First Name'
@@ -210,6 +265,58 @@ export default function ManageEmployee() {
             }}
           />
           <CustomDropdown
+            title='Nature of Employment'
+            name='natureOfEmploymentId'
+            hasDefault={true}
+            value={employeeModalState.employee.natureOfEmploymentId}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+            }}
+            itemsList={employeeModalState.natureOfEmployments.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+          />
+          {employeeModalState.employee.hasSalaryGrade && (
+            <>
+              <CustomNumber
+                title='Salary Grade'
+                type='number'
+                name='salaryGrade'
+                value={employeeModalState.employee?.salaryGrade?.toString()}
+                onChange={(ret) => {
+                  dispatch(employeeModalActions.updateEmployee(ret));
+                }}
+              />
+              <CustomNumber
+                title='Step'
+                type='number'
+                name='step'
+                value={employeeModalState.employee?.step?.toString()}
+                onChange={(ret) => {
+                  dispatch(employeeModalActions.updateEmployee(ret));
+                }}
+              />
+            </>
+          )}
+          <CustomNumber
+            title='Salary'
+            name='tempSalary'
+            type='amount'
+            value={employeeModalState.employee?.tempSalary}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+              dispatch(
+                employeeModalActions.updateEmployee({
+                  elementName: 'salary',
+                  value: +ret.value.replaceAll(',', ''),
+                })
+              );
+            }}
+          />
+          <CustomDropdown
             title='Office'
             hasDefault={true}
             value={employeeModalState.employee.officeId}
@@ -230,7 +337,10 @@ export default function ManageEmployee() {
             onChange={(ret) => {
               dispatch(employeeModalActions.updatePosition(ret.value));
             }}
-            itemsList={employeeModalState.positions.map((x) => {
+            itemsList={(employeeModalState.positions.length > 0
+              ? employeeModalState.positions
+              : employeeModalState.allPositions
+            ).map((x) => {
               return {
                 key: x.id.toString(),
                 value: x.description,
@@ -252,23 +362,6 @@ export default function ManageEmployee() {
             onChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
-          />
-        </div>
-        <div className='manage-container'>
-          <CustomDropdown
-            title='Nature of Employment'
-            name='natureOfEmploymentId'
-            hasDefault={true}
-            value={employeeModalState.employee.natureOfEmploymentId}
-            onChange={(ret) => {
-              dispatch(employeeModalActions.updateEmployee(ret));
-            }}
-            itemsList={employeeModalState.natureOfEmployments.map((x) => {
-              return {
-                key: x.id.toString(),
-                value: x.description,
-              };
-            })}
           />
           <CustomDateTimePicker
             title='Date of Employment'
@@ -364,8 +457,6 @@ export default function ManageEmployee() {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
           />
-        </div>
-        <div className='manage-container'>
           <CustomTextArea
             title='Residence Address'
             name='residenceAddress'
@@ -425,7 +516,6 @@ export default function ManageEmployee() {
             }}
           />
         </div>
-
         <div className='manage-container'>
           <CustomDropdown
             title='Eligibilities'

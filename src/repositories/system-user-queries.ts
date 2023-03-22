@@ -8,7 +8,7 @@ export async function saveProfile(
   password: string | null | undefined,
   newPassword: string | null | undefined
 ): Promise<boolean | undefined> {
-  return await httpPut(SystemUserEnd.SaveProfile, {
+  return await httpPost(SystemUserEnd.SaveProfile, {
     username,
     password,
     newPassword,

@@ -25,12 +25,12 @@
   --referral-background-color: #44484b;
   --secondary-color: #c3b9b9;
   --secondary-color-accent: #684042;
-  --table-hover-color: #faf3f3;
-  --table-hover-color-accent: #000;
+  --table-hover-color: rgb(255, 79, 79);
+  --table-hover-color-accent: #fff;
   --table-selected-color: #c70202;
   --table-selected-color-accent: #fff;
   --table-background-color: #eee;
-  --label-size: 0.6rem;
+  --label-size: 0.55rem;
   --normal-font-size: 0.8rem;
   --banner-font-size: 1rem;
   --menu-header-font-size: 0.9rem;
@@ -367,7 +367,6 @@ textarea {
   font-family: 'Roboto', sans-serif;
   text-align: justify;
   resize: none;
-  border: 0.01em solid var(--input-color);
   border-radius: 0.3em;
 }
 select,
@@ -383,10 +382,11 @@ input {
   background-color: var(--container-background-color);
   &:focus {
     outline: none;
-    border: 0.01em solid var(--input-selected-border-color);
+    border: 0.01em solid var(--input-selected-border-color) !important;
+    box-shadow: 0em 0em 0.2em 0em var(--input-selected-border-color);
   }
   &:read-only {
-    border: 0.01em solid var(--input-border-color) !important;
+    border: 0.01em solid var(--input-border-color);
     color: var(--color) !important;
   }
   &:disabled {
@@ -407,11 +407,11 @@ input {
     font-weight: var(--demibold);
     user-select: none;
     opacity: 0.8;
-    margin: 0.4em 0em 0.25em 0em;
+    margin: 0.46em 0em 0.35em 0em;
   }
   input,
   select {
-    min-height: 2.5em;
+    height: 2.5em !important;
   }
   select {
     text-overflow: ellipsis;
@@ -466,7 +466,7 @@ input {
     width: 100%;
     display: flex;
     border-radius: 0.3em;
-    margin: 1.35em 0em 0.1em 0em;
+    margin: 1.4em 0em 0em 0em;
     height: 2.5em;
     cursor: pointer;
     box-sizing: border-box;
@@ -683,10 +683,12 @@ input {
   input {
     flex-grow: 1;
     border: none;
+    box-shadow: none;
     color: var(--color);
     background: var(--search-background);
+    box-shadow: none !important;
+    border: none !important;
   }
-
   .search-icon {
     margin: 0.5em;
     cursor: pointer;
@@ -850,8 +852,9 @@ input {
   margin: 0.5em;
   box-shadow: 0em 0em 0.2em var(--shadow-color);
   .deleted {
-    text-decoration: line-through;
     color: var(--shadow-color) !important;
+    box-shadow: inset 0.5em 0em var(--disable-color);
+    box-sizing: border-box;
   }
   thead {
     position: sticky;
@@ -901,11 +904,11 @@ input {
       cursor: pointer;
       &:nth-child(even) {
         background: var(--primary-table-alternating);
-        color: var(--table-hover-color-accent);
+        color: var(--primary-table-alternating-accent);
       }
       &:nth-child(odd) {
         background: var(--container-background-color);
-        color: var(--table-hover-color-accent);
+        color: var(--color);
       }
       &:hover {
         box-sizing: border-box;
@@ -1189,16 +1192,27 @@ tbody tr {
   .employee-modal {
     width: 90% !important;
     .manage-employee-body {
-      overflow-y: auto !important;
       max-height: 80vh;
-      flex-direction: row !important;
+      display: flex;
+      flex-direction: column;
+      .details-container {
+        display: flex;
+        flex-wrap: wrap;
+        .custom-input {
+          flex: 1 1 30%;
+        }
+        .custom-text-area {
+          flex: 1 1 100%;
+        }
+        overflow: visible;
+      }
       .manage-container {
         width: 100%;
       }
     }
   }
   .eligibility-management-table {
-    height: 86.5% !important;
+    height: 86.5%;
   }
   .systemUser-management-table {
     height: 30vh !important;
@@ -1254,8 +1268,6 @@ tbody tr {
     .modal-content-body {
       padding: 1em;
       position: relative;
-      display: flex;
-      flex-direction: column;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       overflow-wrap: break-word;
@@ -1572,6 +1584,23 @@ tbody tr {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
+  .eligibility-management-table {
+    .item-table {
+      thead {
+        tr {
+          th:not(:first-child) {
+            display: none;
+          }
+        }
+      }
+      tbody {
+        tr {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+  }
   .filter-container {
     flex-direction: column;
   }
@@ -1586,6 +1615,11 @@ tbody tr {
   .modal-content {
     width: 90%;
   }
+  .details-container {
+    .custom-input:not(.custom-text-area) {
+      flex: 1 1 50% !important;
+    }
+  }
   .menu-item-container {
     width: 100% !important;
   }
@@ -1593,9 +1627,33 @@ tbody tr {
     width: 0 !important;
   }
 }
-@media screen and (max-width: 364px) {
+@media screen and (max-width: 400px) {
   .desktop-profile {
     display: none !important;
+  }
+  .details-container {
+    flex-wrap: unset !important;
+    flex-direction: column;
+    .custom-input {
+      flex: none;
+    }
+  }
+  .eligibility-management-table {
+    .item-table {
+      thead {
+        tr {
+          th:not(:first-child) {
+            display: none;
+          }
+        }
+      }
+      tbody {
+        tr {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
   }
   .mobile-profile {
     display: flex !important;

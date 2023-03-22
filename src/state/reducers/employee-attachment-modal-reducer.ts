@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Guid } from 'guid-typescript';
-import { StringLiteral } from 'typescript';
 import Employee from '../../models/entities/Employee';
 import EmployeeAttachment from '../../models/entities/EmployeeAttachment';
 

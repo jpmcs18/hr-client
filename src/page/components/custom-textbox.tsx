@@ -1,6 +1,7 @@
 import CustomReturn from '../../models/client-model/CustomReturn';
 export default function CustomTextBox({
   title,
+  placeholder,
   name,
   id,
   className,
@@ -10,7 +11,8 @@ export default function CustomTextBox({
   onChange,
   onKeyPress,
 }: {
-  title: string;
+  title?: string;
+  placeholder?: string;
   name?: string;
   id?: string;
   className?: string;
@@ -22,10 +24,11 @@ export default function CustomTextBox({
 }) {
   return (
     <div className={'custom-input ' + className}>
-      <label htmlFor={name}>{title}</label>
+      {title && <label htmlFor={name}>{title}</label>}
       <input
         disabled={disabled}
         readOnly={readonly}
+        placeholder={placeholder}
         type='text'
         name={name}
         id={id}

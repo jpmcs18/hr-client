@@ -67,6 +67,9 @@ export const CivilStatusEnd = {
 export const BloodTypeEnd = {
   GetList: 'blood-types',
 };
+export const ModeOfResignationEnd = {
+  GetList: 'mode-of-resignations',
+};
 export const VaccinationStatusEnd = {
   GetList: 'vaccination-statuses',
 };

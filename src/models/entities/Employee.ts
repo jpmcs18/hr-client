@@ -8,9 +8,13 @@ import Gender from './Gender';
 import NatureOfEmployment from './NatureOfEmployment';
 import Office from './Office';
 import VaccinationStatus from './VaccinationStatus';
+import ModeOfResignation from './ModeOfResignation';
 
 export default interface Employee {
   id: number;
+  idNumber: string | undefined;
+  modeOfResignationId: number | undefined;
+  resignationDate: Date | undefined;
   firstName: string | undefined;
   middleName: string | undefined;
   lastName: string | undefined;
@@ -18,9 +22,9 @@ export default interface Employee {
   fullName: string | undefined;
   natureOfEmploymentId: number | undefined;
   employmentDate: Date | undefined;
-  yearsInService: string | undefined;
+  yearsInService?: string | undefined;
   birthDate: Date | undefined;
-  age: number | undefined;
+  age?: number | undefined;
   genderId: number | undefined;
   bloodTypeId: number | undefined;
   officeId: number | undefined;
@@ -40,6 +44,9 @@ export default interface Employee {
   civilStatusId: number | undefined;
   height: string | undefined;
   weight: string | undefined;
+  salary: number | undefined;
+  salaryGrade: number | undefined;
+  step: number | undefined;
   office?: Office | undefined;
   position?: Position | undefined;
   natureOfEmployment?: NatureOfEmployment | undefined;
@@ -50,4 +57,8 @@ export default interface Employee {
   vaccinationStatus?: VaccinationStatus | undefined;
   employeeEligibilities?: EmployeeEligibility[] | undefined;
   employeeAttachments?: EmployeeAttachment[] | undefined;
+  modeOfResignation?: ModeOfResignation | undefined;
+
+  tempSalary?: string;
+  hasSalaryGrade?: boolean;
 }

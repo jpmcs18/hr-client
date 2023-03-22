@@ -11,6 +11,7 @@ export default function EmployeeItems() {
       <table className='item-table'>
         <thead>
           <tr>
+            <th>ID Number</th>
             <th>Full Name</th>
             <th>Nature of Employment</th>
             <th>Gender</th>

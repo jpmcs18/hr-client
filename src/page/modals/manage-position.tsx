@@ -24,6 +24,7 @@ export default function ManagePosition() {
     dispatch(positionModalActions.setShowModal(false));
     if (hasChange) dispatch(positionActions.setInitiateSearch(true));
   }
+
   async function saveData() {
     setBusy(true);
     if (positionModalState.position.id > 0) {

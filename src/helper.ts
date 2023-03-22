@@ -78,11 +78,9 @@ export function toTimeDisplay(date?: Date | null): string {
     .padStart(2, '0')}`;
 }
 
-export function toAmount(amount?: number | null): string {
+export function toAmount(amount?: string): string {
   if (amount === undefined || amount === null) return '';
-  return amount?.toLocaleString('en-US', {
-    maximumFractionDigits: 2,
-  });
+  return amount.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 export function getPage(page: string): ModuleRoute {

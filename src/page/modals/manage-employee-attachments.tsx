@@ -1,4 +1,4 @@
-import { faFile, faTrash, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -203,7 +203,7 @@ export default function ManageEmployeeAttachments() {
             {file.isImage ? (
               <img src={file.url} alt={file.fileName} />
             ) : (
-              <iframe src={file.url} />
+              <iframe title={file.url} src={file.url} />
             )}
           </div>
         ))}

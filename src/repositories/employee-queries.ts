@@ -1,5 +1,6 @@
 import { EmployeeEnd } from '../endpoints';
 import Employee from '../models/entities/Employee';
+import EmployeeEligibility from '../models/entities/EmployeeEligibility';
 import SearchResult from '../models/response-model/SearchResult';
 import { httpDelete, httpGet, httpPost, httpPut } from './base';
 
@@ -20,7 +21,7 @@ export async function getEmployees(): Promise<Employee[] | undefined> {
 
 export async function insertEmployee(
   employee: Employee,
-  eligibilityIds: number[]
+  eligibilities: EmployeeEligibility[]
 ): Promise<Employee | undefined> {
   return await httpPost<Employee>(EmployeeEnd.Insert, {
     employee: {
@@ -28,18 +29,20 @@ export async function insertEmployee(
       position: undefined,
       office: undefined,
     },
-    eligibilityIds,
+    eligibilities,
   });
 }
 
 export async function updateEmployee(
   employee: Employee,
-  newEligibilityIds: number[],
+  newEligibilities: EmployeeEligibility[],
+  updatedEmployeeEligibilities: EmployeeEligibility[],
   employeeEligibilityIdsToDelete: number[]
 ): Promise<boolean | undefined> {
   return await httpPut(EmployeeEnd.Update + '/' + employee.id, {
     employee,
-    newEligibilityIds,
+    newEligibilities,
+    updatedEmployeeEligibilities,
     employeeEligibilityIdsToDelete,
   });
 }

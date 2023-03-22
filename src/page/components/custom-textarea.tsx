@@ -21,7 +21,7 @@ export default function CustomTextArea({
   onChange?: (data: CustomReturn) => void;
 }) {
   return (
-    <div className={'custom-input ' + className}>
+    <div className={'custom-input custom-text-area ' + className}>
       <label htmlFor={name}>{title}</label>
       <textarea
         disabled={disabled}

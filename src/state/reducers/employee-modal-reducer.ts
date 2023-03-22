@@ -12,41 +12,44 @@ import Gender from '../../models/entities/Gender';
 import NatureOfEmployment from '../../models/entities/NatureOfEmployment';
 import Office from '../../models/entities/Office';
 import VaccinationStatus from '../../models/entities/VaccinationStatus';
+import ModeOfResignation from '../../models/entities/ModeOfResignation';
+import { toAmount } from '../../helper';
 
 interface State {
   employee: Employee;
   offices: Office[];
+  modeOfResignations: ModeOfResignation[];
   natureOfEmployments: NatureOfEmployment[];
   bloodTypes: BloodType[];
+  allPositions: Position[];
   civilStatuses: CivilStatus[];
   genders: Gender[];
   educationalAttainments: EducationalAttainment[];
   vaccinationStatuses: VaccinationStatus[];
   positions: Position[];
   eligibilities: Eligibility[];
-  newEligibilities: number[];
-  deletedEmployeeEligibility: number[];
   employeeEligibilities: EmployeeEligibility[];
   isModalShow: boolean;
 }
 
 const employeeInitialState: Employee = {
   id: 0,
+  idNumber: '',
+  modeOfResignationId: undefined,
+  resignationDate: undefined,
   firstName: '',
   lastName: '',
   middleName: '',
   extension: '',
   fullName: '',
-  officeId: undefined,
-  positionId: undefined,
-  natureOfEmploymentId: undefined,
-  employmentDate: undefined,
-  yearsInService: undefined,
-  birthDate: undefined,
-  age: undefined,
-  genderId: undefined,
-  bloodTypeId: undefined,
-  residenceAddress: undefined,
+  officeId: 0,
+  positionId: 0,
+  natureOfEmploymentId: 0,
+  employmentDate: new Date(),
+  birthDate: new Date(),
+  genderId: 0,
+  bloodTypeId: 0,
+  residenceAddress: '',
   contactNumber: '',
   emailAddress: '',
   gsisNo: '',
@@ -54,13 +57,17 @@ const employeeInitialState: Employee = {
   pagIbigNo: '',
   sssNo: '',
   tinNo: '',
-  isActive: undefined,
-  educationalAttainmentId: undefined,
+  isActive: true,
+  educationalAttainmentId: 0,
   skills: '',
-  vaccinationStatusId: undefined,
-  civilStatusId: undefined,
+  vaccinationStatusId: 0,
+  civilStatusId: 0,
   height: '',
   weight: '',
+  salary: 0.0,
+  tempSalary: '',
+  salaryGrade: 0,
+  step: 0,
 };
 
 const initialState: State = {
@@ -75,9 +82,9 @@ const initialState: State = {
   educationalAttainments: [],
   vaccinationStatuses: [],
   eligibilities: [],
-  newEligibilities: [],
-  deletedEmployeeEligibility: [],
   employeeEligibilities: [],
+  allPositions: [],
+  modeOfResignations: [],
 };
 
 const employeeModalSlice = createSlice({
@@ -86,25 +93,43 @@ const employeeModalSlice = createSlice({
   reducers: {
     setEmployee(state, action: PayloadAction<Employee | undefined>) {
       state.employee = action.payload ?? employeeInitialState;
-      state.newEligibilities = [];
-      state.deletedEmployeeEligibility = [];
+      state.employee = {
+        ...state.employee,
+        tempSalary: toAmount(state.employee.salary?.toString()),
+        hasSalaryGrade: state.employee.natureOfEmployment?.hasSalaryGrade,
+      };
       state.employeeEligibilities =
         state.employee.employeeEligibilities
           ?.slice()
           ?.map((x) => {
-            return { ...x, tempId: Guid.create().toString(), deleted: false };
+            return {
+              ...x,
+              tempId: Guid.create().toString(),
+              deleted: false,
+              updated: false,
+            };
           })
           .sort((a, b) =>
             a.eligibility!.description! < b.eligibility!.description! ? -1 : 1
           ) ?? [];
     },
+    setAllPositions(state, action: PayloadAction<Position[]>) {
+      state.allPositions = action.payload;
+    },
     updateEmployee(state, action: PayloadAction<CustomReturn>) {
-      console.log(action.payload);
       state.employee = {
         ...state.employee,
         [action.payload.elementName]: action.payload.value,
       };
-      console.log(state.employee);
+
+      if (action.payload.elementName === 'natureOfEmploymentId') {
+        state.employee = {
+          ...state.employee,
+          hasSalaryGrade: state.natureOfEmployments
+            .slice()
+            .filter((x) => x.id === +action.payload.value)?.[0]?.hasSalaryGrade,
+        };
+      }
     },
     updateOffice(state, action: PayloadAction<string>) {
       let office = state.offices
@@ -141,7 +166,6 @@ const employeeModalSlice = createSlice({
           ?.positions?.map((x) => x.position!) ?? [];
     },
     addNewEligibility(state, action: PayloadAction<string>) {
-      state.newEligibilities.push(+action.payload);
       state.employeeEligibilities.push({
         employeeId: state.employee.id,
         eligibility: state.eligibilities.filter(
@@ -149,8 +173,14 @@ const employeeModalSlice = createSlice({
         )[0],
         eligibilityId: +action.payload,
         id: 0,
+        rating: '',
+        place: '',
+        date: undefined,
+        validity: undefined,
         tempId: Guid.create().toString(),
         deleted: false,
+        updated: false,
+        added: true,
       });
       state.eligibilities = state.eligibilities.filter(
         (x) => x.id !== +action.payload
@@ -158,7 +188,6 @@ const employeeModalSlice = createSlice({
     },
     deleteEligibility(state, action: PayloadAction<EmployeeEligibility>) {
       if (action.payload.id > 0) {
-        state.deletedEmployeeEligibility.push(action.payload.id);
         state.employeeEligibilities = state.employeeEligibilities.map((x) => {
           if (x.id === action.payload.id) {
             x.deleted = true;
@@ -168,9 +197,6 @@ const employeeModalSlice = createSlice({
       } else {
         state.employeeEligibilities = state.employeeEligibilities.filter(
           (x) => x.tempId !== action.payload.tempId
-        );
-        state.newEligibilities = state.newEligibilities.filter(
-          (x) => x !== action.payload.eligibilityId
         );
       }
       state.eligibilities.push(action.payload.eligibility!);
@@ -185,6 +211,9 @@ const employeeModalSlice = createSlice({
         }
         return x;
       });
+    },
+    setModeOfResignation(state, action: PayloadAction<ModeOfResignation[]>) {
+      state.modeOfResignations = action.payload;
     },
     setNatureOfEmployments(state, action: PayloadAction<NatureOfEmployment[]>) {
       state.natureOfEmployments = action.payload;
@@ -203,6 +232,23 @@ const employeeModalSlice = createSlice({
     },
     setVaccinationStatuses(state, action: PayloadAction<VaccinationStatus[]>) {
       state.vaccinationStatuses = action.payload;
+    },
+    updateEligibility(
+      state,
+      action: PayloadAction<{ rowId: string; element: CustomReturn }>
+    ) {
+      state.employeeEligibilities = state.employeeEligibilities.map((el) => {
+        if (el.tempId === action.payload.rowId) {
+          el = {
+            ...el,
+            [action.payload.element.elementName]: action.payload.element.value,
+          };
+          if (el.id > 0) {
+            el.updated = true;
+          }
+        }
+        return el;
+      });
     },
   },
 });

@@ -9,28 +9,31 @@ export default function CustomDateTimePicker({
   className,
   value,
   readonly,
+  placeholder,
   disabled,
   onChange,
 }: {
-  title: string;
+  title?: string;
   name?: string;
   type?: DateTimePickerType;
   id?: string;
   className?: string;
   value?: Date;
+  placeholder?: string;
   readonly?: boolean | false;
   disabled?: boolean | false;
   onChange?: (data: CustomReturn) => void;
 }) {
   return (
     <div className={'custom-input ' + className}>
-      <label htmlFor={name}>{title}</label>
+      {title && <label htmlFor={name}>{title}</label>}
       <div className='input-container'>
         <input
           disabled={disabled}
           readOnly={readonly}
           type={type ?? 'time'}
           name={name}
+          placeholder={placeholder}
           id={id}
           value={
             !value
