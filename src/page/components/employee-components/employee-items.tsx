@@ -15,9 +15,7 @@ export default function EmployeeItems() {
             <th>Full Name</th>
             <th>Nature of Employment</th>
             <th>Gender</th>
-            <th>Birth Date</th>
             <th>Age</th>
-            <th>Date of Employment</th>
             <th>Years in Service</th>
             <th>Office</th>
             <th>Position</th>

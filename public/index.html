@@ -5,10 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>App</title>
+    <script>
+      (function () {
+        document.removeEventListener('click', () => {});
+        document.addEventListener('click', (e) => {
+          let targetId = e.target.id
+            ?.replace('-input', '')
+            .replace('-icon', '')
+            .replace('-search', '');
+          let selection = document.getElementsByClassName('selection-show');
+          for (let i = 0; i < selection.length; i++) {
+            if (selection[i].id !== targetId)
+              selection[i].classList.remove('selection-show');
+          }
+        });
+      })();
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-
     <div id="root"></div>
     <div id="modal"></div>
   </body>

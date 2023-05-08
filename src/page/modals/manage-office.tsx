@@ -108,7 +108,6 @@ export default function ManageOffice() {
         />
         <CustomDropdown
           title='Position'
-          hasDefault={true}
           onChange={(ret) => {
             dispatch(officeModalActions.addNewPosition(ret.value));
           }}

@@ -45,6 +45,8 @@ export default interface Employee {
   height: string | undefined;
   weight: string | undefined;
   salary: number | undefined;
+  detailedOfficeId: number | undefined;
+  detailedPositionId: number | undefined;
   salaryGrade: number | undefined;
   step: number | undefined;
   office?: Office | undefined;
@@ -58,7 +60,9 @@ export default interface Employee {
   employeeEligibilities?: EmployeeEligibility[] | undefined;
   employeeAttachments?: EmployeeAttachment[] | undefined;
   modeOfResignation?: ModeOfResignation | undefined;
+  detailedPosition?: Position | undefined;
+  detailedOffice?: Office | undefined;
 
   tempSalary?: string;
-  hasSalaryGrade?: boolean;
+  isRegular?: boolean;
 }

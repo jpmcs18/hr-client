@@ -1,6 +1,6 @@
 import ModuleRoute from './models/client-model/ModuleRoute';
 import ModuleRight from './models/entities/ModuleRight';
-import SystemModules from './routes';
+import { SystemModules } from './routes';
 
 export function hasAccess(
   moduleRight: ModuleRight[],
@@ -59,13 +59,25 @@ export function getMonthName(date: Date): string {
 export function toDate(date?: Date | null): string {
   if (date === undefined || date === null) return '';
   const d = new Date(date);
-  return d.toLocaleDateString();
+  return (
+    (d.getMonth() + 1).toString().padStart(2, '0') +
+    '/' +
+    d.getDate().toString().padStart(2, '0') +
+    '/' +
+    d.getFullYear()
+  );
 }
 
 export function toDateDisplay(date?: Date | null): string {
   if (date === undefined || date === null) return '';
   const d = new Date(date);
-  return d.toISOString().split('T')[0];
+  return (
+    d.getFullYear() +
+    '-' +
+    (d.getMonth() + 1).toString().padStart(2, '0') +
+    '-' +
+    d.getDate().toString().padStart(2, '0')
+  );
 }
 
 export function toTimeDisplay(date?: Date | null): string {
@@ -78,9 +90,16 @@ export function toTimeDisplay(date?: Date | null): string {
     .padStart(2, '0')}`;
 }
 
-export function toAmount(amount?: string): string {
+export function toCommaSeparateAmount(amount?: string): string {
   if (amount === undefined || amount === null) return '';
   return amount.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+export function toDisplayAmount(amount?: string): string {
+  if (amount === undefined || amount === null) return '';
+  var result = amount.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  var values = result.split('.');
+  return values[0] + (values[1] ?? '.').padEnd(3, '0');
 }
 
 export function getPage(page: string): ModuleRoute {

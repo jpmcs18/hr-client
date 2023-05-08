@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { toAmount } from '../../helper';
+import { toCommaSeparateAmount } from '../../helper';
 import CustomReturn from '../../models/client-model/CustomReturn';
 
 export default function CustomNumber({
@@ -13,8 +13,9 @@ export default function CustomNumber({
   placeholder,
   disabled,
   onChange,
+  onBlur,
 }: {
-  title: string;
+  title?: string;
   name?: string;
   id?: string;
   className?: string;
@@ -24,10 +25,10 @@ export default function CustomNumber({
   readonly?: boolean | false;
   disabled?: boolean | false;
   onChange?: (data: CustomReturn) => void;
+  onBlur?: () => void;
 }) {
   const input = useRef<HTMLInputElement>(null);
   function formatCurrency(isBlur: boolean) {
-    console.log(input.current?.value);
     if (input.current === null) return;
     var inputValue = input.current.value;
     var length = inputValue.length;
@@ -36,15 +37,15 @@ export default function CustomNumber({
     if (indexOfDecimal >= 0) {
       var wholeNumber = inputValue.substring(0, indexOfDecimal);
       var decimalPoint = inputValue.substring(indexOfDecimal);
-      wholeNumber = toAmount(wholeNumber);
-      decimalPoint = toAmount(decimalPoint);
+      wholeNumber = toCommaSeparateAmount(wholeNumber);
+      decimalPoint = toCommaSeparateAmount(decimalPoint);
       if (isBlur) {
         decimalPoint += '00';
       }
       decimalPoint = decimalPoint.substring(0, 2);
       inputValue = wholeNumber + '.' + decimalPoint;
     } else {
-      inputValue = toAmount(inputValue);
+      inputValue = toCommaSeparateAmount(inputValue);
       if (isBlur) {
         if (inputValue === '') inputValue = '0';
         inputValue += '.00';
@@ -59,8 +60,9 @@ export default function CustomNumber({
 
   return (
     <div className={'custom-input ' + className}>
-      <label htmlFor={name}>{title}</label>
+      {title && <label htmlFor={name}>{title}</label>}
       <input
+        className='custom-number'
         disabled={disabled}
         readOnly={readonly}
         ref={input}
@@ -78,6 +80,7 @@ export default function CustomNumber({
               });
         }}
         onBlur={() => {
+          onBlur?.();
           if (type === 'amount') formatCurrency(true);
         }}
       />

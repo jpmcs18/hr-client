@@ -11,14 +11,14 @@ import {
 } from '../../repositories/session-managers';
 
 interface State {
-  authorize: boolean | false;
+  authorize: boolean | undefined;
   systemUser: SystemUser | undefined;
   moduleRights: ModuleRight[];
   module: number[];
 }
 
 const initialState: State = {
-  authorize: false,
+  authorize: undefined,
   systemUser: undefined,
   moduleRights: [],
   module: [],
@@ -39,6 +39,12 @@ const userProfileSlice = createSlice({
           access
             .map((x) => x.moduleId ?? 0)
             .filter((x, y, z) => z.indexOf(x) === y) ?? [];
+      } else {
+        state.systemUser = undefined;
+        state.authorize = false;
+        state.module = [];
+        state.moduleRights = [];
+        clearSession();
       }
     },
     setProfile(state, action: PayloadAction<SystemUser>) {

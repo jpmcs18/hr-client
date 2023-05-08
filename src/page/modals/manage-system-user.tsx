@@ -111,7 +111,6 @@ export default function ManageSystemUser() {
           <CustomDropdown
             title='Employee'
             name='employeeId'
-            hasDefault={true}
             value={systemUserModalState.systemUser.employeeId}
             onChange={(ret) => {
               dispatch(systemUserModalActions.updateSystemUser(ret));
@@ -149,7 +148,6 @@ export default function ManageSystemUser() {
           <div>
             <CustomDropdown
               title='Roles'
-              hasDefault={true}
               onChange={(ret) => {
                 dispatch(systemUserModalActions.addNewUserRole(ret.value));
               }}

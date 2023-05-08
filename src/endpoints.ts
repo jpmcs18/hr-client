@@ -1,5 +1,5 @@
 export const SecurityEnd = {
-  Refresh: 'securities/refresh',
+  Refresh: 'securities/refresh-token',
   Login: 'securities/log',
 };
 
@@ -25,12 +25,38 @@ export const EmployeeEnd = {
   Delete: 'employees',
 };
 
+export const EmployeeHistoryEnd = {
+  Search: 'employee-histories/search',
+  Insert: 'employee-histories',
+  Update: 'employee-histories',
+  Delete: 'employee-histories',
+};
+
+export const PersonalHistoryEnd = {
+  Search: 'personal-histories/search',
+  Insert: 'personal-histories',
+  Update: 'personal-histories',
+  Delete: 'personal-histories',
+};
+
 export const PositionEnd = {
   Search: 'positions/search',
   GetList: 'positions',
   Insert: 'positions',
   Update: 'positions',
   Delete: 'positions',
+};
+
+export const SalaryGradeBatchEnd = {
+  Search: 'salary-grade-batches/search',
+  GetList: 'salary-grade-batches',
+  Insert: 'salary-grade-batches',
+  Update: 'salary-grade-batches',
+  Delete: 'salary-grade-batches',
+};
+
+export const SalaryGradeItemEnd = {
+  Get: 'salary-grade-items',
 };
 
 export const UserRoleEnd = {

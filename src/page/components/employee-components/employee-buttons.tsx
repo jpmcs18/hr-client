@@ -2,6 +2,7 @@ import {
   faAdd,
   faEdit,
   faFileArrowUp,
+  faHistory,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,6 +16,7 @@ import {
 import { hasAccess } from '../../../helper';
 import { deleteEmployee } from '../../../repositories/employee-queries';
 import { employeeAttachmentModalActions } from '../../../state/reducers/employee-attachment-modal-reducer';
+import { employeeHistoryModalActions } from '../../../state/reducers/employee-history-modal-reducer';
 import { employeeModalActions } from '../../../state/reducers/employee-modal-reducer';
 import { employeeActions } from '../../../state/reducers/employee-reducer';
 import { RootState } from '../../../state/store';
@@ -67,6 +69,12 @@ export default function EmployeeButtons() {
           .finally(() => setBusy(false));
       },
     });
+  }
+  async function history() {
+    dispatch(
+      employeeHistoryModalActions.setEmployee(employeeState.selectedEmployee)
+    );
+    dispatch(employeeHistoryModalActions.setShowModal(true));
   }
   async function nextPage(page: number) {
     dispatch(employeeActions.setCurrentPage(page));
@@ -125,6 +133,20 @@ export default function EmployeeButtons() {
             onClick={attach}
             title='Attach Files'>
             <FontAwesomeIcon icon={faFileArrowUp} />
+          </button>
+        )}
+        {hasAccess(
+          userProfileState.moduleRights,
+          Pages.Employees,
+          'History',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button
+            className='btn-action'
+            disabled={!employeeState.selectedEmployee}
+            onClick={history}
+            title='History'>
+            <FontAwesomeIcon icon={faHistory} />
           </button>
         )}
       </div>

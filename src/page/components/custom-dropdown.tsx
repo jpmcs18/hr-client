@@ -1,3 +1,7 @@
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Guid } from 'guid-typescript';
+import { useState } from 'react';
 import CustomReturn from '../../models/client-model/CustomReturn';
 
 export interface DropdownItem {
@@ -13,7 +17,6 @@ export default function CustomDropdown({
   itemsList,
   readonly,
   onChange,
-  hasDefault,
 }: {
   title: string;
   name?: string;
@@ -23,32 +26,79 @@ export default function CustomDropdown({
   itemsList: DropdownItem[];
   readonly?: boolean | false;
   onChange?: (data: CustomReturn) => void;
-  hasDefault?: boolean | undefined;
 }) {
+  const [filter, setFilter] = useState('');
+  const componentId = Guid.create().toString();
+  function openSelection() {
+    document.getElementById(componentId)?.classList.remove('selection-show');
+    document.getElementById(componentId)?.classList.add('selection-show');
+  }
   return (
-    <div className='custom-input'>
+    <div className={'custom-input ' + className} id={id}>
       <label>{title}</label>
       <div className='select-container'>
-        {readonly ? (
-          <span>{itemsList.find((x) => x.key === value)?.value}</span>
-        ) : (
-          <select
-            id={id}
-            className={className}
-            value={value ?? ''}
-            onChange={(e) => {
-              onChange?.({
-                elementName: name ?? 'def',
-                value: e.target.value,
-              });
-            }}>
-            {hasDefault && <option value={undefined}></option>}
-            {itemsList?.map((item) => (
-              <option key={item.key} value={item.key}>
-                {item.value}
-              </option>
-            ))}
-          </select>
+        <div
+          className='select-input-container input-container'
+          onFocus={() => openSelection()}
+          onClick={() => openSelection()}>
+          <input
+            type='text'
+            className='selection-input'
+            readOnly={true}
+            value={
+              itemsList.filter(
+                (x) => x.key?.toString() === value?.toString()
+              )?.[0]?.value ?? ''
+            }
+            id={componentId + '-input'}
+          />
+          <div className='icon-container'>
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className='icon'
+              id={componentId + '-icon'}
+            />
+          </div>
+        </div>
+        {!readonly && (
+          <div className='selection' id={componentId}>
+            <div>
+              <input
+                className='search-input'
+                type='text'
+                value={filter}
+                placeholder='Search...'
+                autoComplete='off'
+                id={componentId + '-search'}
+                onFocus={() => openSelection()}
+                onChange={(e) => setFilter(e.target.value)}
+              />
+            </div>
+            <div className='selection-list'>
+              {itemsList
+                .filter((x) =>
+                  x.value?.toLowerCase()?.includes(filter.toLowerCase())
+                )
+                .map((item) => (
+                  <div
+                    className={
+                      'selection-item ' +
+                      (item.key?.toString() === value?.toString()
+                        ? 'selected'
+                        : '')
+                    }
+                    key={item.key}
+                    onClick={() => {
+                      onChange?.({
+                        elementName: name ?? 'def',
+                        value: item.key,
+                      });
+                    }}>
+                    {item.value}
+                  </div>
+                ))}
+            </div>
+          </div>
         )}
       </div>
     </div>

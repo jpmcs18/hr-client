@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthorizeProvider } from './custom-hooks/authorize-provider';
 import HomePage from './page/home-page';
-import { getTheme } from './repositories/session-managers';
+import { refreshTokenAuthentication } from './repositories/base';
+import { getTheme, getToken } from './repositories/session-managers';
 import { userProfileAction } from './state/reducers/user-profile-reducer';
 import { RootState } from './state/store';
 import './style/style.css';
@@ -18,6 +19,9 @@ function App() {
       }
 
       if (!userProfileState.authorize) {
+        if (getToken() !== undefined) {
+          refreshTokenAuthentication();
+        }
         dispatch(userProfileAction.initializeState());
       }
     },

@@ -4,6 +4,7 @@ import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
+import { toCommaSeparateAmount } from '../../helper';
 import { getBloodTypes } from '../../repositories/blood-type-queries';
 import { getCivilStatuses } from '../../repositories/civil-status-queries';
 import { getEligibilities } from '../../repositories/eligibility-queries';
@@ -15,6 +16,7 @@ import { getGenders } from '../../repositories/gender-queries';
 import { getNatureOfEmployments } from '../../repositories/nature-of-employment-queries';
 import { getOffices } from '../../repositories/office-queries';
 import { getPositions } from '../../repositories/position-queries';
+import { getSalaryGradeItem } from '../../repositories/salary-grade-item-queries';
 import { getVaccinationStatuses } from '../../repositories/vaccination-status-queries';
 import { employeeModalActions } from '../../state/reducers/employee-modal-reducer';
 import { employeeActions } from '../../state/reducers/employee-reducer';
@@ -172,9 +174,37 @@ export default function ManageEmployee() {
         .finally(() => setBusy(false));
     }
   }
+  async function fetchSalaryGrade() {
+    setBusy(true);
+    await getSalaryGradeItem(
+      employeeModalState.employee.salaryGrade ?? 0,
+      employeeModalState.employee.step ?? 0
+    )
+      .then((res) => {
+        if (res) {
+          dispatch(
+            employeeModalActions.updateEmployee({
+              elementName: 'tempSalary',
+              value: toCommaSeparateAmount(res.amount.toString()),
+            })
+          );
+        }
+      })
+      .finally(() => {
+        setBusy(false);
+      });
+  }
   function onModalClose(hasChange: boolean) {
     dispatch(employeeModalActions.setShowModal(false));
     if (hasChange) dispatch(employeeActions.setInitiateSearch(true));
+  }
+  async function getSalaryGradeAmount() {
+    if (
+      (employeeModalState.employee.salaryGrade ?? 0) > 0 &&
+      (employeeModalState.employee.step ?? 0) > 0
+    ) {
+      await fetchSalaryGrade();
+    }
   }
   return (
     <Modal
@@ -207,7 +237,6 @@ export default function ManageEmployee() {
               />
               <CustomDropdown
                 title='Mode of Separation'
-                hasDefault={true}
                 className='resigned-fields'
                 name='modeOfResignationId'
                 value={employeeModalState.employee.modeOfResignationId}
@@ -267,7 +296,6 @@ export default function ManageEmployee() {
           <CustomDropdown
             title='Nature of Employment'
             name='natureOfEmploymentId'
-            hasDefault={true}
             value={employeeModalState.employee.natureOfEmploymentId}
             onChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
@@ -279,7 +307,7 @@ export default function ManageEmployee() {
               };
             })}
           />
-          {employeeModalState.employee.hasSalaryGrade && (
+          {employeeModalState.employee.isRegular && (
             <>
               <CustomNumber
                 title='Salary Grade'
@@ -289,6 +317,7 @@ export default function ManageEmployee() {
                 onChange={(ret) => {
                   dispatch(employeeModalActions.updateEmployee(ret));
                 }}
+                onBlur={getSalaryGradeAmount}
               />
               <CustomNumber
                 title='Step'
@@ -298,13 +327,20 @@ export default function ManageEmployee() {
                 onChange={(ret) => {
                   dispatch(employeeModalActions.updateEmployee(ret));
                 }}
+                onBlur={getSalaryGradeAmount}
               />
             </>
           )}
           <CustomNumber
-            title='Salary'
+            title={
+              'Salary' +
+              (employeeModalState.employee.isRegular
+                ? ' (Will auto fill based on Sarary Grade and Step)'
+                : '')
+            }
             name='tempSalary'
             type='amount'
+            readonly={employeeModalState.employee.isRegular}
             value={employeeModalState.employee?.tempSalary}
             onChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
@@ -318,7 +354,6 @@ export default function ManageEmployee() {
           />
           <CustomDropdown
             title='Office'
-            hasDefault={true}
             value={employeeModalState.employee.officeId}
             onChange={(ret) => {
               dispatch(employeeModalActions.updateOffice(ret.value));
@@ -332,7 +367,6 @@ export default function ManageEmployee() {
           />
           <CustomDropdown
             title='Position'
-            hasDefault={true}
             value={employeeModalState.employee.positionId}
             onChange={(ret) => {
               dispatch(employeeModalActions.updatePosition(ret.value));
@@ -347,6 +381,43 @@ export default function ManageEmployee() {
               };
             })}
           />
+          {employeeModalState.employee.isRegular && (
+            <>
+              <CustomDropdown
+                title='Detailed Office'
+                value={employeeModalState.employee.detailedOfficeId}
+                onChange={(ret) => {
+                  dispatch(
+                    employeeModalActions.updateDetailedOffice(ret.value)
+                  );
+                }}
+                itemsList={employeeModalState.detailedOffices.map((x) => {
+                  return {
+                    key: x.id.toString(),
+                    value: x.description,
+                  };
+                })}
+              />
+              <CustomDropdown
+                title='Detailed Position'
+                value={employeeModalState.employee.detailedPositionId}
+                onChange={(ret) => {
+                  dispatch(
+                    employeeModalActions.updateDetailedPosition(ret.value)
+                  );
+                }}
+                itemsList={(employeeModalState.detailedPositions.length > 0
+                  ? employeeModalState.detailedPositions
+                  : employeeModalState.allPositions
+                ).map((x) => {
+                  return {
+                    key: x.id.toString(),
+                    value: x.description,
+                  };
+                })}
+              />
+            </>
+          )}
           <CustomTextBox
             title='Contact Number'
             name='contactNumber'
@@ -384,7 +455,6 @@ export default function ManageEmployee() {
           <CustomDropdown
             title='Gender'
             name='genderId'
-            hasDefault={true}
             value={employeeModalState.employee.genderId}
             onChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
@@ -399,7 +469,6 @@ export default function ManageEmployee() {
           <CustomDropdown
             title='Civil Status'
             name='civilStatusId'
-            hasDefault={true}
             value={employeeModalState.employee.civilStatusId}
             onChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
@@ -414,27 +483,11 @@ export default function ManageEmployee() {
           <CustomDropdown
             title='Blood Type'
             name='bloodTypeId'
-            hasDefault={true}
             value={employeeModalState.employee.bloodTypeId}
             onChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
             itemsList={employeeModalState.bloodTypes.map((x) => {
-              return {
-                key: x.id.toString(),
-                value: x.description,
-              };
-            })}
-          />
-          <CustomDropdown
-            title='Vaccination Status'
-            name='vaccinationStatusId'
-            hasDefault={true}
-            value={employeeModalState.employee.vaccinationStatusId}
-            onChange={(ret) => {
-              dispatch(employeeModalActions.updateEmployee(ret));
-            }}
-            itemsList={employeeModalState.vaccinationStatuses.map((x) => {
               return {
                 key: x.id.toString(),
                 value: x.description,
@@ -515,11 +568,24 @@ export default function ManageEmployee() {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
           />
+          <CustomDropdown
+            title='Vaccination Status'
+            name='vaccinationStatusId'
+            value={employeeModalState.employee.vaccinationStatusId}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+            }}
+            itemsList={employeeModalState.vaccinationStatuses.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+          />
         </div>
         <div className='manage-container'>
           <CustomDropdown
             title='Eligibilities'
-            hasDefault={true}
             onChange={(ret) => {
               dispatch(employeeModalActions.addNewEligibility(ret.value));
             }}

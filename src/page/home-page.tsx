@@ -19,7 +19,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import SystemModules from '../routes';
+import { SystemModules } from '../routes';
 import { userProfileAction } from '../state/reducers/user-profile-reducer';
 import { RootState } from '../state/store';
 import PositionPage from './components/position-components/position-page';
@@ -32,6 +32,8 @@ import Dashboard from './dashboard';
 import ManageProfile from './modals/manage-profile';
 import { getPage } from '../helper';
 import { Pages } from '../constant';
+import SalaryGradePage from './components/salary-grade-components/salary-grade-page';
+import ReportPage from './components/report-components/report-page';
 export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
   const setMessage = useSetMessage();
@@ -50,7 +52,10 @@ export default function HomePage() {
   }
   return (
     <>
-      {userProfileState.authorize ? (
+      {' '}
+      {userProfileState.authorize === undefined ? (
+        <div></div>
+      ) : userProfileState.authorize ? (
         <BrowserRouter>
           <header>
             <nav>
@@ -206,6 +211,26 @@ export default function HomePage() {
               <Route
                 path={getPage(Pages.UserRoles).route}
                 element={<UserRolePage />}
+              />
+            )}
+
+            {(!!userProfileState.module.filter(
+              (x) => x === getPage(Pages.Reports).id
+            ).length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route
+                path={getPage(Pages.Reports).route}
+                element={<ReportPage />}
+              />
+            )}
+
+            {(!!userProfileState.module.filter(
+              (x) => x === getPage(Pages.SalaryGrade).id
+            ).length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route
+                path={getPage(Pages.SalaryGrade).route}
+                element={<SalaryGradePage />}
               />
             )}
             <Route

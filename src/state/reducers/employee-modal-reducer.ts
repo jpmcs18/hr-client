@@ -13,11 +13,12 @@ import NatureOfEmployment from '../../models/entities/NatureOfEmployment';
 import Office from '../../models/entities/Office';
 import VaccinationStatus from '../../models/entities/VaccinationStatus';
 import ModeOfResignation from '../../models/entities/ModeOfResignation';
-import { toAmount } from '../../helper';
+import { toCommaSeparateAmount } from '../../helper';
 
 interface State {
   employee: Employee;
   offices: Office[];
+  detailedOffices: Office[];
   modeOfResignations: ModeOfResignation[];
   natureOfEmployments: NatureOfEmployment[];
   bloodTypes: BloodType[];
@@ -27,9 +28,11 @@ interface State {
   educationalAttainments: EducationalAttainment[];
   vaccinationStatuses: VaccinationStatus[];
   positions: Position[];
+  detailedPositions: Position[];
   eligibilities: Eligibility[];
   employeeEligibilities: EmployeeEligibility[];
   isModalShow: boolean;
+  isSalaryGradeUpdate: boolean;
 }
 
 const employeeInitialState: Employee = {
@@ -68,6 +71,8 @@ const employeeInitialState: Employee = {
   tempSalary: '',
   salaryGrade: 0,
   step: 0,
+  detailedOfficeId: 0,
+  detailedPositionId: 0,
 };
 
 const initialState: State = {
@@ -85,6 +90,9 @@ const initialState: State = {
   employeeEligibilities: [],
   allPositions: [],
   modeOfResignations: [],
+  isSalaryGradeUpdate: false,
+  detailedOffices: [],
+  detailedPositions: [],
 };
 
 const employeeModalSlice = createSlice({
@@ -95,9 +103,10 @@ const employeeModalSlice = createSlice({
       state.employee = action.payload ?? employeeInitialState;
       state.employee = {
         ...state.employee,
-        tempSalary: toAmount(state.employee.salary?.toString()),
-        hasSalaryGrade: state.employee.natureOfEmployment?.hasSalaryGrade,
+        tempSalary: toCommaSeparateAmount(state.employee.salary?.toString()),
+        isRegular: state.employee.natureOfEmployment?.isRegular,
       };
+      state.isSalaryGradeUpdate = false;
       state.employeeEligibilities =
         state.employee.employeeEligibilities
           ?.slice()
@@ -117,17 +126,33 @@ const employeeModalSlice = createSlice({
       state.allPositions = action.payload;
     },
     updateEmployee(state, action: PayloadAction<CustomReturn>) {
+      if (action.payload.elementName === 'salaryGrade') {
+        if (state.employee.salaryGrade !== +action.payload.value) {
+          state.isSalaryGradeUpdate = true;
+        }
+      }
+      if (action.payload.elementName === 'step') {
+        if (state.employee.step !== +action.payload.value) {
+          state.isSalaryGradeUpdate = true;
+        }
+      }
       state.employee = {
         ...state.employee,
         [action.payload.elementName]: action.payload.value,
       };
-
+      if (action.payload.elementName === 'tempSalary') {
+        state.employee = {
+          ...state.employee,
+          salary: +action.payload.value.toString().replaceAll(',', ''),
+        };
+        state.isSalaryGradeUpdate = false;
+      }
       if (action.payload.elementName === 'natureOfEmploymentId') {
         state.employee = {
           ...state.employee,
-          hasSalaryGrade: state.natureOfEmployments
+          isRegular: state.natureOfEmployments
             .slice()
-            .filter((x) => x.id === +action.payload.value)?.[0]?.hasSalaryGrade,
+            .filter((x) => x.id === +action.payload.value)?.[0]?.isRegular,
         };
       }
     },
@@ -145,7 +170,7 @@ const employeeModalSlice = createSlice({
       state.positions = office.positions?.map((x) => x.position!) ?? [];
     },
     updatePosition(state, action: PayloadAction<string>) {
-      let position = state.positions
+      let position = state.allPositions
         .slice()
         .filter((x) => x.id === +action.payload)[0];
       state.employee = {
@@ -154,15 +179,43 @@ const employeeModalSlice = createSlice({
         positionId: position.id,
       };
     },
+    updateDetailedOffice(state, action: PayloadAction<string>) {
+      let office = state.detailedOffices
+        .slice()
+        .filter((x) => x.id === +action.payload)[0];
+      state.employee = {
+        ...state.employee,
+        detailedOfficeId: office.id,
+        detailedOffice: office,
+        detailedPosition: undefined,
+        detailedPositionId: undefined,
+      };
+      state.detailedPositions = office.positions?.map((x) => x.position!) ?? [];
+    },
+    updateDetailedPosition(state, action: PayloadAction<string>) {
+      let position = state.allPositions
+        .slice()
+        .filter((x) => x.id === +action.payload)[0];
+      state.employee = {
+        ...state.employee,
+        detailedPosition: position,
+        detailedPositionId: position.id,
+      };
+    },
     setShowModal(state, action: PayloadAction<boolean>) {
       state.isModalShow = action.payload;
     },
     setOffices(state, action: PayloadAction<Office[]>) {
       state.offices = action.payload;
+      state.detailedOffices = action.payload;
 
       state.positions =
         action.payload
           .filter((x) => x.id === state.employee.officeId)?.[0]
+          ?.positions?.map((x) => x.position!) ?? [];
+      state.detailedPositions =
+        action.payload
+          .filter((x) => x.id === state.employee.detailedOfficeId)?.[0]
           ?.positions?.map((x) => x.position!) ?? [];
     },
     addNewEligibility(state, action: PayloadAction<string>) {

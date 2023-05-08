@@ -11,6 +11,12 @@ import systemUserReducer from './reducers/system-user-reducer';
 import userProfileReducer from './reducers/user-profile-reducer';
 import userRoleModalReducer from './reducers/user-role-modal-reducer';
 import userRoleReducer from './reducers/user-role-reducer';
+import salaryGradeBatchReducer from './reducers/salary-grade-batch-reducer';
+import salaryGradeModalReducer from './reducers/salary-grade-modal-reducer';
+import employeeHistoryModalReducer from './reducers/employee-history-modal-reducer';
+import serviceRecordModalReducer from './reducers/service-record-modal-reducer';
+import personalHistoryModalReducer from './reducers/personal-history-modal-reducer';
+import employeeSearchableReducer from './reducers/employee-searchable-reducer';
 const store = configureStore({
   reducer: {
     userProfile: userProfileReducer,
@@ -25,6 +31,12 @@ const store = configureStore({
     systemUser: systemUserReducer,
     systemUserModal: systemUserModalReducer,
     employeeAttachmentModal: employeeAttachmentModalReducer,
+    salaryGradeBatch: salaryGradeBatchReducer,
+    salaryGradeModal: salaryGradeModalReducer,
+    employeeHistoryModal: employeeHistoryModalReducer,
+    serviceRecordModal: serviceRecordModalReducer,
+    personalHistoryModal: personalHistoryModalReducer,
+    employeeSearchable: employeeSearchableReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
