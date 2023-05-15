@@ -7,6 +7,7 @@ interface State extends Searchable {
   selectedEmployee: Employee | undefined;
   isModalShow: boolean;
   onCloseFunction: ((employee: Employee) => void) | undefined;
+  isRegular: boolean | undefined;
 }
 const initialState: State = {
   employees: [],
@@ -17,6 +18,7 @@ const initialState: State = {
   initiateSearch: false,
   isModalShow: false,
   onCloseFunction: undefined,
+  isRegular: undefined,
 };
 
 const employeeSearchableSlice = createSlice({
@@ -26,6 +28,9 @@ const employeeSearchableSlice = createSlice({
     fill(state, action: PayloadAction<Employee[]>) {
       state.employees = action.payload;
       state.selectedEmployee = undefined;
+    },
+    setIsRegular(state, action: PayloadAction<boolean | undefined>) {
+      state.isRegular = action.payload;
     },
     setSelected(state, action: PayloadAction<Employee | undefined>) {
       state.selectedEmployee = action.payload;
@@ -52,6 +57,7 @@ const employeeSearchableSlice = createSlice({
       state.isModalShow = action.payload;
       state.employees = [];
       state.selectedEmployee = undefined;
+      state.isRegular = undefined;
     },
   },
 });

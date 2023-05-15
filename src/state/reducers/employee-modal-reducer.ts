@@ -14,6 +14,8 @@ import Office from '../../models/entities/Office';
 import VaccinationStatus from '../../models/entities/VaccinationStatus';
 import ModeOfResignation from '../../models/entities/ModeOfResignation';
 import { toCommaSeparateAmount } from '../../helper';
+import Remuneration from '../../models/entities/Remuneration';
+import EmployeeRemuneration from '../../models/entities/EmployeeRemuneration';
 
 interface State {
   employee: Employee;
@@ -31,6 +33,8 @@ interface State {
   detailedPositions: Position[];
   eligibilities: Eligibility[];
   employeeEligibilities: EmployeeEligibility[];
+  remunerations: Remuneration[];
+  employeeRemunerations: EmployeeRemuneration[];
   isModalShow: boolean;
   isSalaryGradeUpdate: boolean;
 }
@@ -73,6 +77,7 @@ const employeeInitialState: Employee = {
   step: 0,
   detailedOfficeId: 0,
   detailedPositionId: 0,
+  birthPlace: '',
 };
 
 const initialState: State = {
@@ -93,6 +98,8 @@ const initialState: State = {
   isSalaryGradeUpdate: false,
   detailedOffices: [],
   detailedPositions: [],
+  remunerations: [],
+  employeeRemunerations: [],
 };
 
 const employeeModalSlice = createSlice({
@@ -120,6 +127,21 @@ const employeeModalSlice = createSlice({
           })
           .sort((a, b) =>
             a.eligibility!.description! < b.eligibility!.description! ? -1 : 1
+          ) ?? [];
+
+      state.employeeRemunerations =
+        state.employee.employeeRemunerations
+          ?.slice()
+          ?.map((x) => {
+            return {
+              ...x,
+              tempId: Guid.create().toString(),
+              deleted: false,
+              updated: false,
+            };
+          })
+          .sort((a, b) =>
+            a.remuneration!.description! < b.remuneration!.description! ? -1 : 1
           ) ?? [];
     },
     setAllPositions(state, action: PayloadAction<Position[]>) {
@@ -265,6 +287,86 @@ const employeeModalSlice = createSlice({
         return x;
       });
     },
+    updateEligibility(
+      state,
+      action: PayloadAction<{ rowId: string; element: CustomReturn }>
+    ) {
+      state.employeeEligibilities = state.employeeEligibilities.map((el) => {
+        if (el.tempId === action.payload.rowId) {
+          el = {
+            ...el,
+            [action.payload.element.elementName]: action.payload.element.value,
+          };
+          if (el.id > 0) {
+            el.updated = true;
+          }
+        }
+        return el;
+      });
+    },
+    addNewRemuneration(state, action: PayloadAction<string>) {
+      state.employeeRemunerations.push({
+        employeeId: state.employee.id,
+        remuneration: state.remunerations.filter(
+          (x) => x.id === +action.payload
+        )[0],
+        remunerationId: +action.payload,
+        id: 0,
+        tempId: Guid.create().toString(),
+        deleted: false,
+        updated: false,
+        added: true,
+        amount: 0,
+        tempAmount: '0',
+      });
+      state.remunerations = state.remunerations.filter(
+        (x) => x.id !== +action.payload
+      );
+    },
+    deleteRemuneration(state, action: PayloadAction<EmployeeRemuneration>) {
+      if (action.payload.id > 0) {
+        state.employeeRemunerations = state.employeeRemunerations.map((x) => {
+          if (x.id === action.payload.id) {
+            x.deleted = true;
+          }
+          return x;
+        });
+      } else {
+        state.employeeRemunerations = state.employeeRemunerations.filter(
+          (x) => x.tempId !== action.payload.tempId
+        );
+      }
+      state.remunerations.push(action.payload.remuneration!);
+      state.remunerations = state.remunerations
+        .slice()
+        .sort((a, b) => (a.description! < b.description! ? -1 : 1));
+    },
+    undoDeleteRemuneration(state, action: PayloadAction<number>) {
+      state.employeeRemunerations = state.employeeRemunerations.map((x) => {
+        if (x.id === action.payload) {
+          x.deleted = false;
+        }
+        return x;
+      });
+    },
+    updateRemuneration(
+      state,
+      action: PayloadAction<{ rowId: string; value: string }>
+    ) {
+      state.employeeRemunerations = state.employeeRemunerations.map((x) => {
+        if (x.tempId === action.payload.rowId) {
+          x = {
+            ...x,
+            tempAmount: action.payload.value,
+            amount: +action.payload.value.replaceAll(',', ''),
+          };
+          if (x.id > 0) {
+            x.updated = true;
+          }
+        }
+        return x;
+      });
+    },
     setModeOfResignation(state, action: PayloadAction<ModeOfResignation[]>) {
       state.modeOfResignations = action.payload;
     },
@@ -283,25 +385,11 @@ const employeeModalSlice = createSlice({
     setEligibilities(state, action: PayloadAction<Eligibility[]>) {
       state.eligibilities = action.payload;
     },
+    setRemunerations(state, action: PayloadAction<Remuneration[]>) {
+      state.remunerations = action.payload;
+    },
     setVaccinationStatuses(state, action: PayloadAction<VaccinationStatus[]>) {
       state.vaccinationStatuses = action.payload;
-    },
-    updateEligibility(
-      state,
-      action: PayloadAction<{ rowId: string; element: CustomReturn }>
-    ) {
-      state.employeeEligibilities = state.employeeEligibilities.map((el) => {
-        if (el.tempId === action.payload.rowId) {
-          el = {
-            ...el,
-            [action.payload.element.elementName]: action.payload.element.value,
-          };
-          if (el.id > 0) {
-            el.updated = true;
-          }
-        }
-        return el;
-      });
     },
   },
 });

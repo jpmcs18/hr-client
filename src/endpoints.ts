@@ -109,3 +109,7 @@ export const EmployeeAttachmentEnd = {
   Delete: 'employee-attachments',
   UndoDelete: 'employee-attachments/undo-delete',
 };
+
+export const ReportEnd = {
+  ContractualCOE: 'reports/coe-contractual',
+};

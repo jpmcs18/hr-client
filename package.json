@@ -20,6 +20,7 @@
     "cross-env": "^7.0.3",
     "crypto-js": "^4.1.1",
     "guid-typescript": "^1.0.9",
+    "print-js": "^1.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",

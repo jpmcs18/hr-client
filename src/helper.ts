@@ -105,3 +105,7 @@ export function toDisplayAmount(amount?: string): string {
 export function getPage(page: string): ModuleRoute {
   return SystemModules.filter((x) => x.pageName === page)[0];
 }
+
+export function dateToString(date?: Date | undefined): string | undefined {
+  return date === undefined ? undefined : new Date(date).toLocaleString();
+}

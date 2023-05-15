@@ -6,11 +6,15 @@ import { httpDelete, httpGet, httpPost, httpPut } from './base';
 
 export async function searchEmployee(
   key: string,
-  page: number
+  page: number,
+  isRegular?: boolean
 ): Promise<SearchResult<Employee> | undefined> {
   var query = '?page=' + page;
   if (!!key) {
     query += '&key=' + encodeURI(key);
+  }
+  if (isRegular !== undefined) {
+    query += '&isRegular=' + isRegular;
   }
   return await httpGet<SearchResult<Employee>>(EmployeeEnd.Search + query);
 }

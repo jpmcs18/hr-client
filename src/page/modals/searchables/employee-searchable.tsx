@@ -35,7 +35,8 @@ export default function EmployeeSearchable() {
     dispatch(employeeSearchableActions.setInitiateSearch(false));
     await searchEmployee(
       employeeSearchableState.key,
-      employeeSearchableState.currentPage
+      employeeSearchableState.currentPage,
+      employeeSearchableState.isRegular
     )
       .then((res) => {
         if (res !== undefined) {

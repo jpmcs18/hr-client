@@ -27,7 +27,8 @@ import CustomDropdown from '../components/custom-dropdown';
 import CustomNumber from '../components/custom-number';
 import CustomTextArea from '../components/custom-textarea';
 import CustomTextBox from '../components/custom-textbox';
-import ManageEmployeeEligibilitiesTable from './manage-employee-eligibility-table';
+import ManageEmployeeEligibilitiesTable from './manage-employee-eligibilities-table';
+import ManageEmployeeRemunerationTable from './manage-employee-remuneration-table';
 import Modal from './modal';
 
 export default function ManageEmployee() {
@@ -452,6 +453,14 @@ export default function ManageEmployee() {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
           />
+          <CustomTextBox
+            title='Place of Birth'
+            name='birthPlace'
+            value={employeeModalState.employee?.birthPlace}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+            }}
+          />
           <CustomDropdown
             title='Gender'
             name='genderId'
@@ -583,21 +592,8 @@ export default function ManageEmployee() {
             })}
           />
         </div>
-        <div className='manage-container'>
-          <CustomDropdown
-            title='Eligibilities'
-            onChange={(ret) => {
-              dispatch(employeeModalActions.addNewEligibility(ret.value));
-            }}
-            itemsList={employeeModalState.eligibilities.map((x) => {
-              return {
-                key: x.id.toString(),
-                value: x.description,
-              };
-            })}
-          />
-          <ManageEmployeeEligibilitiesTable />
-        </div>
+        <ManageEmployeeEligibilitiesTable />
+        <ManageEmployeeRemunerationTable />
       </div>
       <div className='modal-footer'>
         <button onClick={saveData} className='btn-modal btn-primary'>

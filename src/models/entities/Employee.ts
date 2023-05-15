@@ -9,6 +9,7 @@ import NatureOfEmployment from './NatureOfEmployment';
 import Office from './Office';
 import VaccinationStatus from './VaccinationStatus';
 import ModeOfResignation from './ModeOfResignation';
+import EmployeeRemuneration from './EmployeeRemuneration';
 
 export default interface Employee {
   id: number;
@@ -24,6 +25,7 @@ export default interface Employee {
   employmentDate: Date | undefined;
   yearsInService?: string | undefined;
   birthDate: Date | undefined;
+  birthPlace: string | undefined;
   age?: number | undefined;
   genderId: number | undefined;
   bloodTypeId: number | undefined;
@@ -62,6 +64,7 @@ export default interface Employee {
   modeOfResignation?: ModeOfResignation | undefined;
   detailedPosition?: Position | undefined;
   detailedOffice?: Office | undefined;
+  employeeRemunerations?: EmployeeRemuneration[] | undefined;
 
   tempSalary?: string;
   isRegular?: boolean;
