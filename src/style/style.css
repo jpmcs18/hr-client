@@ -121,6 +121,7 @@ body {
 
 .table-container {
   margin: 0.5em;
+  overflow: auto;
 }
 
 .title-container {
@@ -205,12 +206,24 @@ header nav .icon {
   width: -moz-fit-content;
   width: fit-content;
   color: var(--primary-color-accent);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 header nav .icon label {
   font-size: var(--menu-font-size);
   font-weight: var(--bold);
   text-align: center;
+}
+
+header nav .icon img {
+  height: 1.5em;
+  width: 1.5em;
+  margin-right: 0.2em;
 }
 
 header nav .logo {
@@ -398,6 +411,20 @@ header nav .active {
 
 section {
   margin: 0 auto;
+}
+
+.search-main-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.search-main-container .search-icon {
+  margin: 1em;
+  margin-bottom: -0.5em;
 }
 
 .login-container {
@@ -740,6 +767,12 @@ input:disabled {
 .custom-input .select-container .select-input-container .icon-container .icon {
   cursor: pointer;
   color: var(--color);
+}
+
+.custom-input .select-container .select-input-container .icon-container .close-icon {
+  cursor: pointer;
+  color: var(--color);
+  margin: 0 0.5em;
 }
 
 .custom-input .select-container .selection-show {
@@ -1491,7 +1524,7 @@ tbody tr {
 }
 
 .modal-container .searchable-modal .employee-searchable-content-body .searchable-table {
-  width: 100%;
+  width: calc(100% - 1em);
   height: 50vh;
   overflow: auto;
 }
@@ -2112,6 +2145,7 @@ tbody tr {
   margin: 0.5em;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  overflow: hidden;
 }
 
 .collapsible-container .header {
@@ -2120,6 +2154,8 @@ tbody tr {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-shadow: 0em 0em 0.4em var(--shadow-color);
+          box-shadow: 0em 0em 0.4em var(--shadow-color);
 }
 
 .collapsible-container .header .title {
@@ -2183,15 +2219,36 @@ tbody tr {
 .collapsible-container .collapse {
   height: 0em !important;
   opacity: 0 !important;
+  overflow: hidden;
 }
 
 .collapsible-container .content {
   opacity: 1;
-  max-height: 20em;
   border-top: 0.1em solid var(--shadow-color);
-  overflow: auto;
   -webkit-transition: height ease-in-out 0.2s;
   transition: height ease-in-out 0.2s;
+  width: 100%;
+}
+
+.module-right-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  margin: 1em;
+}
+
+.module-right-container .module-right {
+  margin: 0.3em;
 }
 
 @media screen and (max-width: 1200px) {

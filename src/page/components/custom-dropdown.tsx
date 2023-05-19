@@ -1,4 +1,4 @@
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Guid } from 'guid-typescript';
 import { useState } from 'react';
@@ -17,6 +17,7 @@ export default function CustomDropdown({
   itemsList,
   readonly,
   onChange,
+  onClear,
 }: {
   title: string;
   name?: string;
@@ -25,6 +26,7 @@ export default function CustomDropdown({
   value?: any;
   itemsList: DropdownItem[];
   readonly?: boolean | false;
+  onClear?: () => void;
   onChange?: (data: CustomReturn) => void;
 }) {
   const [filter, setFilter] = useState('');
@@ -58,6 +60,13 @@ export default function CustomDropdown({
               className='icon'
               id={componentId + '-icon'}
             />
+            {onClear && (
+              <FontAwesomeIcon
+                icon={faClose}
+                className='close-icon'
+                onClick={onClear}
+              />
+            )}
           </div>
         </div>
         {!readonly && (

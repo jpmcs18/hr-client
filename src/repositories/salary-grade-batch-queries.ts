@@ -1,6 +1,5 @@
 import { SalaryGradeBatchEnd } from '../endpoints';
 import SalaryGradeBatch from '../models/entities/SalaryGradeBatch';
-import SalaryGradeItem from '../models/entities/SalaryGradeItem';
 import SearchResult from '../models/response-model/SearchResult';
 import { httpDelete, httpGet, httpPost, httpPut } from './base';
 

@@ -23,6 +23,7 @@ export const EmployeeEnd = {
   Insert: 'employees',
   Update: 'employees',
   Delete: 'employees',
+  Promote: 'employees/promote',
 };
 
 export const EmployeeHistoryEnd = {
@@ -45,6 +46,13 @@ export const PositionEnd = {
   Insert: 'positions',
   Update: 'positions',
   Delete: 'positions',
+};
+
+export const RequestHistoryEnd = {
+  Search: 'request-history/search',
+};
+export const RequestTypeEnd = {
+  GetList: 'request-types',
 };
 
 export const SalaryGradeBatchEnd = {
@@ -102,6 +110,9 @@ export const VaccinationStatusEnd = {
 export const EligibilityEnd = {
   GetList: 'eligibilities',
 };
+export const RemunerationEnd = {
+  GetList: 'remunerations',
+};
 
 export const EmployeeAttachmentEnd = {
   Upload: 'employee-attachments/upload',
@@ -111,5 +122,7 @@ export const EmployeeAttachmentEnd = {
 };
 
 export const ReportEnd = {
+  ServiceRecord: 'reports/service-record',
   ContractualCOE: 'reports/coe-contractual',
+  RegularCOE: 'reports/coe-regular',
 };

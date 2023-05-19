@@ -8,6 +8,7 @@ import {
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
 import Employee from '../../../models/entities/Employee';
+import { generateRegularCOE } from '../../../repositories/report-queries';
 import { employeeSearchableActions } from '../../../state/reducers/employee-searchable-reducer';
 import { RootState } from '../../../state/store';
 import ReportModal from '../../modals/report-modal';
@@ -15,7 +16,7 @@ import CustomDateTimePicker from '../custom-datetime-picker';
 import CustomSelector from '../custom-selector';
 import CustomTextBox from '../custom-textbox';
 
-export default function EmploymentCertificateReport() {
+export default function EmploymentCertificateRegularReport() {
   const dispatch = useDispatch();
   const [employee, setEmployee] = useState<Employee | undefined>();
   const [date, setDate] = useState(() => new Date());
@@ -28,16 +29,16 @@ export default function EmploymentCertificateReport() {
   }
   async function printCOE() {
     setBusy(true);
-    // await generateCOE(employee?.id ?? 0, date, purpose)
-    //   .then((res) => {
-    //     if (res) {
-    //       print(res);
-    //     }
-    //   })
-    //   .catch((err) => setToasterMessage({ content: err.message }))
-    //   .finally(() => {
-    //     setBusy(false);
-    //   });
+    await generateRegularCOE(employee?.id ?? 0, date, purpose)
+      .then((res) => {
+        if (res) {
+          print(res);
+        }
+      })
+      .catch((err) => setToasterMessage({ content: err.message }))
+      .finally(() => {
+        setBusy(false);
+      });
   }
   function print(report: string) {
     printJS({
@@ -48,13 +49,14 @@ export default function EmploymentCertificateReport() {
   }
   return (
     <section className='report-container'>
-      <div className='report-header'>Certificate of Employment (Regular)</div>
+      <div className='report-header'>Certificate of Employment - Regular</div>
       <div className='report-body'>
         <CustomSelector
           title='Employee'
           value={employee?.fullName}
           onSelectorClick={() => {
             dispatch(employeeSearchableActions.setShowModal(true));
+            dispatch(employeeSearchableActions.setIsRegular(true));
             dispatch(
               employeeSearchableActions.setOnCloseFunction(
                 onCloseEmployeeSearch

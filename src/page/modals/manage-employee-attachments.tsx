@@ -1,11 +1,13 @@
-import { faTrash, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faMaximize, faTrash, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Pages } from '../../constant';
 import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
+import { hasAccess } from '../../helper';
 import {
   deleteAttachment,
   getAttachments,
@@ -25,12 +27,13 @@ export default function ManageEmployeeAttachments() {
   const setToasterMessage = useSetToasterMessage();
   const fileRef = useRef<HTMLInputElement>(null);
   const setBusy = useSetBusy();
+  const userProfileState = useSelector((state: RootState) => state.userProfile);
   const employeeAttachmentModalState = useSelector(
     (state: RootState) => state.employeeAttachmentModal
   );
   useEffect(
     () => {
-      upload();
+      if (employeeAttachmentModalState.initiateUpload) upload();
     },
     //eslint-disable-next-line
     [employeeAttachmentModalState.initiateUpload]
@@ -156,6 +159,9 @@ export default function ManageEmployeeAttachments() {
         );
       });
   }
+  function openNewTab(fileUrl?: string) {
+    window.open(fileUrl, '_blank');
+  }
   return (
     <Modal
       className='employee-attachment-modal'
@@ -170,9 +176,16 @@ export default function ManageEmployeeAttachments() {
         accept='image/png, image/jpeg, application/pdf'
       />
       <div className='employee-attachment-content-body'>
-        <div
-          className='attachment attachment-add'
-          onClick={showFileBrowser}></div>
+        {hasAccess(
+          userProfileState.moduleRights,
+          Pages.Attachment,
+          'Add',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <div
+            className='attachment attachment-add'
+            onClick={showFileBrowser}></div>
+        )}
         {employeeAttachmentModalState.files.map((file) => (
           <div
             key={file.tempId}
@@ -182,21 +195,43 @@ export default function ManageEmployeeAttachments() {
             {file.isProcessing && <CustomLoading />}
             {!file.isProcessing && (
               <div className='attachment-control btn-actions-group'>
-                {!file.isDeleted && (
+                {hasAccess(
+                  userProfileState.moduleRights,
+                  Pages.Attachment,
+                  'Maximize (Print & Download)',
+                  userProfileState.systemUser?.isAdmin
+                ) && (
                   <button
                     className='btn-action'
-                    title='Delete'
-                    onClick={() => deletion(file)}>
-                    <FontAwesomeIcon icon={faTrash} />
+                    title='Maximize (Print & Download)'
+                    onClick={() => openNewTab(file.fileUrl)}>
+                    <FontAwesomeIcon icon={faMaximize} />
                   </button>
                 )}
-                {file.isDeleted && (
-                  <button
-                    className='btn-action'
-                    title='Undo Delete'
-                    onClick={() => undoDeletion(file)}>
-                    <FontAwesomeIcon icon={faUndo} />
-                  </button>
+                {hasAccess(
+                  userProfileState.moduleRights,
+                  Pages.Attachment,
+                  'Delete',
+                  userProfileState.systemUser?.isAdmin
+                ) && (
+                  <>
+                    {!file.isDeleted && (
+                      <button
+                        className='btn-action'
+                        title='Delete'
+                        onClick={() => deletion(file)}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    )}
+                    {file.isDeleted && (
+                      <button
+                        className='btn-action'
+                        title='Undo Delete'
+                        onClick={() => undoDeletion(file)}>
+                        <FontAwesomeIcon icon={faUndo} />
+                      </button>
+                    )}
+                  </>
                 )}
               </div>
             )}

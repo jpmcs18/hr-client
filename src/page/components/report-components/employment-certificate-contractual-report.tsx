@@ -16,7 +16,7 @@ import CustomDateTimePicker from '../custom-datetime-picker';
 import CustomSelector from '../custom-selector';
 import CustomTextBox from '../custom-textbox';
 
-export default function EmploymentCertificateReport() {
+export default function EmploymentCertificateContractualReport() {
   const dispatch = useDispatch();
   const [employee, setEmployee] = useState<Employee | undefined>();
   const [date, setDate] = useState(() => new Date());
@@ -50,7 +50,7 @@ export default function EmploymentCertificateReport() {
   return (
     <section className='report-container'>
       <div className='report-header'>
-        Certificate of Employment (Contract Of Service)
+        Certificate of Employment - Contract of Service
       </div>
       <div className='report-body'>
         <CustomSelector

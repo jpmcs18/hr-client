@@ -24,7 +24,7 @@ import { userProfileAction } from '../state/reducers/user-profile-reducer';
 import { RootState } from '../state/store';
 import PositionPage from './components/position-components/position-page';
 import EmployeePage from './components/employee-components/employee-page';
-import Icon from './components/icon';
+import Icon from '../icon';
 import OfficePage from './components/office-components/office-page';
 import SystemUserPage from './components/system-user-component/system-user-page';
 import UserRolePage from './components/user-role-component/user-role-page';
@@ -34,6 +34,7 @@ import { getPage } from '../helper';
 import { Pages } from '../constant';
 import SalaryGradePage from './components/salary-grade-components/salary-grade-page';
 import ReportPage from './components/report-components/report-page';
+import RequestHistoryPage from './components/request-history-components/request-history-page';
 export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
   const setMessage = useSetMessage();
@@ -52,7 +53,6 @@ export default function HomePage() {
   }
   return (
     <>
-      {' '}
       {userProfileState.authorize === undefined ? (
         <div></div>
       ) : userProfileState.authorize ? (
@@ -231,6 +231,15 @@ export default function HomePage() {
               <Route
                 path={getPage(Pages.SalaryGrade).route}
                 element={<SalaryGradePage />}
+              />
+            )}
+            {(!!userProfileState.module.filter(
+              (x) => x === getPage(Pages.RequestHistory).id
+            ).length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route
+                path={getPage(Pages.RequestHistory).route}
+                element={<RequestHistoryPage />}
               />
             )}
             <Route

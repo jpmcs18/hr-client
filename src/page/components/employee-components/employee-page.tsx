@@ -9,6 +9,7 @@ import { searchEmployee } from '../../../repositories/employee-queries';
 import { employeeActions } from '../../../state/reducers/employee-reducer';
 import { RootState } from '../../../state/store';
 import EmployeeHistoryModal from '../../modals/employee-history-components/employee-history-modal';
+import EmployeePromotion from '../../modals/employee-promotion';
 import ManageEmployee from '../../modals/manage-employee';
 import ManageEmployeeAttachments from '../../modals/manage-employee-attachments';
 import SearchBar from '../searchbar';
@@ -24,6 +25,9 @@ export default function EmployeePage() {
   );
   const employeeHistoryModalState = useSelector(
     (state: RootState) => state.employeeHistoryModal
+  );
+  const employeePromotionState = useSelector(
+    (state: RootState) => state.employeePromotion
   );
   const employeeState = useSelector((state: RootState) => state.employee);
   const dispatch = useDispatch();
@@ -78,6 +82,7 @@ export default function EmployeePage() {
       {employeeAttachmentModalState.isModalShow && (
         <ManageEmployeeAttachments />
       )}
+      {employeePromotionState.isModalShow && <EmployeePromotion />}
       {employeeHistoryModalState.isModalShow && <EmployeeHistoryModal />}
     </>
   );

@@ -6,7 +6,6 @@ import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
-import Employee from '../../../models/entities/Employee';
 import { searchEmployee } from '../../../repositories/employee-queries';
 import { employeeSearchableActions } from '../../../state/reducers/employee-searchable-reducer';
 import { RootState } from '../../../state/store';

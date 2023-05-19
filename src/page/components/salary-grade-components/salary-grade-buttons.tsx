@@ -106,21 +106,6 @@ export default function SalaryGradeButtons() {
             <FontAwesomeIcon icon={faTrash} />
           </button>
         )}
-        {/* {hasAccess(
-          userProfileState.moduleRights,
-          Pages.SalaryGrade,
-          'Recompute',
-          userProfileState.systemUser?.isAdmin
-        ) && (
-          <button
-            className='btn-action'
-            disabled={!salaryGradeBatchState.selectedSalaryGradeBatch}
-            onClick={onDelete}
-            title='Recompute Employee Salary'>
-            <FontAwesomeIcon icon={faUsersViewfinder} />
-            <FontAwesomeIcon icon={faCircleDollarToSlot} />
-          </button>
-        )} */}
       </div>
 
       <Pagination

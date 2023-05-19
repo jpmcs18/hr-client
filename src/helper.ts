@@ -11,7 +11,7 @@ export function hasAccess(
   var module = getPage(page);
   return (
     !!moduleRight
-      .filter((x) => x.moduleId === module.id)
+      .filter((x) => x.moduleId === module?.id)
       ?.filter((x) => x.right === access).length || isAdmin
   );
 }

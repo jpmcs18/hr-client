@@ -18,3 +18,37 @@ export async function generateContractualCOE(
       encodeURIComponent(purpose)
   );
 }
+
+export async function generateRegularCOE(
+  employeeId: number,
+  date: Date,
+  purpose: string
+): Promise<string | undefined> {
+  console.log('dd');
+  return await httpGet<string>(
+    ReportEnd.RegularCOE +
+      '?employeeId=' +
+      employeeId +
+      '&date=' +
+      encodeURIComponent(dateToString(date) ?? '') +
+      '&purpose=' +
+      encodeURIComponent(purpose)
+  );
+}
+
+export async function generateServiceRecord(
+  employeeId: number,
+  date: Date,
+  purpose: string
+): Promise<string | undefined> {
+  console.log('dd');
+  return await httpGet<string>(
+    ReportEnd.ServiceRecord +
+      '?employeeId=' +
+      employeeId +
+      '&date=' +
+      encodeURIComponent(dateToString(date) ?? '') +
+      '&purpose=' +
+      encodeURIComponent(purpose)
+  );
+}

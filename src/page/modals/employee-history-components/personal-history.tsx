@@ -80,8 +80,8 @@ export default function PersonalHistory() {
         <div className='btn-actions-group'>
           {hasAccess(
             userProfileState.moduleRights,
-            Pages.Employees,
-            'Add Personal History',
+            Pages.PersonalHistory,
+            'Add',
             userProfileState.systemUser?.isAdmin
           ) && (
             <button className='btn-action' title='Add' onClick={addHistory}>
@@ -90,7 +90,7 @@ export default function PersonalHistory() {
           )}
           {hasAccess(
             userProfileState.moduleRights,
-            Pages.Employees,
+            Pages.PersonalHistory,
             'Edit',
             userProfileState.systemUser?.isAdmin
           ) && (
@@ -104,7 +104,7 @@ export default function PersonalHistory() {
           )}
           {hasAccess(
             userProfileState.moduleRights,
-            Pages.Employees,
+            Pages.PersonalHistory,
             'Delete',
             userProfileState.systemUser?.isAdmin
           ) && (

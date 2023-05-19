@@ -16,6 +16,7 @@ import { getGenders } from '../../repositories/gender-queries';
 import { getNatureOfEmployments } from '../../repositories/nature-of-employment-queries';
 import { getOffices } from '../../repositories/office-queries';
 import { getPositions } from '../../repositories/position-queries';
+import { getRemunerations } from '../../repositories/remunerations-queries';
 import { getSalaryGradeItem } from '../../repositories/salary-grade-item-queries';
 import { getVaccinationStatuses } from '../../repositories/vaccination-status-queries';
 import { employeeModalActions } from '../../state/reducers/employee-modal-reducer';
@@ -47,17 +48,18 @@ export default function ManageEmployee() {
   );
 
   async function initializeComponent() {
-    await getOff();
-    await getNOE();
-    await getBT();
-    await getCS();
-    await getGen();
-    await getVC();
-    await getElg();
-    await getPos();
+    await fetchOffices();
+    await fetchNatureOfEmployments();
+    await fetchBloodTypes();
+    await fetchCivilStatuses();
+    await fetchGenders();
+    await fetchVaccinationStatuses();
+    await fetchEligibilities();
+    await fetchPositions();
+    await fetchRemunerations();
   }
 
-  async function getNOE() {
+  async function fetchNatureOfEmployments() {
     setBusy(true);
     await getNatureOfEmployments()
       .then((res) => {
@@ -67,7 +69,7 @@ export default function ManageEmployee() {
       })
       .finally(() => setBusy(false));
   }
-  async function getPos() {
+  async function fetchPositions() {
     setBusy(true);
     await getPositions()
       .then((res) => {
@@ -77,7 +79,7 @@ export default function ManageEmployee() {
       })
       .finally(() => setBusy(false));
   }
-  async function getBT() {
+  async function fetchBloodTypes() {
     setBusy(true);
     await getBloodTypes()
       .then((res) => {
@@ -87,7 +89,7 @@ export default function ManageEmployee() {
       })
       .finally(() => setBusy(false));
   }
-  async function getCS() {
+  async function fetchCivilStatuses() {
     setBusy(true);
     await getCivilStatuses()
       .then((res) => {
@@ -97,7 +99,7 @@ export default function ManageEmployee() {
       })
       .finally(() => setBusy(false));
   }
-  async function getElg() {
+  async function fetchEligibilities() {
     setBusy(true);
     await getEligibilities()
       .then((res) => {
@@ -107,7 +109,7 @@ export default function ManageEmployee() {
       })
       .finally(() => setBusy(false));
   }
-  async function getGen() {
+  async function fetchGenders() {
     setBusy(true);
     await getGenders()
       .then((res) => {
@@ -117,7 +119,7 @@ export default function ManageEmployee() {
       })
       .finally(() => setBusy(false));
   }
-  async function getVC() {
+  async function fetchVaccinationStatuses() {
     setBusy(true);
     await getVaccinationStatuses()
       .then((res) => {
@@ -127,12 +129,22 @@ export default function ManageEmployee() {
       })
       .finally(() => setBusy(false));
   }
-  async function getOff() {
+  async function fetchOffices() {
     setBusy(true);
     await getOffices()
       .then((res) => {
         if (res) {
           dispatch(employeeModalActions.setOffices(res));
+        }
+      })
+      .finally(() => setBusy(false));
+  }
+  async function fetchRemunerations() {
+    setBusy(true);
+    await getRemunerations()
+      .then((res) => {
+        if (res) {
+          dispatch(employeeModalActions.setRemunerations(res));
         }
       })
       .finally(() => setBusy(false));
@@ -145,6 +157,11 @@ export default function ManageEmployee() {
         employeeModalState.employeeEligibilities.filter((x) => x.added),
         employeeModalState.employeeEligibilities.filter((x) => x.updated),
         employeeModalState.employeeEligibilities
+          .filter((x) => x.deleted)
+          .map((x) => x.id),
+        employeeModalState.employeeRemunerations.filter((x) => x.added),
+        employeeModalState.employeeRemunerations.filter((x) => x.updated),
+        employeeModalState.employeeRemunerations
           .filter((x) => x.deleted)
           .map((x) => x.id)
       )
@@ -161,7 +178,8 @@ export default function ManageEmployee() {
     } else {
       await insertEmployee(
         employeeModalState.employee,
-        employeeModalState.employeeEligibilities.filter((x) => x.added)
+        employeeModalState.employeeEligibilities.filter((x) => x.added),
+        employeeModalState.employeeRemunerations.filter((x) => x.added)
       )
         .then((res) => {
           if (res !== undefined) {
@@ -392,6 +410,11 @@ export default function ManageEmployee() {
                     employeeModalActions.updateDetailedOffice(ret.value)
                   );
                 }}
+                onClear={() => {
+                  dispatch(
+                    employeeModalActions.updateDetailedOffice(undefined)
+                  );
+                }}
                 itemsList={employeeModalState.detailedOffices.map((x) => {
                   return {
                     key: x.id.toString(),
@@ -405,6 +428,11 @@ export default function ManageEmployee() {
                 onChange={(ret) => {
                   dispatch(
                     employeeModalActions.updateDetailedPosition(ret.value)
+                  );
+                }}
+                onClear={() => {
+                  dispatch(
+                    employeeModalActions.updateDetailedPosition(undefined)
                   );
                 }}
                 itemsList={(employeeModalState.detailedPositions.length > 0

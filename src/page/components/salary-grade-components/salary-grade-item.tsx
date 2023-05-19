@@ -1,5 +1,4 @@
 import { toDate } from '../../../helper';
-import Position from '../../../models/entities/Position';
 import SalaryGradeBatch from '../../../models/entities/SalaryGradeBatch';
 
 export default function PositionItem({

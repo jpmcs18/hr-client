@@ -18,6 +18,8 @@ import serviceRecordModalReducer from './reducers/service-record-modal-reducer';
 import personalHistoryModalReducer from './reducers/personal-history-modal-reducer';
 import employeeSearchableReducer from './reducers/employee-searchable-reducer';
 import reportModalReducer from './reducers/report-modal-reducer';
+import employeePromotionReducer from './reducers/employee-promotion-reducer';
+import requestHistoryReducer from './reducers/request-history-reducer';
 const store = configureStore({
   reducer: {
     userProfile: userProfileReducer,
@@ -39,6 +41,8 @@ const store = configureStore({
     personalHistoryModal: personalHistoryModalReducer,
     employeeSearchable: employeeSearchableReducer,
     reportModal: reportModalReducer,
+    employeePromotion: employeePromotionReducer,
+    requestHistory: requestHistoryReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

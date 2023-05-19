@@ -1,8 +1,14 @@
 import {
   faAdd,
+  faArrowsLeftRightToLine,
+  faArrowsUpToLine,
+  faArrowUp,
+  faArrowUpFromBracket,
+  faArrowUpWideShort,
   faEdit,
   faFileArrowUp,
   faHistory,
+  faLevelUp,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,6 +24,7 @@ import { deleteEmployee } from '../../../repositories/employee-queries';
 import { employeeAttachmentModalActions } from '../../../state/reducers/employee-attachment-modal-reducer';
 import { employeeHistoryModalActions } from '../../../state/reducers/employee-history-modal-reducer';
 import { employeeModalActions } from '../../../state/reducers/employee-modal-reducer';
+import { employeePromotionActions } from '../../../state/reducers/employee-promotion-reducer';
 import { employeeActions } from '../../../state/reducers/employee-reducer';
 import { RootState } from '../../../state/store';
 import Pagination from '../pagination';
@@ -70,15 +77,21 @@ export default function EmployeeButtons() {
       },
     });
   }
-  async function history() {
+  function history() {
     dispatch(
       employeeHistoryModalActions.setEmployee(employeeState.selectedEmployee)
     );
     dispatch(employeeHistoryModalActions.setShowModal(true));
   }
-  async function nextPage(page: number) {
+  function nextPage(page: number) {
     dispatch(employeeActions.setCurrentPage(page));
     dispatch(employeeActions.setInitiateSearch(true));
+  }
+  function promote() {
+    dispatch(
+      employeePromotionActions.setEmployee(employeeState.selectedEmployee!)
+    );
+    dispatch(employeePromotionActions.setShowModal(true));
   }
   return (
     <section className='btn-actions-group-container'>
@@ -110,6 +123,20 @@ export default function EmployeeButtons() {
         {hasAccess(
           userProfileState.moduleRights,
           Pages.Employees,
+          'Promote',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button
+            className='btn-action'
+            disabled={!employeeState.selectedEmployee}
+            onClick={promote}
+            title='Promote'>
+            <FontAwesomeIcon icon={faLevelUp} />
+          </button>
+        )}
+        {hasAccess(
+          userProfileState.moduleRights,
+          Pages.Employees,
           'Delete',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -124,7 +151,7 @@ export default function EmployeeButtons() {
         {hasAccess(
           userProfileState.moduleRights,
           Pages.Employees,
-          'Attach Files',
+          'Attachments',
           userProfileState.systemUser?.isAdmin
         ) && (
           <button

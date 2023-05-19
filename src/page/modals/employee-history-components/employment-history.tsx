@@ -81,8 +81,8 @@ export default function EmploymentHistory() {
         <div className='btn-actions-group'>
           {hasAccess(
             userProfileState.moduleRights,
-            Pages.Employees,
-            'Add Personal History',
+            Pages.ServiceRecord,
+            'Add',
             userProfileState.systemUser?.isAdmin
           ) && (
             <button className='btn-action' title='Add' onClick={addHistory}>
@@ -91,7 +91,7 @@ export default function EmploymentHistory() {
           )}
           {hasAccess(
             userProfileState.moduleRights,
-            Pages.Employees,
+            Pages.ServiceRecord,
             'Edit',
             userProfileState.systemUser?.isAdmin
           ) && (
@@ -105,7 +105,7 @@ export default function EmploymentHistory() {
           )}
           {hasAccess(
             userProfileState.moduleRights,
-            Pages.Employees,
+            Pages.ServiceRecord,
             'Delete',
             userProfileState.systemUser?.isAdmin
           ) && (

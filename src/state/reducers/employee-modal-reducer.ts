@@ -1,21 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Guid } from 'guid-typescript';
+import { toCommaSeparateAmount } from '../../helper';
 import CustomReturn from '../../models/client-model/CustomReturn';
 import BloodType from '../../models/entities/BloodType';
 import CivilStatus from '../../models/entities/CivilStatus';
-import Position from '../../models/entities/Position';
 import EducationalAttainment from '../../models/entities/EducationalAttainment';
 import Eligibility from '../../models/entities/Eligibility';
 import Employee from '../../models/entities/Employee';
 import EmployeeEligibility from '../../models/entities/EmployeeEligibility';
+import EmployeeRemuneration from '../../models/entities/EmployeeRemuneration';
 import Gender from '../../models/entities/Gender';
+import ModeOfResignation from '../../models/entities/ModeOfResignation';
 import NatureOfEmployment from '../../models/entities/NatureOfEmployment';
 import Office from '../../models/entities/Office';
-import VaccinationStatus from '../../models/entities/VaccinationStatus';
-import ModeOfResignation from '../../models/entities/ModeOfResignation';
-import { toCommaSeparateAmount } from '../../helper';
+import Position from '../../models/entities/Position';
 import Remuneration from '../../models/entities/Remuneration';
-import EmployeeRemuneration from '../../models/entities/EmployeeRemuneration';
+import VaccinationStatus from '../../models/entities/VaccinationStatus';
 
 interface State {
   employee: Employee;
@@ -49,13 +49,13 @@ const employeeInitialState: Employee = {
   middleName: '',
   extension: '',
   fullName: '',
-  officeId: 0,
-  positionId: 0,
-  natureOfEmploymentId: 0,
+  officeId: undefined,
+  positionId: undefined,
+  natureOfEmploymentId: undefined,
   employmentDate: new Date(),
   birthDate: new Date(),
-  genderId: 0,
-  bloodTypeId: 0,
+  genderId: undefined,
+  bloodTypeId: undefined,
   residenceAddress: '',
   contactNumber: '',
   emailAddress: '',
@@ -65,18 +65,18 @@ const employeeInitialState: Employee = {
   sssNo: '',
   tinNo: '',
   isActive: true,
-  educationalAttainmentId: 0,
+  educationalAttainmentId: undefined,
   skills: '',
-  vaccinationStatusId: 0,
-  civilStatusId: 0,
+  vaccinationStatusId: undefined,
+  civilStatusId: undefined,
   height: '',
   weight: '',
   salary: 0.0,
   tempSalary: '',
   salaryGrade: 0,
   step: 0,
-  detailedOfficeId: 0,
-  detailedPositionId: 0,
+  detailedOfficeId: undefined,
+  detailedPositionId: undefined,
   birthPlace: '',
 };
 
@@ -138,6 +138,7 @@ const employeeModalSlice = createSlice({
               tempId: Guid.create().toString(),
               deleted: false,
               updated: false,
+              tempAmount: toCommaSeparateAmount(x.amount.toString()),
             };
           })
           .sort((a, b) =>
@@ -201,28 +202,48 @@ const employeeModalSlice = createSlice({
         positionId: position.id,
       };
     },
-    updateDetailedOffice(state, action: PayloadAction<string>) {
-      let office = state.detailedOffices
-        .slice()
-        .filter((x) => x.id === +action.payload)[0];
-      state.employee = {
-        ...state.employee,
-        detailedOfficeId: office.id,
-        detailedOffice: office,
-        detailedPosition: undefined,
-        detailedPositionId: undefined,
-      };
-      state.detailedPositions = office.positions?.map((x) => x.position!) ?? [];
+    updateDetailedOffice(state, action: PayloadAction<string | undefined>) {
+      if (!!action.payload) {
+        let office = state.detailedOffices
+          .slice()
+          .filter((x) => x.id === +action.payload!)[0];
+        state.employee = {
+          ...state.employee,
+          detailedOfficeId: office.id,
+          detailedOffice: office,
+          detailedPosition: undefined,
+          detailedPositionId: undefined,
+        };
+        state.detailedPositions =
+          office.positions?.map((x) => x.position!) ?? [];
+      } else {
+        state.employee = {
+          ...state.employee,
+          detailedOfficeId: undefined,
+          detailedOffice: undefined,
+          detailedPosition: undefined,
+          detailedPositionId: undefined,
+        };
+        state.detailedPositions = [];
+      }
     },
-    updateDetailedPosition(state, action: PayloadAction<string>) {
-      let position = state.allPositions
-        .slice()
-        .filter((x) => x.id === +action.payload)[0];
-      state.employee = {
-        ...state.employee,
-        detailedPosition: position,
-        detailedPositionId: position.id,
-      };
+    updateDetailedPosition(state, action: PayloadAction<string | undefined>) {
+      if (!!action.payload) {
+        let position = state.allPositions
+          .slice()
+          .filter((x) => x.id === +action.payload!)[0];
+        state.employee = {
+          ...state.employee,
+          detailedPosition: position,
+          detailedPositionId: position.id,
+        };
+      } else {
+        state.employee = {
+          ...state.employee,
+          detailedPosition: undefined,
+          detailedPositionId: undefined,
+        };
+      }
     },
     setShowModal(state, action: PayloadAction<boolean>) {
       state.isModalShow = action.payload;
@@ -383,10 +404,18 @@ const employeeModalSlice = createSlice({
       state.civilStatuses = action.payload;
     },
     setEligibilities(state, action: PayloadAction<Eligibility[]>) {
-      state.eligibilities = action.payload;
+      state.eligibilities = action.payload.filter(
+        (x) =>
+          !state.employeeEligibilities.filter((y) => y.eligibilityId === x.id)
+            .length
+      );
     },
     setRemunerations(state, action: PayloadAction<Remuneration[]>) {
-      state.remunerations = action.payload;
+      state.remunerations = action.payload.filter(
+        (x) =>
+          !state.employeeRemunerations.filter((y) => y.remunerationId === x.id)
+            .length
+      );
     },
     setVaccinationStatuses(state, action: PayloadAction<VaccinationStatus[]>) {
       state.vaccinationStatuses = action.payload;
