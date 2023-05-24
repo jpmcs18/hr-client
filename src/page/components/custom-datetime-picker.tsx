@@ -1,5 +1,6 @@
 import CustomReturn from '../../models/client-model/CustomReturn';
 import { toDateDisplay, toTimeDisplay } from '../../helper';
+import { useRef } from 'react';
 type DateTimePickerType = 'date' | 'time' | 'datetime-local';
 export default function CustomDateTimePicker({
   title,
@@ -24,6 +25,20 @@ export default function CustomDateTimePicker({
   disabled?: boolean | false;
   onChange?: (data: CustomReturn) => void;
 }) {
+  const date = useRef<string | undefined>(
+    value === undefined || value === null
+      ? undefined
+      : type === 'date'
+      ? toDateDisplay(value)
+      : toTimeDisplay(value)
+  );
+
+  function onBlur() {
+    onChange?.({
+      elementName: name ?? '',
+      value: date === undefined ? undefined : new Date(date.current!),
+    });
+  }
   return (
     <div className={'custom-input ' + className}>
       {title && <label htmlFor={name}>{title}</label>}
@@ -35,17 +50,12 @@ export default function CustomDateTimePicker({
           name={name}
           placeholder={placeholder}
           id={id}
-          value={
-            !value
-              ? undefined
-              : type === 'date'
-              ? toDateDisplay(value)
-              : toTimeDisplay(value)
-          }
+          value={date.current}
           className={type}
-          onChange={(e) =>
-            onChange?.({ elementName: name ?? '', value: e.target.valueAsDate })
-          }
+          onChange={(e) => {
+            date.current = e.target.value;
+          }}
+          onBlur={onBlur}
         />
       </div>
     </div>

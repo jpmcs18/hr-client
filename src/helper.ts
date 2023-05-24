@@ -92,7 +92,11 @@ export function toTimeDisplay(date?: Date | null): string {
 
 export function toCommaSeparateAmount(amount?: string): string {
   if (amount === undefined || amount === null) return '';
-  return amount.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  var data = amount.split('.');
+  return (
+    data[0].replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+    (data[1] ? '.' + data[1] : '')
+  );
 }
 
 export function toDisplayAmount(amount?: string): string {

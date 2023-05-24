@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { civilStatusMarried, genderFemale } from '../../constant';
 import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
-import { toCommaSeparateAmount } from '../../helper';
 import { getBloodTypes } from '../../repositories/blood-type-queries';
 import { getCivilStatuses } from '../../repositories/civil-status-queries';
 import { getEligibilities } from '../../repositories/eligibility-queries';
@@ -201,10 +201,15 @@ export default function ManageEmployee() {
     )
       .then((res) => {
         if (res) {
+          console.log(
+            employeeModalState.employee.salaryGrade,
+            employeeModalState.employee.step,
+            res.amount
+          );
           dispatch(
             employeeModalActions.updateEmployee({
-              elementName: 'tempSalary',
-              value: toCommaSeparateAmount(res.amount.toString()),
+              elementName: 'salary',
+              value: res.amount,
             })
           );
         }
@@ -280,6 +285,34 @@ export default function ManageEmployee() {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
           />
+          <CustomDropdown
+            title='Civil Status'
+            name='civilStatusId'
+            value={employeeModalState.employee.civilStatusId}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+            }}
+            itemsList={employeeModalState.civilStatuses.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+          />
+          <CustomDropdown
+            title='Gender'
+            name='genderId'
+            value={employeeModalState.employee.genderId}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+            }}
+            itemsList={employeeModalState.genders.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+          />
           <CustomTextBox
             title='First Name'
             name='firstName'
@@ -312,166 +345,28 @@ export default function ManageEmployee() {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
           />
-          <CustomDropdown
-            title='Nature of Employment'
-            name='natureOfEmploymentId'
-            value={employeeModalState.employee.natureOfEmploymentId}
-            onChange={(ret) => {
-              dispatch(employeeModalActions.updateEmployee(ret));
-            }}
-            itemsList={employeeModalState.natureOfEmployments.map((x) => {
-              return {
-                key: x.id.toString(),
-                value: x.description,
-              };
-            })}
-          />
-          {employeeModalState.employee.isRegular && (
-            <>
-              <CustomNumber
-                title='Salary Grade'
-                type='number'
-                name='salaryGrade'
-                value={employeeModalState.employee?.salaryGrade?.toString()}
-                onChange={(ret) => {
-                  dispatch(employeeModalActions.updateEmployee(ret));
-                }}
-                onBlur={getSalaryGradeAmount}
-              />
-              <CustomNumber
-                title='Step'
-                type='number'
-                name='step'
-                value={employeeModalState.employee?.step?.toString()}
-                onChange={(ret) => {
-                  dispatch(employeeModalActions.updateEmployee(ret));
-                }}
-                onBlur={getSalaryGradeAmount}
-              />
-            </>
-          )}
-          <CustomNumber
-            title={
-              'Salary' +
-              (employeeModalState.employee.isRegular
-                ? ' (Will auto fill based on Sarary Grade and Step)'
-                : '')
-            }
-            name='tempSalary'
-            type='amount'
-            readonly={employeeModalState.employee.isRegular}
-            value={employeeModalState.employee?.tempSalary}
-            onChange={(ret) => {
-              dispatch(employeeModalActions.updateEmployee(ret));
-              dispatch(
-                employeeModalActions.updateEmployee({
-                  elementName: 'salary',
-                  value: +ret.value.replaceAll(',', ''),
-                })
-              );
-            }}
-          />
-          <CustomDropdown
-            title='Office'
-            value={employeeModalState.employee.officeId}
-            onChange={(ret) => {
-              dispatch(employeeModalActions.updateOffice(ret.value));
-            }}
-            itemsList={employeeModalState.offices.map((x) => {
-              return {
-                key: x.id.toString(),
-                value: x.description,
-              };
-            })}
-          />
-          <CustomDropdown
-            title='Position'
-            value={employeeModalState.employee.positionId}
-            onChange={(ret) => {
-              dispatch(employeeModalActions.updatePosition(ret.value));
-            }}
-            itemsList={(employeeModalState.positions.length > 0
-              ? employeeModalState.positions
-              : employeeModalState.allPositions
-            ).map((x) => {
-              return {
-                key: x.id.toString(),
-                value: x.description,
-              };
-            })}
-          />
-          {employeeModalState.employee.isRegular && (
-            <>
-              <CustomDropdown
-                title='Detailed Office'
-                value={employeeModalState.employee.detailedOfficeId}
-                onChange={(ret) => {
-                  dispatch(
-                    employeeModalActions.updateDetailedOffice(ret.value)
-                  );
-                }}
-                onClear={() => {
-                  dispatch(
-                    employeeModalActions.updateDetailedOffice(undefined)
-                  );
-                }}
-                itemsList={employeeModalState.detailedOffices.map((x) => {
-                  return {
-                    key: x.id.toString(),
-                    value: x.description,
-                  };
-                })}
-              />
-              <CustomDropdown
-                title='Detailed Position'
-                value={employeeModalState.employee.detailedPositionId}
-                onChange={(ret) => {
-                  dispatch(
-                    employeeModalActions.updateDetailedPosition(ret.value)
-                  );
-                }}
-                onClear={() => {
-                  dispatch(
-                    employeeModalActions.updateDetailedPosition(undefined)
-                  );
-                }}
-                itemsList={(employeeModalState.detailedPositions.length > 0
-                  ? employeeModalState.detailedPositions
-                  : employeeModalState.allPositions
-                ).map((x) => {
-                  return {
-                    key: x.id.toString(),
-                    value: x.description,
-                  };
-                })}
-              />
-            </>
-          )}
-          <CustomTextBox
-            title='Contact Number'
-            name='contactNumber'
-            value={employeeModalState.employee?.contactNumber}
-            onChange={(ret) => {
-              dispatch(employeeModalActions.updateEmployee(ret));
-            }}
-          />
-          <CustomTextBox
-            title='Email Address'
-            name='emailAddress'
-            value={employeeModalState.employee?.emailAddress}
-            onChange={(ret) => {
-              dispatch(employeeModalActions.updateEmployee(ret));
-            }}
-          />
-          <CustomDateTimePicker
-            title='Date of Employment'
-            type='date'
-            name='employmentDate'
-            value={employeeModalState.employee.employmentDate}
-            onChange={(ret) => {
-              dispatch(employeeModalActions.updateEmployee(ret));
-            }}
-          />
+          {+(employeeModalState.employee.genderId ?? 0) === +genderFemale &&
+            +(employeeModalState.employee.civilStatusId ?? 0) ===
+              +civilStatusMarried && (
+              <>
+                <CustomTextBox
+                  title='Maiden Middle Name'
+                  name='maidenMiddleName'
+                  value={employeeModalState.employee?.maidenMiddleName}
+                  onChange={(ret) => {
+                    dispatch(employeeModalActions.updateEmployee(ret));
+                  }}
+                />
+                <CustomTextBox
+                  title='Maiden Last Name'
+                  name='maidenLastName'
+                  value={employeeModalState.employee?.maidenLastName}
+                  onChange={(ret) => {
+                    dispatch(employeeModalActions.updateEmployee(ret));
+                  }}
+                />
+              </>
+            )}
           <CustomDateTimePicker
             title='Date of Birth'
             type='date'
@@ -489,33 +384,21 @@ export default function ManageEmployee() {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
           />
-          <CustomDropdown
-            title='Gender'
-            name='genderId'
-            value={employeeModalState.employee.genderId}
+          <CustomTextBox
+            title='Contact Number'
+            name='contactNumber'
+            value={employeeModalState.employee?.contactNumber}
             onChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
-            itemsList={employeeModalState.genders.map((x) => {
-              return {
-                key: x.id.toString(),
-                value: x.description,
-              };
-            })}
           />
-          <CustomDropdown
-            title='Civil Status'
-            name='civilStatusId'
-            value={employeeModalState.employee.civilStatusId}
+          <CustomTextBox
+            title='Email Address'
+            name='emailAddress'
+            value={employeeModalState.employee?.emailAddress}
             onChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
-            itemsList={employeeModalState.civilStatuses.map((x) => {
-              return {
-                key: x.id.toString(),
-                value: x.description,
-              };
-            })}
           />
           <CustomDropdown
             title='Blood Type'
@@ -547,6 +430,20 @@ export default function ManageEmployee() {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
           />
+          <CustomDropdown
+            title='Vaccination Status'
+            name='vaccinationStatusId'
+            value={employeeModalState.employee.vaccinationStatusId}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+            }}
+            itemsList={employeeModalState.vaccinationStatuses.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+          />
           <CustomTextArea
             title='Residence Address'
             name='residenceAddress'
@@ -564,6 +461,132 @@ export default function ManageEmployee() {
             onChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
+          />
+          <CustomDateTimePicker
+            title='Date of Employment'
+            type='date'
+            name='employmentDate'
+            value={employeeModalState.employee.employmentDate}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+            }}
+          />
+          <CustomDropdown
+            title='Nature of Employment'
+            name='natureOfEmploymentId'
+            value={employeeModalState.employee.natureOfEmploymentId}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+            }}
+            itemsList={employeeModalState.natureOfEmployments.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+          />
+          {employeeModalState.employee.isRegular && (
+            <>
+              <CustomNumber
+                title='Salary Grade'
+                type='number'
+                name='salaryGrade'
+                value={employeeModalState.employee?.salaryGrade}
+                onChange={(ret) => {
+                  dispatch(employeeModalActions.updateEmployee(ret));
+                }}
+                onBlur={getSalaryGradeAmount}
+              />
+              <CustomNumber
+                title='Step'
+                type='number'
+                name='step'
+                value={employeeModalState.employee?.step}
+                onChange={(ret) => {
+                  dispatch(employeeModalActions.updateEmployee(ret));
+                }}
+                onBlur={getSalaryGradeAmount}
+              />
+            </>
+          )}
+          <CustomNumber
+            title={
+              'Salary' +
+              (employeeModalState.employee.isRegular
+                ? ' (Will auto fill based on Sarary Grade and Step)'
+                : '')
+            }
+            name='salary'
+            type='amount'
+            readonly={employeeModalState.employee.isRegular}
+            value={employeeModalState.employee?.salary}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+            }}
+          />
+          <CustomDropdown
+            title='Office'
+            value={employeeModalState.employee.officeId}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateOffice(ret.value));
+            }}
+            itemsList={employeeModalState.offices.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+          />
+          <CustomDropdown
+            title='Position'
+            value={employeeModalState.employee.positionId}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updatePosition(ret.value));
+            }}
+            itemsList={(employeeModalState.positions.length > 0
+              ? employeeModalState.positions
+              : employeeModalState.allPositions
+            ).map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+          />
+          <CustomDropdown
+            title='Detailed Office'
+            value={employeeModalState.employee.detailedOfficeId}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateDetailedOffice(ret.value));
+            }}
+            onClear={() => {
+              dispatch(employeeModalActions.updateDetailedOffice(undefined));
+            }}
+            itemsList={employeeModalState.detailedOffices.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+          />
+          <CustomDropdown
+            title='Detailed Position'
+            value={employeeModalState.employee.detailedPositionId}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateDetailedPosition(ret.value));
+            }}
+            onClear={() => {
+              dispatch(employeeModalActions.updateDetailedPosition(undefined));
+            }}
+            itemsList={(employeeModalState.detailedPositions.length > 0
+              ? employeeModalState.detailedPositions
+              : employeeModalState.allPositions
+            ).map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
           />
           <CustomTextBox
             title='GSIS Number'
@@ -604,20 +627,6 @@ export default function ManageEmployee() {
             onChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
-          />
-          <CustomDropdown
-            title='Vaccination Status'
-            name='vaccinationStatusId'
-            value={employeeModalState.employee.vaccinationStatusId}
-            onChange={(ret) => {
-              dispatch(employeeModalActions.updateEmployee(ret));
-            }}
-            itemsList={employeeModalState.vaccinationStatuses.map((x) => {
-              return {
-                key: x.id.toString(),
-                value: x.description,
-              };
-            })}
           />
         </div>
         <ManageEmployeeEligibilitiesTable />

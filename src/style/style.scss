@@ -512,7 +512,7 @@ input {
       padding: 0.5em;
     }
     .unchecked {
-      box-shadow: inset 0em 0em 1em 0em var(--shadow-color);
+      box-shadow: inset 0em 0em 0.5em var(--shadow-color);
     }
     .checked {
       background-color: var(--primary-color);
@@ -1132,6 +1132,22 @@ tbody tr {
   left: 0;
   right: 0;
   bottom: 0;
+  .service-record-modal {
+    width: 90% !important;
+    .service-record-content-body {
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      .details {
+        display: flex;
+        flex-wrap: wrap;
+        .custom-input {
+          flex: 1 1 30%;
+        }
+        overflow: visible;
+      }
+    }
+  }
   .report-modal {
     width: 80%;
 
@@ -1246,6 +1262,7 @@ tbody tr {
       }
     }
   }
+
   .employee-modal {
     width: 90% !important;
     .manage-employee-body {

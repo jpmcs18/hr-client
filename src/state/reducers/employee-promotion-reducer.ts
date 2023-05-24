@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { toDisplayAmount } from '../../helper';
 import CustomReturn from '../../models/client-model/CustomReturn';
 import Employee from '../../models/entities/Employee';
-import EmployeeHistory from '../../models/entities/EmployeeHistory';
 import NatureOfEmployment from '../../models/entities/NatureOfEmployment';
 import Office from '../../models/entities/Office';
 import Position from '../../models/entities/Position';
@@ -17,8 +15,6 @@ interface Promotion {
   salaryGrade?: number | undefined;
   step?: number | undefined;
   salary: number;
-
-  tempSalary: string;
 }
 interface State {
   employee: Employee | undefined;
@@ -38,7 +34,6 @@ const employeePromotionInitialState: Promotion = {
   officeId: undefined,
   positionId: undefined,
   salary: 0,
-  tempSalary: '0.00',
 };
 
 const initialState: State = {
@@ -94,12 +89,6 @@ const employeePromotionSlice = createSlice({
         state.detailedPositions = !state.detailedPositions.slice().length
           ? state.allPositions
           : state.detailedPositions;
-      }
-      if (action.payload.elementName === 'tempSalary') {
-        state.employeePromotion = {
-          ...state.employeePromotion,
-          salary: action.payload.value.replaceAll(',', ''),
-        };
       }
     },
     setOffices(state, action: PayloadAction<Office[]>) {

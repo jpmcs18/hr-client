@@ -17,7 +17,6 @@ export default function CustomDropdown({
   itemsList,
   readonly,
   onChange,
-  onClear,
 }: {
   title: string;
   name?: string;
@@ -60,13 +59,16 @@ export default function CustomDropdown({
               className='icon'
               id={componentId + '-icon'}
             />
-            {onClear && (
-              <FontAwesomeIcon
-                icon={faClose}
-                className='close-icon'
-                onClick={onClear}
-              />
-            )}
+            <FontAwesomeIcon
+              icon={faClose}
+              className='close-icon'
+              onClick={() =>
+                onChange?.({
+                  elementName: name ?? 'def',
+                  value: undefined,
+                })
+              }
+            />
           </div>
         </div>
         {!readonly && (

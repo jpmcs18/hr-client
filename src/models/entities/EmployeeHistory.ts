@@ -18,6 +18,4 @@ export default interface EmployeeHistory {
   detailedOffice?: Office | undefined;
   startDate?: Date | undefined;
   endDate?: Date | undefined;
-
-  tempSalary?: string | undefined;
 }

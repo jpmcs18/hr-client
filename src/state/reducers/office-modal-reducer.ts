@@ -3,6 +3,8 @@ import { Guid } from 'guid-typescript';
 import Position from '../../models/entities/Position';
 import Office from '../../models/entities/Office';
 import OfficePosition from '../../models/entities/OfficePosition';
+import CustomReturn from '../../models/client-model/CustomReturn';
+import Employee from '../../models/entities/Employee';
 
 interface State {
   office: Office;
@@ -17,6 +19,7 @@ const officeInitialState: Office = {
   id: 0,
   abbreviation: '',
   description: '',
+  departmentHeadId: undefined,
   positions: [],
 };
 
@@ -46,6 +49,19 @@ const officeModalSlice = createSlice({
           .sort((a, b) =>
             a.position!.description! < b.position!.description! ? -1 : 1
           ) ?? [];
+    },
+    updateOffice(state, action: PayloadAction<CustomReturn>) {
+      state.office = {
+        ...state.office,
+        [action.payload.elementName]: action.payload.value,
+      };
+    },
+    updateHead(state, action: PayloadAction<Employee>) {
+      state.office = {
+        ...state.office,
+        departmentHead: action.payload,
+        departmentHeadId: action.payload.id,
+      };
     },
     setShowModal(state, action: PayloadAction<boolean>) {
       state.isModalShow = action.payload;

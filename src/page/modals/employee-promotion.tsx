@@ -4,7 +4,6 @@ import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
-import { toCommaSeparateAmount } from '../../helper';
 import { promoteEmployee } from '../../repositories/employee-queries';
 import { getNatureOfEmployments } from '../../repositories/nature-of-employment-queries';
 import { getOffices } from '../../repositories/office-queries';
@@ -132,8 +131,8 @@ export default function EmployeePromotion() {
         if (res) {
           dispatch(
             employeePromotionActions.updateEmployeePromotion({
-              elementName: 'tempSalary',
-              value: toCommaSeparateAmount(res.amount.toString()),
+              elementName: 'salary',
+              value: res.amount,
             })
           );
         }
@@ -155,121 +154,127 @@ export default function EmployeePromotion() {
       className='service-record-modal'
       onClose={() => onModalClose(false)}
       title='Manage Service Record'>
-      <div className='modal-content-body'>
-        <CustomDateTimePicker
-          type='date'
-          name='appointmentDate'
-          title='Appintment Date'
-          value={employeePromotionState.employeePromotion.appointmentDate}
-          onChange={(ret) =>
-            dispatch(employeePromotionActions.updateEmployeePromotion(ret))
-          }
-        />
-        <CustomDropdown
-          title='Employment Type'
-          name='natureOfEmploymentId'
-          value={employeePromotionState.employeePromotion.natureOfEmploymentId}
-          itemsList={employeePromotionState.natureOfEmployments.map((x) => {
-            return {
-              key: x.id.toString(),
-              value: x.description,
-            };
-          })}
-          onChange={(ret) =>
-            dispatch(employeePromotionActions.updateEmployeePromotion(ret))
-          }
-        />
-        <CustomDropdown
-          title='Office'
-          name='officeId'
-          value={employeePromotionState.employeePromotion.officeId}
-          itemsList={employeePromotionState.offices.map((x) => {
-            return {
-              key: x.id.toString(),
-              value: x.description,
-            };
-          })}
-          onChange={(ret) =>
-            dispatch(employeePromotionActions.updateEmployeePromotion(ret))
-          }
-        />
-        <CustomDropdown
-          title='Position'
-          name='positionId'
-          value={employeePromotionState.employeePromotion.positionId}
-          itemsList={employeePromotionState.positions.map((x) => {
-            return {
-              key: x.id.toString(),
-              value: x.description,
-            };
-          })}
-          onChange={(ret) =>
-            dispatch(employeePromotionActions.updateEmployeePromotion(ret))
-          }
-        />
-        {employeePromotionState.isRegular && (
-          <>
-            <CustomDropdown
-              title='Detailed Office'
-              name='detailedOfficeId'
-              value={employeePromotionState.employeePromotion.detailedOfficeId}
-              itemsList={employeePromotionState.offices.map((x) => {
-                return {
-                  key: x.id.toString(),
-                  value: x.description,
-                };
-              })}
-              onChange={(ret) =>
-                dispatch(employeePromotionActions.updateEmployeePromotion(ret))
-              }
-            />
-            <CustomDropdown
-              title='Detailed Position'
-              name='detailedPositionId'
-              value={
-                employeePromotionState.employeePromotion.detailedPositionId
-              }
-              itemsList={employeePromotionState.detailedPositions.map((x) => {
-                return {
-                  key: x.id.toString(),
-                  value: x.description,
-                };
-              })}
-              onChange={(ret) =>
-                dispatch(employeePromotionActions.updateEmployeePromotion(ret))
-              }
-            />
-            <CustomNumber
-              title='Salary Grade'
-              type='number'
-              name='salaryGrade'
-              value={employeePromotionState.employeePromotion?.salaryGrade?.toString()}
-              onChange={(ret) => {
-                dispatch(employeePromotionActions.updateEmployeePromotion(ret));
-              }}
-              onBlur={getSalaryGradeAmount}
-            />
-            <CustomNumber
-              title='Step'
-              type='number'
-              name='step'
-              value={employeePromotionState.employeePromotion?.step?.toString()}
-              onChange={(ret) => {
-                dispatch(employeePromotionActions.updateEmployeePromotion(ret));
-              }}
-              onBlur={getSalaryGradeAmount}
-            />
-          </>
-        )}
-        <CustomNumber
-          title='Salary'
-          type='amount'
-          name='tempSalary'
-          value={employeePromotionState.employeePromotion.tempSalary}
-          onChange={(ret) =>
-            dispatch(employeePromotionActions.updateEmployeePromotion(ret))
-          }
-        />
+      <div className='modal-content-body service-record-content-body'>
+        <div className='details'>
+          <CustomDateTimePicker
+            type='date'
+            name='appointmentDate'
+            title='Appintment Date'
+            value={employeePromotionState.employeePromotion.appointmentDate}
+            onChange={(ret) =>
+              dispatch(employeePromotionActions.updateEmployeePromotion(ret))
+            }
+          />
+          <CustomDropdown
+            title='Employment Type'
+            name='natureOfEmploymentId'
+            value={
+              employeePromotionState.employeePromotion.natureOfEmploymentId
+            }
+            itemsList={employeePromotionState.natureOfEmployments.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+            onChange={(ret) =>
+              dispatch(employeePromotionActions.updateEmployeePromotion(ret))
+            }
+          />
+          <CustomDropdown
+            title='Office'
+            name='officeId'
+            value={employeePromotionState.employeePromotion.officeId}
+            itemsList={employeePromotionState.offices.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+            onChange={(ret) =>
+              dispatch(employeePromotionActions.updateEmployeePromotion(ret))
+            }
+          />
+          <CustomDropdown
+            title='Position'
+            name='positionId'
+            value={employeePromotionState.employeePromotion.positionId}
+            itemsList={employeePromotionState.positions.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+            onChange={(ret) =>
+              dispatch(employeePromotionActions.updateEmployeePromotion(ret))
+            }
+          />
+          <CustomDropdown
+            title='Detailed Office'
+            name='detailedOfficeId'
+            value={employeePromotionState.employeePromotion.detailedOfficeId}
+            itemsList={employeePromotionState.offices.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+            onChange={(ret) =>
+              dispatch(employeePromotionActions.updateEmployeePromotion(ret))
+            }
+          />
+          <CustomDropdown
+            title='Detailed Position'
+            name='detailedPositionId'
+            value={employeePromotionState.employeePromotion.detailedPositionId}
+            itemsList={employeePromotionState.detailedPositions.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+            onChange={(ret) =>
+              dispatch(employeePromotionActions.updateEmployeePromotion(ret))
+            }
+          />
+          {employeePromotionState.isRegular && (
+            <>
+              <CustomNumber
+                title='Salary Grade'
+                type='number'
+                name='salaryGrade'
+                value={employeePromotionState.employeePromotion?.salaryGrade}
+                onChange={(ret) => {
+                  dispatch(
+                    employeePromotionActions.updateEmployeePromotion(ret)
+                  );
+                }}
+                onBlur={getSalaryGradeAmount}
+              />
+              <CustomNumber
+                title='Step'
+                type='number'
+                name='step'
+                value={employeePromotionState.employeePromotion?.step}
+                onChange={(ret) => {
+                  dispatch(
+                    employeePromotionActions.updateEmployeePromotion(ret)
+                  );
+                }}
+                onBlur={getSalaryGradeAmount}
+              />
+            </>
+          )}
+          <CustomNumber
+            title='Salary'
+            type='amount'
+            name='salary'
+            value={employeePromotionState.employeePromotion.salary}
+            onChange={(ret) =>
+              dispatch(employeePromotionActions.updateEmployeePromotion(ret))
+            }
+          />
+        </div>
       </div>
       <div className='modal-footer'>
         <button onClick={saveData} className='btn-modal btn-primary'>

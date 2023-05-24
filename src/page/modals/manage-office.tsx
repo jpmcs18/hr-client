@@ -4,21 +4,28 @@ import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
-import { getPositions } from '../../repositories/position-queries';
+import Employee from '../../models/entities/Employee';
 import { insertOffice, updateOffice } from '../../repositories/office-queries';
+import { getPositions } from '../../repositories/position-queries';
+import { employeeSearchableActions } from '../../state/reducers/employee-searchable-reducer';
 import { officeModalActions } from '../../state/reducers/office-modal-reducer';
 import { officeActions } from '../../state/reducers/office-reducer';
 import { RootState } from '../../state/store';
 import CustomDropdown from '../components/custom-dropdown';
+import CustomSelector from '../components/custom-selector';
 import CustomTextBox from '../components/custom-textbox';
 import ManageOfficePositionsTable from './manage-office-positions-table';
 import Modal from './modal';
+import EmployeeSearchable from './searchables/employee-searchable';
 
 export default function ManageOffice() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
   const officeModalState = useSelector((state: RootState) => state.officeModal);
+  const employeeSearchableState = useSelector(
+    (state: RootState) => state.employeeSearchable
+  );
   useEffect(
     () => {
       getDes();
@@ -76,34 +83,43 @@ export default function ManageOffice() {
         .finally(() => setBusy(false));
     }
   }
+  function onCloseEmployeeSearch(employee?: Employee) {
+    if (employee) {
+      dispatch(officeModalActions.updateHead(employee));
+    }
+  }
   return (
     <Modal
       className='office-modal'
       onClose={() => onModalClose(false)}
       title='Manage Office'>
       <div className='modal-content-body'>
+        <CustomSelector
+          title='Head'
+          value={officeModalState.office?.departmentHead?.fullName}
+          onSelectorClick={() => {
+            dispatch(
+              employeeSearchableActions.setOnCloseFunction(
+                onCloseEmployeeSearch
+              )
+            );
+            dispatch(employeeSearchableActions.setShowModal(true));
+          }}
+        />
         <CustomTextBox
           title='Description'
+          name='description'
           value={officeModalState.office?.description}
           onChange={(ret) => {
-            dispatch(
-              officeModalActions.setOffice({
-                ...officeModalState.office!,
-                description: ret.value,
-              })
-            );
+            dispatch(officeModalActions.updateOffice(ret));
           }}
         />
         <CustomTextBox
           title='Abbreviation'
+          name='abbreviation'
           value={officeModalState.office?.abbreviation}
           onChange={(ret) => {
-            dispatch(
-              officeModalActions.setOffice({
-                ...officeModalState.office!,
-                abbreviation: ret.value,
-              })
-            );
+            dispatch(officeModalActions.updateOffice(ret));
           }}
         />
         <CustomDropdown
@@ -125,6 +141,8 @@ export default function ManageOffice() {
           SAVE
         </button>
       </div>
+
+      <>{employeeSearchableState.isModalShow && <EmployeeSearchable />}</>
     </Modal>
   );
 }

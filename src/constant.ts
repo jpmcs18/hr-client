@@ -9,7 +9,8 @@ export const APP_SECRET = process.env.REACT_APP_SECRET_KEY;
 
 export const totalSalaryGrades = 32;
 export const totalSteps = 8;
-
+export const genderFemale: number = 2;
+export const civilStatusMarried: number = 1;
 export const Pages = {
   Employees: 'Employees',
   Attachment: 'Employee Attachments',

@@ -5,6 +5,7 @@ export default function OfficeItem({ office }: { office: Office }) {
     <>
       <td>{office.description}</td>
       <td>{office.abbreviation}</td>
+      <td>{office.departmentHead?.fullName}</td>
     </>
   );
 }

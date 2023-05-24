@@ -1,10 +1,5 @@
 import {
   faAdd,
-  faArrowsLeftRightToLine,
-  faArrowsUpToLine,
-  faArrowUp,
-  faArrowUpFromBracket,
-  faArrowUpWideShort,
   faEdit,
   faFileArrowUp,
   faHistory,

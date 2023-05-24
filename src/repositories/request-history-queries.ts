@@ -1,5 +1,4 @@
-import { PositionEnd, RequestHistoryEnd } from '../endpoints';
-import Position from '../models/entities/Position';
+import { RequestHistoryEnd } from '../endpoints';
 import RequestHistory from '../models/entities/RequestHistory';
 import SearchResult from '../models/response-model/SearchResult';
 import { httpGet } from './base';

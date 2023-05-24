@@ -116,10 +116,7 @@ export default function ManageServiceRecord() {
     }
   }
   return (
-    <Modal
-      className='service-record-modal'
-      onClose={() => onModalClose(false)}
-      title='Manage Service Record'>
+    <Modal onClose={() => onModalClose(false)} title='Manage Service Record'>
       <div className='modal-content-body'>
         <CustomDateTimePicker
           type='date'
@@ -212,8 +209,8 @@ export default function ManageServiceRecord() {
         <CustomNumber
           title='Salary Per Annum'
           type='amount'
-          name='tempSalary'
-          value={serviceRecordModalState.employeeHistory.tempSalary}
+          name='salary'
+          value={serviceRecordModalState.employeeHistory.salary}
           onChange={(ret) =>
             dispatch(serviceRecordModalActions.updateEmployeeHistory(ret))
           }

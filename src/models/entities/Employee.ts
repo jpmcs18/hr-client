@@ -19,6 +19,8 @@ export default interface Employee {
   firstName: string | undefined;
   middleName: string | undefined;
   lastName: string | undefined;
+  maidenMiddleName: string | undefined;
+  maidenLastName: string | undefined;
   extension: string | undefined;
   fullName: string | undefined;
   natureOfEmploymentId: number | undefined;
@@ -66,6 +68,5 @@ export default interface Employee {
   detailedOffice?: Office | undefined;
   employeeRemunerations?: EmployeeRemuneration[] | undefined;
 
-  tempSalary?: string;
   isRegular?: boolean;
 }

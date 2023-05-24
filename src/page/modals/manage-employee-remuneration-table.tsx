@@ -51,7 +51,7 @@ export default function ManageEmployeeRemunerationTable() {
                   <CustomNumber
                     type='amount'
                     placeholder='Amount...'
-                    value={x.tempAmount}
+                    value={x.amount}
                     onChange={(ret) =>
                       dispatch(
                         employeeModalActions.updateRemuneration({

@@ -47,6 +47,8 @@ const employeeInitialState: Employee = {
   firstName: '',
   lastName: '',
   middleName: '',
+  maidenMiddleName: '',
+  maidenLastName: '',
   extension: '',
   fullName: '',
   officeId: undefined,
@@ -72,7 +74,6 @@ const employeeInitialState: Employee = {
   height: '',
   weight: '',
   salary: 0.0,
-  tempSalary: '',
   salaryGrade: 0,
   step: 0,
   detailedOfficeId: undefined,
@@ -110,7 +111,6 @@ const employeeModalSlice = createSlice({
       state.employee = action.payload ?? employeeInitialState;
       state.employee = {
         ...state.employee,
-        tempSalary: toCommaSeparateAmount(state.employee.salary?.toString()),
         isRegular: state.employee.natureOfEmployment?.isRegular,
       };
       state.isSalaryGradeUpdate = false;
@@ -163,11 +163,7 @@ const employeeModalSlice = createSlice({
         ...state.employee,
         [action.payload.elementName]: action.payload.value,
       };
-      if (action.payload.elementName === 'tempSalary') {
-        state.employee = {
-          ...state.employee,
-          salary: +action.payload.value.toString().replaceAll(',', ''),
-        };
+      if (action.payload.elementName === 'salary') {
         state.isSalaryGradeUpdate = false;
       }
       if (action.payload.elementName === 'natureOfEmploymentId') {

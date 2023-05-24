@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { toDisplayAmount } from '../../helper';
 import CustomReturn from '../../models/client-model/CustomReturn';
 import EmployeeHistory from '../../models/entities/EmployeeHistory';
 import NatureOfEmployment from '../../models/entities/NatureOfEmployment';
@@ -24,7 +23,6 @@ const employeeHistoryInitialState: EmployeeHistory = {
   detailedOfficeId: undefined,
   detailedPositionId: undefined,
   salary: 0,
-  tempSalary: '0.00',
 };
 
 const initialState: State = {
@@ -46,10 +44,6 @@ const serviceRecordModalSlice = createSlice({
       action: PayloadAction<EmployeeHistory | undefined>
     ) {
       state.employeeHistory = action.payload ?? employeeHistoryInitialState;
-      state.employeeHistory = {
-        ...state.employeeHistory,
-        tempSalary: toDisplayAmount(state.employeeHistory.salary?.toString()),
-      };
       state.positions =
         state.offices
           .filter((x) => x.id === state.employeeHistory.officeId)?.[0]
@@ -88,12 +82,6 @@ const serviceRecordModalSlice = createSlice({
         state.detailedPositions = !state.detailedPositions.slice().length
           ? state.allPositions
           : state.detailedPositions;
-      }
-      if (action.payload.elementName === 'tempSalary') {
-        state.employeeHistory = {
-          ...state.employeeHistory,
-          salary: action.payload.value.replaceAll(',', ''),
-        };
       }
     },
     setOffices(state, action: PayloadAction<Office[]>) {

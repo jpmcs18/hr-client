@@ -13,7 +13,6 @@ import { requestHistoryActions } from '../../../state/reducers/request-history-r
 import { RootState } from '../../../state/store';
 import CustomDropdown from '../custom-dropdown';
 import CustomTextBox from '../custom-textbox';
-import SearchBar from '../searchbar';
 import RequestHistoryButtons from './request-history-buttons';
 import RequestHistoryItems from './request-history-items';
 

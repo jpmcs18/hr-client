@@ -28,6 +28,11 @@ export default function ManageSalaryGrade() {
     if (hasChange) dispatch(salaryGradeBatchActions.setInitiateSearch(true));
   }
   async function saveData() {
+    if (!salaryGradeModalState.salaryGradeBatch.description) {
+      setToasterMessage({ content: 'Please fill description' });
+      return;
+    }
+
     setBusy(true);
     if (salaryGradeModalState.salaryGradeBatch.id > 0) {
       await updateSalaryGradeBatch({
@@ -132,7 +137,7 @@ export default function ManageSalaryGrade() {
                             <td key={salaryGradeItem.tempId}>
                               <CustomNumber
                                 type='amount'
-                                value={salaryGradeItem.tempAmount}
+                                value={salaryGradeItem.amount}
                                 onChange={(ret) =>
                                   dispatch(
                                     salaryGradeModalActions.updateSalaryGrade({
@@ -151,7 +156,7 @@ export default function ManageSalaryGrade() {
                         <td key={salaryGradeItem.tempId}>
                           <CustomNumber
                             type='amount'
-                            value={salaryGradeItem.tempAmount}
+                            value={salaryGradeItem.amount}
                             onChange={(ret) =>
                               dispatch(
                                 salaryGradeModalActions.updateSalaryGrade({

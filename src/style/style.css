@@ -695,8 +695,8 @@ input:disabled {
 }
 
 .custom-input .checkbox-button .unchecked {
-  -webkit-box-shadow: inset 0em 0em 1em 0em var(--shadow-color);
-          box-shadow: inset 0em 0em 1em 0em var(--shadow-color);
+  -webkit-box-shadow: inset 0em 0em 0.5em var(--shadow-color);
+          box-shadow: inset 0em 0em 0.5em var(--shadow-color);
 }
 
 .custom-input .checkbox-button .checked {
@@ -1493,6 +1493,36 @@ tbody tr {
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.modal-container .service-record-modal {
+  width: 90% !important;
+}
+
+.modal-container .service-record-modal .service-record-content-body {
+  max-height: 80vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.modal-container .service-record-modal .service-record-content-body .details {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  overflow: visible;
+}
+
+.modal-container .service-record-modal .service-record-content-body .details .custom-input {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 30%;
+          flex: 1 1 30%;
 }
 
 .modal-container .report-modal {
