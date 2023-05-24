@@ -159,13 +159,13 @@ const employeeModalSlice = createSlice({
           state.isSalaryGradeUpdate = true;
         }
       }
+      if (action.payload.elementName === 'salary') {
+        state.isSalaryGradeUpdate = false;
+      }
       state.employee = {
         ...state.employee,
         [action.payload.elementName]: action.payload.value,
       };
-      if (action.payload.elementName === 'salary') {
-        state.isSalaryGradeUpdate = false;
-      }
       if (action.payload.elementName === 'natureOfEmploymentId') {
         state.employee = {
           ...state.employee,

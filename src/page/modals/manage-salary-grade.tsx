@@ -138,7 +138,7 @@ export default function ManageSalaryGrade() {
                               <CustomNumber
                                 type='amount'
                                 value={salaryGradeItem.amount}
-                                onChange={(ret) =>
+                                onValueChange={(ret) =>
                                   dispatch(
                                     salaryGradeModalActions.updateSalaryGrade({
                                       tempId: salaryGradeItem.tempId!,
@@ -157,7 +157,7 @@ export default function ManageSalaryGrade() {
                           <CustomNumber
                             type='amount'
                             value={salaryGradeItem.amount}
-                            onChange={(ret) =>
+                            onValueChange={(ret) =>
                               dispatch(
                                 salaryGradeModalActions.updateSalaryGrade({
                                   tempId: salaryGradeItem.tempId!,

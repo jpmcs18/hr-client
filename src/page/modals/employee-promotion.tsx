@@ -244,24 +244,24 @@ export default function EmployeePromotion() {
                 type='number'
                 name='salaryGrade'
                 value={employeePromotionState.employeePromotion?.salaryGrade}
-                onChange={(ret) => {
+                onValueChange={(ret) => {
                   dispatch(
                     employeePromotionActions.updateEmployeePromotion(ret)
                   );
                 }}
-                onBlur={getSalaryGradeAmount}
+                onInputBlur={getSalaryGradeAmount}
               />
               <CustomNumber
                 title='Step'
                 type='number'
                 name='step'
                 value={employeePromotionState.employeePromotion?.step}
-                onChange={(ret) => {
+                onValueChange={(ret) => {
                   dispatch(
                     employeePromotionActions.updateEmployeePromotion(ret)
                   );
                 }}
-                onBlur={getSalaryGradeAmount}
+                onInputBlur={getSalaryGradeAmount}
               />
             </>
           )}
@@ -270,7 +270,7 @@ export default function EmployeePromotion() {
             type='amount'
             name='salary'
             value={employeePromotionState.employeePromotion.salary}
-            onChange={(ret) =>
+            onValueChange={(ret) =>
               dispatch(employeePromotionActions.updateEmployeePromotion(ret))
             }
           />

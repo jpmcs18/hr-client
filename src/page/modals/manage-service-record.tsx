@@ -211,7 +211,7 @@ export default function ManageServiceRecord() {
           type='amount'
           name='salary'
           value={serviceRecordModalState.employeeHistory.salary}
-          onChange={(ret) =>
+          onValueChange={(ret) =>
             dispatch(serviceRecordModalActions.updateEmployeeHistory(ret))
           }
         />

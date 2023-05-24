@@ -24,7 +24,6 @@ export default function ReportModal({ onClose }: { onClose?: () => void }) {
       type: 'pdf',
       base64: true,
     });
-    console.log(reportModalState.pdfBase64);
   }
   return (
     <Modal

@@ -47,6 +47,13 @@ export default function ManageEmployee() {
     []
   );
 
+  useEffect(() => {
+    fetchSalaryGrade();
+  }, [
+    employeeModalState.employee.salaryGrade,
+    employeeModalState.employee.step,
+  ]);
+
   async function initializeComponent() {
     await fetchOffices();
     await fetchNatureOfEmployments();
@@ -201,11 +208,6 @@ export default function ManageEmployee() {
     )
       .then((res) => {
         if (res) {
-          console.log(
-            employeeModalState.employee.salaryGrade,
-            employeeModalState.employee.step,
-            res.amount
-          );
           dispatch(
             employeeModalActions.updateEmployee({
               elementName: 'salary',
@@ -221,14 +223,6 @@ export default function ManageEmployee() {
   function onModalClose(hasChange: boolean) {
     dispatch(employeeModalActions.setShowModal(false));
     if (hasChange) dispatch(employeeActions.setInitiateSearch(true));
-  }
-  async function getSalaryGradeAmount() {
-    if (
-      (employeeModalState.employee.salaryGrade ?? 0) > 0 &&
-      (employeeModalState.employee.step ?? 0) > 0
-    ) {
-      await fetchSalaryGrade();
-    }
   }
   return (
     <Modal
@@ -492,20 +486,18 @@ export default function ManageEmployee() {
                 type='number'
                 name='salaryGrade'
                 value={employeeModalState.employee?.salaryGrade}
-                onChange={(ret) => {
+                onValueChange={(ret) => {
                   dispatch(employeeModalActions.updateEmployee(ret));
                 }}
-                onBlur={getSalaryGradeAmount}
               />
               <CustomNumber
                 title='Step'
                 type='number'
                 name='step'
                 value={employeeModalState.employee?.step}
-                onChange={(ret) => {
+                onValueChange={(ret) => {
                   dispatch(employeeModalActions.updateEmployee(ret));
                 }}
-                onBlur={getSalaryGradeAmount}
               />
             </>
           )}
@@ -520,7 +512,7 @@ export default function ManageEmployee() {
             type='amount'
             readonly={employeeModalState.employee.isRegular}
             value={employeeModalState.employee?.salary}
-            onChange={(ret) => {
+            onValueChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
           />

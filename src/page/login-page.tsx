@@ -42,7 +42,6 @@ export default function LoginPage() {
       .then(async (res) => {
         if (res !== undefined) {
           dispatch(userProfileAction.setAccess(res));
-          console.log(res);
         }
       })
       .catch((err) => {

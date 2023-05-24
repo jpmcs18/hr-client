@@ -13,8 +13,8 @@ export default function CustomNumber({
   readonly,
   placeholder,
   disabled,
-  onChange,
-  onBlur,
+  onValueChange,
+  onInputBlur,
 }: {
   title?: string;
   numberName?: string;
@@ -26,8 +26,8 @@ export default function CustomNumber({
   placeholder?: string;
   readonly?: boolean | false;
   disabled?: boolean | false;
-  onChange?: (data: CustomReturn) => void;
-  onBlur?: () => void;
+  onValueChange?: (data: CustomReturn) => void;
+  onInputBlur?: () => void;
 }) {
   const input = useRef<HTMLInputElement>(null);
 
@@ -76,11 +76,13 @@ export default function CustomNumber({
     input.current.setSelectionRange(selectionStart, selectionStart);
     if (isBlur) {
       if (inputData) {
-        onChange?.({
+        onValueChange?.({
           elementName: name ?? '',
           value: inputData.replaceAll(',', ''),
         });
       }
+
+      onInputBlur?.();
     }
   }
 
@@ -100,8 +102,7 @@ export default function CustomNumber({
           formatCurrency(false);
         }}
         onBlur={() => {
-          onBlur?.();
-          if (type === 'amount') formatCurrency(true);
+          formatCurrency(true);
         }}
       />
     </div>

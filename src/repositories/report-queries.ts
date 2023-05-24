@@ -7,7 +7,6 @@ export async function generateContractualCOE(
   date: Date,
   purpose: string
 ): Promise<string | undefined> {
-  console.log('dd');
   return await httpGet<string>(
     ReportEnd.ContractualCOE +
       '?employeeId=' +
@@ -24,7 +23,6 @@ export async function generateRegularCOE(
   date: Date,
   purpose: string
 ): Promise<string | undefined> {
-  console.log('dd');
   return await httpGet<string>(
     ReportEnd.RegularCOE +
       '?employeeId=' +
@@ -41,7 +39,6 @@ export async function generateServiceRecord(
   date: Date,
   purpose: string
 ): Promise<string | undefined> {
-  console.log('dd');
   return await httpGet<string>(
     ReportEnd.ServiceRecord +
       '?employeeId=' +
