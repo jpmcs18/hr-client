@@ -1,6 +1,6 @@
 import CustomReturn from '../../models/client-model/CustomReturn';
 import { toDateDisplay, toTimeDisplay } from '../../helper';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 type DateTimePickerType = 'date' | 'time' | 'datetime-local';
 export default function CustomDateTimePicker({
   title,
@@ -25,20 +25,29 @@ export default function CustomDateTimePicker({
   disabled?: boolean | false;
   onChange?: (data: CustomReturn) => void;
 }) {
-  const date = useRef<string | undefined>(
-    value === undefined || value === null
-      ? undefined
-      : type === 'date'
-      ? toDateDisplay(value)
-      : toTimeDisplay(value)
+  const input = useRef<HTMLInputElement>(null);
+
+  useEffect(
+    () => {
+      if (input.current) {
+        input.current.value = !value
+          ? ''
+          : type === 'date'
+          ? toDateDisplay(value)
+          : toTimeDisplay(value);
+      }
+    },
+    //eslint-disable-next-line
+    [value]
   );
 
   function onBlur() {
     onChange?.({
       elementName: name ?? '',
-      value: date === undefined ? undefined : new Date(date.current!),
+      value: input.current?.valueAsDate,
     });
   }
+
   return (
     <div className={'custom-input ' + className}>
       {title && <label htmlFor={name}>{title}</label>}
@@ -50,11 +59,8 @@ export default function CustomDateTimePicker({
           name={name}
           placeholder={placeholder}
           id={id}
-          value={date.current}
+          ref={input}
           className={type}
-          onChange={(e) => {
-            date.current = e.target.value;
-          }}
           onBlur={onBlur}
         />
       </div>
