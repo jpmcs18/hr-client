@@ -23,6 +23,7 @@ const employeeHistoryInitialState: EmployeeHistory = {
   detailedOfficeId: undefined,
   detailedPositionId: undefined,
   salary: 0,
+  nolawop: undefined,
 };
 
 const initialState: State = {

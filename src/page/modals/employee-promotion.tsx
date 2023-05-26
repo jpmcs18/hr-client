@@ -1,3 +1,5 @@
+import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -153,7 +155,7 @@ export default function EmployeePromotion() {
     <Modal
       className='service-record-modal'
       onClose={() => onModalClose(false)}
-      title='Manage Service Record'>
+      title='Employee Promotion'>
       <div className='modal-content-body service-record-content-body'>
         <div className='details'>
           <CustomDateTimePicker
@@ -277,9 +279,12 @@ export default function EmployeePromotion() {
         </div>
       </div>
       <div className='modal-footer'>
-        <button onClick={saveData} className='btn-modal btn-primary'>
-          SAVE
-        </button>
+        <div className='btn-actions-group'>
+          <button onClick={saveData} className='btn-action'>
+            <FontAwesomeIcon icon={faSave} />
+            <span className='desktop-features'>Save</span>
+          </button>
+        </div>
       </div>
     </Modal>
   );

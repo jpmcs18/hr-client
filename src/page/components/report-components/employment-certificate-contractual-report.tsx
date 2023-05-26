@@ -82,6 +82,7 @@ export default function EmploymentCertificateContractualReport() {
         <div className='btn-actions-group'>
           <button className='btn-action' onClick={printCOE}>
             <FontAwesomeIcon icon={faPrint} />
+            <span className='desktop-features'>Print</span>
           </button>
         </div>
       </div>

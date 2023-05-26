@@ -87,6 +87,7 @@ export default function EmploymentHistory() {
           ) && (
             <button className='btn-action' title='Add' onClick={addHistory}>
               <FontAwesomeIcon icon={faAdd} />
+              <span className='desktop-features'>Add</span>
             </button>
           )}
           {hasAccess(
@@ -101,6 +102,7 @@ export default function EmploymentHistory() {
               onClick={editHistory}
               title='Edit'>
               <FontAwesomeIcon icon={faEdit} />
+              <span className='desktop-features'>Edit</span>
             </button>
           )}
           {hasAccess(
@@ -115,6 +117,7 @@ export default function EmploymentHistory() {
               onClick={deleteHistory}
               title='Delete'>
               <FontAwesomeIcon icon={faTrash} />
+              <span className='desktop-features'>Delete</span>
             </button>
           )}
         </div>
@@ -148,6 +151,7 @@ export default function EmploymentHistory() {
               <th style={{ minWidth: '15em' }}>Office</th>
               <th style={{ minWidth: '10em' }}>Position</th>
               <th>Salary Per Annum</th>
+              <th>NO LAWOP</th>
             </tr>
           </thead>
           <tbody>
@@ -191,6 +195,7 @@ export default function EmploymentHistory() {
                 <td align='right'>
                   {toDisplayAmount(history.salary?.toString())}
                 </td>
+                <td>{history.nolawop}</td>
               </tr>
             ))}
           </tbody>

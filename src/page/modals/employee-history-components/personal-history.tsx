@@ -86,6 +86,7 @@ export default function PersonalHistory() {
           ) && (
             <button className='btn-action' title='Add' onClick={addHistory}>
               <FontAwesomeIcon icon={faAdd} />
+              <span className='desktop-features'>Add</span>
             </button>
           )}
           {hasAccess(
@@ -100,6 +101,7 @@ export default function PersonalHistory() {
               onClick={editHistory}
               title='Edit'>
               <FontAwesomeIcon icon={faEdit} />
+              <span className='desktop-features'>Edit</span>
             </button>
           )}
           {hasAccess(
@@ -114,6 +116,7 @@ export default function PersonalHistory() {
               onClick={deleteHistory}
               title='Delete'>
               <FontAwesomeIcon icon={faTrash} />
+              <span className='desktop-features'>Delete</span>
             </button>
           )}
         </div>

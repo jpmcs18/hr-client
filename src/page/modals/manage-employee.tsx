@@ -1,3 +1,5 @@
+import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { civilStatusMarried, genderFemale } from '../../constant';
@@ -47,12 +49,13 @@ export default function ManageEmployee() {
     []
   );
 
-  useEffect(() => {
-    fetchSalaryGrade();
-  }, [
-    employeeModalState.employee.salaryGrade,
-    employeeModalState.employee.step,
-  ]);
+  useEffect(
+    () => {
+      fetchSalaryGrade();
+    },
+    //eslint-disable-next-line
+    [employeeModalState.employee.salaryGrade, employeeModalState.employee.step]
+  );
 
   async function initializeComponent() {
     await fetchOffices();
@@ -625,9 +628,12 @@ export default function ManageEmployee() {
         <ManageEmployeeRemunerationTable />
       </div>
       <div className='modal-footer'>
-        <button onClick={saveData} className='btn-modal btn-primary'>
-          SAVE
-        </button>
+        <div className='btn-actions-group'>
+          <button onClick={saveData} className='btn-action'>
+            <FontAwesomeIcon icon={faSave} />
+            <span className='desktop-features'>Save</span>
+          </button>
+        </div>
       </div>
     </Modal>
   );

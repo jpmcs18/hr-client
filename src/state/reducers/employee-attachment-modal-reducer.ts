@@ -87,7 +87,7 @@ const employeeAttachmentModalSlice = createSlice({
     },
     setUploadedFiles(state, action: PayloadAction<FileList>) {
       const fileTypes = ['jpeg', 'jpg', 'png'];
-      state.files.push(
+      state.files = [
         ...Array.from(action.payload).map<FileUploading>((file) => {
           let fileType = file.name.substring(
             file.name.lastIndexOf('.') + 1,
@@ -105,8 +105,9 @@ const employeeAttachmentModalSlice = createSlice({
             isImage: isImage,
             isDeleted: false,
           };
-        })
-      );
+        }),
+        ...state.files,
+      ];
       state.initiateUpload = true;
     },
     updateProcessingFile(

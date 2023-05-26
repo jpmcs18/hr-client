@@ -1,3 +1,10 @@
+import {
+  faCancel,
+  faCheck,
+  faThumbsDown,
+  faThumbsUp,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch } from 'react-redux';
 import {
   useMessage,
@@ -28,26 +35,39 @@ export default function MessageDialog() {
         <p>{Message?.message}</p>
       </div>
       <div className='modal-footer'>
-        {(Message?.action === undefined || Message?.action === 'OKCANCEL') && (
-          <button onClick={ok} className='btn-modal btn-primary'>
-            OK
-          </button>
-        )}
-        {Message?.action === 'OKCANCEL' && (
-          <button onClick={handleClose} className='btn-modal btn-secondary '>
-            CANCEL
-          </button>
-        )}
-        {Message?.action === 'YESNO' && (
-          <button onClick={ok} className='btn-modal btn-primary'>
-            YES
-          </button>
-        )}
-        {Message?.action === 'YESNO' && (
-          <button onClick={handleClose} className='btn-modal btn-secondary'>
-            NO
-          </button>
-        )}
+        <div className='btn-actions-group'>
+          {Message?.action === 'OKCANCEL' && (
+            <button onClick={handleClose} className='btn-action btn-secondary '>
+              <FontAwesomeIcon icon={faCancel} />
+              <span className='desktop-features'>Cancel</span>
+            </button>
+          )}
+        </div>
+        <div className='btn-actions-group'>
+          {(Message?.action === undefined ||
+            Message?.action === 'OKCANCEL') && (
+            <button onClick={ok} className='btn-action btn-primary'>
+              <FontAwesomeIcon icon={faCheck} />
+              <span className='desktop-features'>Ok</span>
+            </button>
+          )}
+        </div>
+        <div className='btn-actions-group'>
+          {Message?.action === 'YESNO' && (
+            <button onClick={handleClose} className='btn-action btn-secondary'>
+              <FontAwesomeIcon icon={faThumbsDown} />
+              <span className='desktop-features'>No</span>
+            </button>
+          )}
+        </div>
+        <div className='btn-actions-group'>
+          {Message?.action === 'YESNO' && (
+            <button onClick={ok} className='btn-action btn-primary'>
+              <FontAwesomeIcon icon={faThumbsUp} />
+              <span className='desktop-features'>Yes</span>
+            </button>
+          )}
+        </div>
       </div>
     </Modal>
   );

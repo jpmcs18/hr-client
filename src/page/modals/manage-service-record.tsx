@@ -1,3 +1,5 @@
+import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -17,6 +19,7 @@ import { RootState } from '../../state/store';
 import CustomDateTimePicker from '../components/custom-datetime-picker';
 import CustomDropdown from '../components/custom-dropdown';
 import CustomNumber from '../components/custom-number';
+import CustomTextBox from '../components/custom-textbox';
 import Modal from './modal';
 
 export default function ManageServiceRecord() {
@@ -215,11 +218,22 @@ export default function ManageServiceRecord() {
             dispatch(serviceRecordModalActions.updateEmployeeHistory(ret))
           }
         />
+        <CustomTextBox
+          title='NO LAWOP'
+          name='nolawop'
+          value={serviceRecordModalState.employeeHistory.nolawop}
+          onChange={(ret) =>
+            dispatch(serviceRecordModalActions.updateEmployeeHistory(ret))
+          }
+        />
       </div>
       <div className='modal-footer'>
-        <button onClick={saveData} className='btn-modal btn-primary'>
-          SAVE
-        </button>
+        <div className='btn-actions-group'>
+          <button onClick={saveData} className='btn-action'>
+            <FontAwesomeIcon icon={faSave} />
+            <span className='desktop-features'>Save</span>
+          </button>
+        </div>
       </div>
     </Modal>
   );

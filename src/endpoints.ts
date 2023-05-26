@@ -126,3 +126,10 @@ export const ReportEnd = {
   ContractualCOE: 'reports/coe-contractual',
   RegularCOE: 'reports/coe-regular',
 };
+
+export const EmployeeLeaveCreditsEnd = {
+  GetList: 'employee-leave-credits',
+  Insert: 'employee-leave-credits',
+  Update: 'employee-leave-credits',
+  Delete: 'employee-leave-credits',
+};

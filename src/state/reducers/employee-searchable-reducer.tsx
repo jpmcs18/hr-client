@@ -55,9 +55,16 @@ const employeeSearchableSlice = createSlice({
     },
     setShowModal(state, action: PayloadAction<boolean>) {
       state.isModalShow = action.payload;
-      state.employees = [];
-      state.selectedEmployee = undefined;
-      state.isRegular = undefined;
+      if (!action.payload) {
+        state.employees = [];
+        state.selectedEmployee = undefined;
+        state.key = '';
+        state.currentPage = 1;
+        state.pageCount = 0;
+        state.initiateSearch = false;
+        state.onCloseFunction = undefined;
+        state.isRegular = undefined;
+      }
     },
   },
 });

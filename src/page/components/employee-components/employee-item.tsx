@@ -1,5 +1,3 @@
-import React from 'react';
-import { toDate } from '../../../helper';
 import Employee from '../../../models/entities/Employee';
 
 export default function EmployeeItem({ employee }: { employee: Employee }) {
@@ -27,9 +25,14 @@ export default function EmployeeItem({ employee }: { employee: Employee }) {
           </i>
         )}
       </td>
-      <td>
-        <div>{employee.isActive ? 'Active' : 'Separated'}</div>
-        <div>{employee.isActive ? '' : toDate(employee.resignationDate)}</div>
+      <td align='center'>
+        <div>
+          {employee.isActive ? (
+            <span className='active'>Active</span>
+          ) : (
+            <span className='separated'>Separated</span>
+          )}
+        </div>
       </td>
     </>
   );

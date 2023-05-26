@@ -1,3 +1,5 @@
+import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { totalSteps } from '../../constant';
 import {
@@ -76,7 +78,7 @@ export default function ManageSalaryGrade() {
       onClose={() => onModalClose(false)}
       title='Manage Salary Grade'>
       <div className='modal-content-body'>
-        <section className='header'>
+        <div className='header'>
           <CustomTextBox
             title='Description'
             value={salaryGradeModalState.salaryGradeBatch?.description}
@@ -103,8 +105,8 @@ export default function ManageSalaryGrade() {
               dispatch(salaryGradeModalActions.updateSalaryGradeBatch(ret))
             }
           />
-        </section>
-        <section className='table-container salary-grade-table-container'>
+        </div>
+        <div className='table-container salary-grade-table-container'>
           <table className='item-table'>
             <thead>
               <tr>
@@ -127,60 +129,38 @@ export default function ManageSalaryGrade() {
               {salaryGradeModalState.salaryGradeItems.map(
                 (salaryGradeItems, i) => (
                   <tr key={i}>
-                    {salaryGradeItems.map((salaryGradeItem, j) => {
-                      if (salaryGradeItem.step === 1) {
-                        return (
-                          <>
-                            <td key={salaryGradeItem.tempId + j.toString()}>
-                              {salaryGradeItem.salaryGrade}
-                            </td>
-                            <td key={salaryGradeItem.tempId}>
-                              <CustomNumber
-                                type='amount'
-                                value={salaryGradeItem.amount}
-                                onValueChange={(ret) =>
-                                  dispatch(
-                                    salaryGradeModalActions.updateSalaryGrade({
-                                      tempId: salaryGradeItem.tempId!,
-                                      index: i,
-                                      amount: ret.value,
-                                    })
-                                  )
-                                }
-                              />
-                            </td>
-                          </>
-                        );
-                      }
-                      return (
-                        <td key={salaryGradeItem.tempId}>
-                          <CustomNumber
-                            type='amount'
-                            value={salaryGradeItem.amount}
-                            onValueChange={(ret) =>
-                              dispatch(
-                                salaryGradeModalActions.updateSalaryGrade({
-                                  tempId: salaryGradeItem.tempId!,
-                                  index: i,
-                                  amount: ret.value,
-                                })
-                              )
-                            }
-                          />
-                        </td>
-                      );
-                    })}
+                    <td>{i + 1}</td>
+                    {salaryGradeItems.map((salaryGradeItem, j) => (
+                      <td key={salaryGradeItem.tempId}>
+                        <CustomNumber
+                          type='amount'
+                          value={salaryGradeItem.amount}
+                          onValueChange={(ret) =>
+                            dispatch(
+                              salaryGradeModalActions.updateSalaryGrade({
+                                tempId: salaryGradeItem.tempId!,
+                                index: i,
+                                amount: ret.value,
+                              })
+                            )
+                          }
+                        />
+                      </td>
+                    ))}
                   </tr>
                 )
               )}
             </tbody>
           </table>
-        </section>
+        </div>
       </div>
       <div className='modal-footer'>
-        <button onClick={saveData} className='btn-modal btn-primary'>
-          SAVE
-        </button>
+        <div className='btn-actions-group'>
+          <button onClick={saveData} className='btn-action'>
+            <FontAwesomeIcon icon={faSave} />
+            <span className='desktop-features'>Save</span>
+          </button>
+        </div>
       </div>
     </Modal>
   );

@@ -17,6 +17,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/store';
 import { useDispatch } from 'react-redux';
 import { userProfileAction } from '../../state/reducers/user-profile-reducer';
+import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function ManageProfile({ onClose }: { onClose: () => void }) {
   const [darkMode, setdarkMode] = useState(() => !!getTheme());
@@ -61,6 +63,7 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
         });
       })
       .catch((err) => {
+        console.log(err);
         setToasterMessage({ content: err.message });
       })
       .finally(() => setBusy(false));
@@ -139,9 +142,12 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
         </div>
       </div>
       <div className='modal-footer'>
-        <button onClick={saveData} className='btn-modal btn-primary'>
-          SAVE
-        </button>
+        <div className='btn-actions-group'>
+          <button onClick={saveData} className='btn-action'>
+            <FontAwesomeIcon icon={faSave} />
+            <span className='desktop-features'>Save</span>
+          </button>
+        </div>
       </div>
     </Modal>
   );

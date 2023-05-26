@@ -78,6 +78,7 @@ export default function ServiceRecordReport() {
         <div className='btn-actions-group'>
           <button className='btn-action' onClick={printSR}>
             <FontAwesomeIcon icon={faPrint} />
+            <span className='desktop-features'>Print</span>
           </button>
         </div>
       </div>

@@ -69,6 +69,7 @@ export default function UserRoleButtons() {
         ) && (
           <button className='btn-action' title='Add' onClick={add}>
             <FontAwesomeIcon icon={faAdd} />
+            <span className='desktop-features'>Add</span>
           </button>
         )}
         {hasAccess(
@@ -83,6 +84,7 @@ export default function UserRoleButtons() {
             onClick={edit}
             title='Edit'>
             <FontAwesomeIcon icon={faEdit} />
+            <span className='desktop-features'>Edit</span>
           </button>
         )}
         {hasAccess(
@@ -97,6 +99,7 @@ export default function UserRoleButtons() {
             onClick={onDelete}
             title='Delete'>
             <FontAwesomeIcon icon={faTrash} />
+            <span className='desktop-features'>Delete</span>
           </button>
         )}
       </div>

@@ -1,9 +1,8 @@
 import {
   faAdd,
   faEdit,
-  faKey,
-  faRepeat,
   faTrash,
+  faUndo,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
@@ -103,6 +102,7 @@ export default function SystemUserButtons() {
         ) && (
           <button className='btn-action' title='Add' onClick={add}>
             <FontAwesomeIcon icon={faAdd} />
+            <span className='desktop-features'>Add</span>
           </button>
         )}
         {hasAccess(
@@ -117,6 +117,7 @@ export default function SystemUserButtons() {
             onClick={edit}
             title='Edit'>
             <FontAwesomeIcon icon={faEdit} />
+            <span className='desktop-features'>Edit</span>
           </button>
         )}
         {hasAccess(
@@ -131,6 +132,7 @@ export default function SystemUserButtons() {
             onClick={onDelete}
             title='Delete'>
             <FontAwesomeIcon icon={faTrash} />
+            <span className='desktop-features'>Delete</span>
           </button>
         )}
         {hasAccess(
@@ -144,8 +146,8 @@ export default function SystemUserButtons() {
             disabled={!systemUserState.selectedSystemUser}
             onClick={resetPass}
             title='Reset Password'>
-            <FontAwesomeIcon icon={faRepeat} />
-            <FontAwesomeIcon icon={faKey} />
+            <FontAwesomeIcon icon={faUndo} />
+            <span className='desktop-features'>Reset Password</span>
           </button>
         )}
       </div>

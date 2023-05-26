@@ -19,7 +19,7 @@ export default function EmployeeItems() {
             <th>Years in Service</th>
             <th>Office</th>
             <th>Position</th>
-            <th>Status</th>
+            <th style={{ textAlign: 'center' }}>Status</th>
           </tr>
         </thead>
         <tbody>
