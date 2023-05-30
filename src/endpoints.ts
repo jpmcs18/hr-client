@@ -118,7 +118,6 @@ export const EmployeeAttachmentEnd = {
   Upload: 'employee-attachments/upload',
   GetList: 'employee-attachments',
   Delete: 'employee-attachments',
-  UndoDelete: 'employee-attachments/undo-delete',
 };
 
 export const ReportEnd = {

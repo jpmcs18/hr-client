@@ -1,6 +1,6 @@
 import { EmployeeAttachmentEnd } from '../endpoints';
 import EmployeeAttachment from '../models/entities/EmployeeAttachment';
-import { httpDelete, httpGet, httpPostMultiPart, httpPut } from './base';
+import { httpDelete, httpGet, httpPostMultiPart } from './base';
 
 export async function uploadAttachment(
   file: File,
@@ -25,10 +25,4 @@ export async function getAttachments(
 
 export async function deleteAttachment(employeeId: number): Promise<boolean> {
   return httpDelete(EmployeeAttachmentEnd.Delete + '/' + employeeId);
-}
-
-export async function undoDeleteAttachment(
-  employeeId: number
-): Promise<boolean> {
-  return httpPut(EmployeeAttachmentEnd.UndoDelete + '/' + employeeId);
 }

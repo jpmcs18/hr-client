@@ -1,4 +1,4 @@
-import { EmployeeAttachmentEnd, EmployeeLeaveCreditsEnd } from '../endpoints';
+import { EmployeeLeaveCreditsEnd } from '../endpoints';
 import EmployeeLeaveCredits from '../models/entities/EmployeeLeaveCredits';
 import { httpGet, httpPost, httpPut } from './base';
 

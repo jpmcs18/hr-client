@@ -1,4 +1,4 @@
-import { faMaximize, faTrash, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faMaximize, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +11,6 @@ import { hasAccess } from '../../helper';
 import {
   deleteAttachment,
   getAttachments,
-  undoDeleteAttachment,
   uploadAttachment,
 } from '../../repositories/employee-attachment-queries';
 import {
@@ -132,33 +131,6 @@ export default function ManageEmployeeAttachments() {
         );
       });
   }
-  async function undoDeletion(file: FileUploading) {
-    dispatch(
-      employeeAttachmentModalActions.updateProcessingFile({
-        tempId: file.tempId,
-        isProcessing: true,
-      })
-    );
-    await undoDeleteAttachment(file.id)
-      .then((res) => {
-        if (res) {
-          dispatch(
-            employeeAttachmentModalActions.undoDeleteAttachment(file.tempId)
-          );
-        }
-      })
-      .catch((err) => {
-        setToasterMessage({ content: err.message });
-      })
-      .finally(() => {
-        dispatch(
-          employeeAttachmentModalActions.updateProcessingFile({
-            tempId: file.tempId,
-            isProcessing: false,
-          })
-        );
-      });
-  }
   function openNewTab(fileUrl?: string) {
     window.open(fileUrl, '_blank');
   }
@@ -187,11 +159,7 @@ export default function ManageEmployeeAttachments() {
             onClick={showFileBrowser}></div>
         )}
         {employeeAttachmentModalState.files.map((file) => (
-          <div
-            key={file.tempId}
-            className={
-              'attachment ' + (file.isDeleted ? 'attachment-deleted' : '')
-            }>
+          <div key={file.tempId} className='attachment'>
             {file.isProcessing && <CustomLoading />}
             {!file.isProcessing && (
               <div className='attachment-control btn-actions-group'>
@@ -214,24 +182,12 @@ export default function ManageEmployeeAttachments() {
                   'Delete',
                   userProfileState.systemUser?.isAdmin
                 ) && (
-                  <>
-                    {!file.isDeleted && (
-                      <button
-                        className='btn-action'
-                        title='Delete'
-                        onClick={() => deletion(file)}>
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
-                    )}
-                    {file.isDeleted && (
-                      <button
-                        className='btn-action'
-                        title='Undo Delete'
-                        onClick={() => undoDeletion(file)}>
-                        <FontAwesomeIcon icon={faUndo} />
-                      </button>
-                    )}
-                  </>
+                  <button
+                    className='btn-action'
+                    title='Delete'
+                    onClick={() => deletion(file)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
                 )}
               </div>
             )}

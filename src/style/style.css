@@ -1873,7 +1873,7 @@ tbody tr {
 .modal-container .modal-content .modal-footer {
   -webkit-box-shadow: 0em 0em 0.2em 0em var(--shadow-color);
           box-shadow: 0em 0em 0.2em 0em var(--shadow-color);
-  padding: 1em;
+  padding: 0.5em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

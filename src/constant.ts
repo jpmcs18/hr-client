@@ -16,6 +16,7 @@ export const Pages = {
   Attachment: 'Employee Attachments',
   ServiceRecord: 'Service Record',
   PersonalHistory: 'Personal History',
+  EmployeeLeaveCredits: 'Employee Leave Credits',
   Positions: 'Positions',
   Offices: 'Offices',
   SalaryGrade: 'Salary Grades',

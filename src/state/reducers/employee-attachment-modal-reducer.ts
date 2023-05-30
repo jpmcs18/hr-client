@@ -13,7 +13,6 @@ export interface FileUploading {
   fileName: string;
   url: string;
   isImage: boolean;
-  isDeleted: boolean;
 }
 interface State {
   employee: Employee | undefined;
@@ -70,20 +69,9 @@ const employeeAttachmentModalSlice = createSlice({
       state.isModalShow = action.payload;
     },
     deleteAttachment(state, action: PayloadAction<string>) {
-      state.files = state.files.slice().map((file) => {
-        if (file.tempId === action.payload) {
-          file.isDeleted = true;
-        }
-        return file;
-      });
-    },
-    undoDeleteAttachment(state, action: PayloadAction<string>) {
-      state.files = state.files.slice().map((file) => {
-        if (file.tempId === action.payload) {
-          file.isDeleted = false;
-        }
-        return file;
-      });
+      state.files = state.files
+        .slice()
+        .filter((file) => file.tempId === action.payload);
     },
     setUploadedFiles(state, action: PayloadAction<FileList>) {
       const fileTypes = ['jpeg', 'jpg', 'png'];
