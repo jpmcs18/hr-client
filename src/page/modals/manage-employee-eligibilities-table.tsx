@@ -19,6 +19,7 @@ export default function ManageEmployeeEligibilitiesTable() {
         onChange={(ret) => {
           dispatch(employeeModalActions.addNewEligibility(ret.value));
         }}
+        selectorOnly={true}
         itemsList={employeeModalState.eligibilities.map((x) => {
           return {
             key: x.id.toString(),

@@ -155,7 +155,7 @@ export default function EmployeeButtons() {
             <span className='desktop-features'>Attachments</span>
           </button>
         )}
-        {/* {hasAccess(
+        {hasAccess(
           userProfileState.moduleRights,
           Pages.Employees,
           'Leave Credits',
@@ -169,7 +169,7 @@ export default function EmployeeButtons() {
             <FontAwesomeIcon icon={faPersonWalkingLuggage} />
             <span className='desktop-features'>Leave Credits</span>
           </button>
-        )} */}
+        )}
         {hasAccess(
           userProfileState.moduleRights,
           Pages.Employees,

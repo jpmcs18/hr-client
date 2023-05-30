@@ -147,21 +147,7 @@ export default function ManageSystemUser() {
           />
         </div>
         {!systemUserModalState.systemUser.isAdmin && (
-          <div>
-            <CustomDropdown
-              title='Roles'
-              onChange={(ret) => {
-                dispatch(systemUserModalActions.addNewUserRole(ret.value));
-              }}
-              itemsList={systemUserModalState.userRoles.map((x) => {
-                return {
-                  key: x.id.toString(),
-                  value: x.description,
-                };
-              })}
-            />
-            <ManageSystemUserPositionsTable />
-          </div>
+          <ManageSystemUserPositionsTable />
         )}
       </div>
       <div className='modal-footer'>

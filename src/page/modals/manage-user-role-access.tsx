@@ -32,7 +32,7 @@ export default function ManageUserRoleAccess() {
                         checkChange={() => {
                           dispatch(userRoleModalActions.checkModule(module.id));
                         }}
-                        isCheck={module.isCheck ?? false}
+                        isChecked={module.isCheck ?? false}
                       />
                     </div>
                   }
@@ -51,7 +51,7 @@ export default function ManageUserRoleAccess() {
                                 })
                               );
                             }}
-                            isCheck={moduleRight.isCheck ?? false}
+                            isChecked={moduleRight.isCheck ?? false}
                           />
                         </div>
                       ))}

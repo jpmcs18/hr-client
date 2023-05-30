@@ -554,9 +554,6 @@ export default function ManageEmployee() {
             onChange={(ret) => {
               dispatch(employeeModalActions.updateDetailedOffice(ret.value));
             }}
-            onClear={() => {
-              dispatch(employeeModalActions.updateDetailedOffice(undefined));
-            }}
             itemsList={employeeModalState.detailedOffices.map((x) => {
               return {
                 key: x.id.toString(),
@@ -569,9 +566,6 @@ export default function ManageEmployee() {
             value={employeeModalState.employee.detailedPositionId}
             onChange={(ret) => {
               dispatch(employeeModalActions.updateDetailedPosition(ret.value));
-            }}
-            onClear={() => {
-              dispatch(employeeModalActions.updateDetailedPosition(undefined));
             }}
             itemsList={(employeeModalState.detailedPositions.length > 0
               ? employeeModalState.detailedPositions

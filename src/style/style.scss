@@ -327,6 +327,7 @@ section {
   .search-icon {
     margin: 1em;
     margin-bottom: -0.5em;
+    cursor: pointer;
   }
 }
 .login-container {
@@ -976,15 +977,11 @@ input {
 .align-center {
   text-align: center !important;
 }
-.specs {
+.search-filter-container {
   display: flex;
-  justify-content: flex-start;
-  .key {
-    font-weight: var(--demibold);
-  }
-  span {
-    margin-right: 0.3em;
-  }
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.15em;
 }
 .btn-actions-group-container {
   display: flex;
@@ -1151,6 +1148,12 @@ tbody tr {
   left: 0;
   right: 0;
   bottom: 0;
+  .employee-leave-credits-modal {
+    width: 90%;
+    .employee-leave-credits-body {
+      height: 80vh;
+    }
+  }
   .service-record-modal {
     width: 90% !important;
     .service-record-content-body {

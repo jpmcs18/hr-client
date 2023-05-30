@@ -19,6 +19,7 @@ export default function ManageEmployeeRemunerationTable() {
         onChange={(ret) => {
           dispatch(employeeModalActions.addNewRemuneration(ret.value));
         }}
+        selectorOnly={true}
         itemsList={employeeModalState.remunerations.map((x) => {
           return {
             key: x.id.toString(),

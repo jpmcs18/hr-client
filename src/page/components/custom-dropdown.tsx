@@ -17,6 +17,7 @@ export default function CustomDropdown({
   itemsList,
   readonly,
   onChange,
+  selectorOnly,
 }: {
   title: string;
   name?: string;
@@ -25,8 +26,8 @@ export default function CustomDropdown({
   value?: any;
   itemsList: DropdownItem[];
   readonly?: boolean | false;
-  onClear?: () => void;
   onChange?: (data: CustomReturn) => void;
+  selectorOnly?: boolean | undefined;
 }) {
   const [filter, setFilter] = useState('');
   const componentId = Guid.create().toString();
@@ -59,16 +60,18 @@ export default function CustomDropdown({
               className='icon'
               id={componentId + '-icon'}
             />
-            <FontAwesomeIcon
-              icon={faClose}
-              className='close-icon'
-              onClick={() =>
-                onChange?.({
-                  elementName: name ?? 'def',
-                  value: undefined,
-                })
-              }
-            />
+            {!selectorOnly && (
+              <FontAwesomeIcon
+                icon={faClose}
+                className='close-icon'
+                onClick={() =>
+                  onChange?.({
+                    elementName: name ?? 'def',
+                    value: undefined,
+                  })
+                }
+              />
+            )}
           </div>
         </div>
         {!readonly && (

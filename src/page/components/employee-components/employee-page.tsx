@@ -6,7 +6,11 @@ import {
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
 import { searchEmployee } from '../../../repositories/employee-queries';
+import { getGenders } from '../../../repositories/gender-queries';
+import { getOffices } from '../../../repositories/office-queries';
+import { getPositions } from '../../../repositories/position-queries';
 import { employeeActions } from '../../../state/reducers/employee-reducer';
+import { officeActions } from '../../../state/reducers/office-reducer';
 import { RootState } from '../../../state/store';
 import EmployeeHistoryModal from '../../modals/employee-history-components/employee-history-modal';
 import EmployeeLeaveCreditsModal from '../../modals/employee-leave-credits-modal';
@@ -16,6 +20,7 @@ import ManageEmployeeAttachments from '../../modals/manage-employee-attachments'
 import SearchBar from '../searchbar';
 import EmployeeButtons from './employee-buttons';
 import EmployeeItems from './employee-items';
+import EmployeeSearch from './employee-search';
 
 export default function EmployeePage() {
   const employeeModalState = useSelector(
@@ -45,11 +50,28 @@ export default function EmployeePage() {
     [employeeState.initiateSearch]
   );
 
+  useEffect(
+    () => {
+      fetchOffices();
+      fetchPositions();
+      fetchGenders();
+    },
+    //eslint-disable-next-line
+    []
+  );
+
   async function searchEmp() {
     if (!employeeState.initiateSearch) return;
     setBusy(true);
     dispatch(employeeActions.setInitiateSearch(false));
-    await searchEmployee(employeeState.key, employeeState.currentPage)
+    await searchEmployee(
+      employeeState.key,
+      employeeState.currentPage,
+      undefined,
+      employeeState.selectedOfficeId,
+      employeeState.selectedPositionId,
+      employeeState.selectedGenderId
+    )
       .then((res) => {
         if (res !== undefined) {
           dispatch(employeeActions.fill(res.results));
@@ -63,23 +85,48 @@ export default function EmployeePage() {
         setBusy(false);
       });
   }
-  async function search(key: string) {
-    dispatch(employeeActions.setkey(key));
-    dispatch(employeeActions.setCurrentPage(1));
-    dispatch(employeeActions.setInitiateSearch(true));
+
+  async function fetchOffices() {
+    setBusy(true);
+    await getOffices()
+      .then((res) => {
+        if (res) {
+          dispatch(employeeActions.setOffices(res));
+        }
+      })
+      .catch((e) => setToasterMessage({ content: e.message }))
+      .finally(() => setBusy(false));
   }
+
+  async function fetchPositions() {
+    setBusy(true);
+    await getPositions()
+      .then((res) => {
+        if (res) {
+          dispatch(employeeActions.setPositions(res));
+        }
+      })
+      .catch((e) => setToasterMessage({ content: e.message }))
+      .finally(() => setBusy(false));
+  }
+  async function fetchGenders() {
+    setBusy(true);
+    await getGenders()
+      .then((res) => {
+        if (res) {
+          dispatch(employeeActions.setGenders(res));
+        }
+      })
+      .catch((e) => setToasterMessage({ content: e.message }))
+      .finally(() => setBusy(false));
+  }
+
   return (
     <>
       <section className='title-container'>
         <div className='title'>{Pages.Employees}</div>
       </section>
-      <section>
-        <SearchBar
-          search={search}
-          placeholder='Search Key'
-          value={employeeState.key}
-        />
-      </section>
+      <EmployeeSearch />
       <EmployeeButtons />
       <EmployeeItems />
       {employeeModalState.isModalShow && <ManageEmployee />}

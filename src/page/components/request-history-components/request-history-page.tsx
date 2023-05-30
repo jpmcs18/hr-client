@@ -84,9 +84,6 @@ export default function RequestHistoryPage() {
         <CustomDropdown
           title='Request Type'
           value={requestHistoryState.requestTypeId}
-          onClear={() =>
-            dispatch(requestHistoryActions.setRequestTypeId(undefined))
-          }
           onChange={(ret) =>
             dispatch(requestHistoryActions.setRequestTypeId(ret.value))
           }

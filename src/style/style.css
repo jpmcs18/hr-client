@@ -429,6 +429,7 @@ section {
 .search-main-container .search-icon {
   margin: 1em;
   margin-bottom: -0.5em;
+  cursor: pointer;
 }
 
 .login-container {
@@ -1267,21 +1268,17 @@ input:disabled {
   text-align: center !important;
 }
 
-.specs {
+.search-filter-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
-}
-
-.specs .key {
-  font-weight: var(--demibold);
-}
-
-.specs span {
-  margin-right: 0.3em;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0.15em;
 }
 
 .btn-actions-group-container {
@@ -1513,6 +1510,14 @@ tbody tr {
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.modal-container .employee-leave-credits-modal {
+  width: 90%;
+}
+
+.modal-container .employee-leave-credits-modal .employee-leave-credits-body {
+  height: 80vh;
 }
 
 .modal-container .service-record-modal {

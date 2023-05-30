@@ -8,11 +8,23 @@ import { httpDelete, httpGet, httpPost, httpPut } from './base';
 export async function searchEmployee(
   key: string,
   page: number,
-  isRegular?: boolean
+  isRegular?: boolean,
+  officeId?: number,
+  positionId?: number,
+  genderId?: number
 ): Promise<SearchResult<Employee> | undefined> {
   var query = '?page=' + page;
   if (!!key) {
     query += '&key=' + encodeURI(key);
+  }
+  if (officeId !== undefined) {
+    query += '&officeId=' + officeId;
+  }
+  if (positionId !== undefined) {
+    query += '&positionId=' + positionId;
+  }
+  if (genderId !== undefined) {
+    query += '&genderId=' + genderId;
   }
   if (isRegular !== undefined) {
     query += '&isRegular=' + isRegular;

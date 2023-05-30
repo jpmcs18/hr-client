@@ -1,13 +1,13 @@
 import React from 'react';
 
 export default function CustomCheckBox({
-  isCheck,
+  isChecked,
   checkChange,
   id,
   text,
 }: {
   checkChange: () => void;
-  isCheck: boolean;
+  isChecked: boolean;
   id?: string;
   text?: string;
 }) {
@@ -18,7 +18,7 @@ export default function CustomCheckBox({
           type='checkbox'
           id={id ?? 'check'}
           onChange={checkChange}
-          checked={isCheck}
+          checked={isChecked}
         />
         <span className='checkmark'></span>
       </label>

@@ -124,18 +124,6 @@ export default function ManageOffice() {
             dispatch(officeModalActions.updateOffice(ret));
           }}
         />
-        <CustomDropdown
-          title='Position'
-          onChange={(ret) => {
-            dispatch(officeModalActions.addNewPosition(ret.value));
-          }}
-          itemsList={officeModalState.positions.map((x) => {
-            return {
-              key: x.id.toString(),
-              value: x.description,
-            };
-          })}
-        />
         <ManageOfficePositionsTable />
       </div>
       <div className='modal-footer'>

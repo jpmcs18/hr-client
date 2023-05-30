@@ -112,7 +112,7 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
                 checkChange={() => {
                   setChangePassword((x) => !x);
                 }}
-                isCheck={changePassword}
+                isChecked={changePassword}
               />
             </div>
             <div className='content'>
