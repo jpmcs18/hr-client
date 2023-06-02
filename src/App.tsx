@@ -4,6 +4,7 @@ import { AuthorizeProvider } from './custom-hooks/authorize-provider';
 import HomePage from './page/home-page';
 import { refreshTokenAuthentication } from './repositories/base';
 import { getTheme, getToken } from './repositories/session-managers';
+import { dropdownActions } from './state/reducers/dropdown-reducer';
 import { userProfileAction } from './state/reducers/user-profile-reducer';
 import { RootState } from './state/store';
 import './style/style.css';
@@ -24,6 +25,21 @@ function App() {
         }
         dispatch(userProfileAction.initializeState());
       }
+
+      document.removeEventListener('click', () => {});
+      document.addEventListener('click', (e: any) => {
+        let targetId = e.target.id
+          ?.replace('-input', '')
+          .replace('-icon', '')
+          .replace('-icon-remove', '')
+          .replace('-search', '');
+        let selection = document.getElementsByClassName('selection');
+        for (let i = 0; i < selection.length; i++) {
+          if (selection[i].id !== targetId) {
+            dispatch(dropdownActions.setOpenDropdown(undefined));
+          }
+        }
+      });
     },
     //eslint-disable-next-line
     []

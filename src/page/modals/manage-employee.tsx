@@ -620,6 +620,25 @@ export default function ManageEmployee() {
         </div>
         <ManageEmployeeEligibilitiesTable />
         <ManageEmployeeRemunerationTable />
+        <select>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+          <option>S</option>
+        </select>
       </div>
       <div className='modal-footer'>
         <div className='btn-actions-group'>

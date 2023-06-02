@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface State {
-  openDropdown: string;
+  openDropdown: string | undefined;
 }
 
 const initialState: State = {
-  openDropdown: '',
+  openDropdown: undefined,
 };
 
 const dropdownSlice = createSlice({
   name: 'dropdown',
   initialState: initialState,
   reducers: {
-    setOpenDropdown(state, action: PayloadAction<string>) {
+    setOpenDropdown(state, action: PayloadAction<string | undefined>) {
       state.openDropdown = action.payload;
     },
   },

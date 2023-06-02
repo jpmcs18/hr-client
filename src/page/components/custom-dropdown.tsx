@@ -58,8 +58,11 @@ export default function CustomDropdown({
   );
 
   function openSelection() {
+    if (dropdownState.openDropdown === componentId.current) {
+      dispatch(dropdownActions.setOpenDropdown(undefined));
+      return;
+    }
     dispatch(dropdownActions.setOpenDropdown(componentId.current));
-    console.log('onOpen', componentId.current);
   }
   return (
     <div className={'custom-input ' + className} id={id}>
@@ -100,7 +103,13 @@ export default function CustomDropdown({
           </div>
         </div>
         {!readonly && isOpen && (
-          <CustomDropdownItems id={componentId.current} itemsList={itemsList} />
+          <CustomDropdownItems
+            id={componentId.current}
+            itemsList={itemsList}
+            onChange={onChange}
+            name={name}
+            value={value}
+          />
         )}
       </div>
     </div>

@@ -1,6 +1,9 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { useDispatch } from 'react-redux';
+import { domainToASCII } from 'url';
 import CustomReturn from '../../models/client-model/CustomReturn';
+import { dropdownActions } from '../../state/reducers/dropdown-reducer';
 import { DropdownItem } from './custom-dropdown';
 
 export default function CustomDropdownItems({
@@ -18,6 +21,19 @@ export default function CustomDropdownItems({
 }) {
   const [filter, setFilter] = useState('');
   const divRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
+  useEffect(
+    () => {
+      var timer = setInterval(() => {
+        setItemsLocation();
+      }, 10);
+      return () => {
+        clearInterval(timer);
+      };
+    },
+    //eslint-disable-next-line
+    []
+  );
   useLayoutEffect(
     () => {
       setItemsLocation();
@@ -27,14 +43,20 @@ export default function CustomDropdownItems({
   );
 
   function setItemsLocation() {
+    const div = divRef.current?.getBoundingClientRect() as DOMRect;
+    const screenSize = window.screen.availHeight;
+    const parent = document
+      .getElementById(id)
+      ?.getBoundingClientRect() as DOMRect;
+    // console.log(parent.x, parent.y, screenSize);
     if (divRef.current?.style) {
-      const parent = document.getElementById(id);
-      const { x, y, width, height, top, right, bottom, left } =
-        parent?.getBoundingClientRect() as DOMRect;
-      divRef.current.style.top = `${bottom + 2}px`;
-      divRef.current.style.left = `${left}px`;
-      divRef.current.style.width = `${width}px`;
-      console.log();
+      divRef.current.style.top = `${parent.height + parent.y}px`;
+      divRef.current.style.left = `${parent.left + 1}px`;
+      divRef.current.style.width = `${parent.width - 2}px`;
+
+      if (div.height + parent.y + parent.height + 100 > screenSize) {
+        divRef.current.style.top = `${parent.y - div.height}px`;
+      }
     }
   }
   return ReactDOM.createPortal(
@@ -60,6 +82,7 @@ export default function CustomDropdownItems({
               }
               key={item.key}
               onClick={() => {
+                dispatch(dropdownActions.setOpenDropdown(undefined));
                 onChange?.({
                   elementName: name ?? 'def',
                   value: item.key,
