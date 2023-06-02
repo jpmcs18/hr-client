@@ -51,6 +51,11 @@ export const PositionEnd = {
 export const RequestHistoryEnd = {
   Search: 'request-history/search',
 };
+
+export const EmployeeLeaveCreditsHistoryEnd = {
+  Search: 'employee-leave-credits-history/search',
+};
+
 export const RequestTypeEnd = {
   GetList: 'request-types',
 };
@@ -100,6 +105,9 @@ export const CivilStatusEnd = {
 };
 export const BloodTypeEnd = {
   GetList: 'blood-types',
+};
+export const LeaveTypeEnd = {
+  GetList: 'leave-types',
 };
 export const ModeOfResignationEnd = {
   GetList: 'mode-of-resignations',

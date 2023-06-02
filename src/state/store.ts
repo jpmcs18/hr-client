@@ -21,6 +21,7 @@ import reportModalReducer from './reducers/report-modal-reducer';
 import employeePromotionReducer from './reducers/employee-promotion-reducer';
 import requestHistoryReducer from './reducers/request-history-reducer';
 import employeeLeaveCreditsReducer from './reducers/employee-leave-credits-reducer';
+import employeeLeaveCreditsModalReducer from './reducers/employee-leave-credits-modal-reducer';
 const store = configureStore({
   reducer: {
     userProfile: userProfileReducer,
@@ -45,6 +46,7 @@ const store = configureStore({
     employeePromotion: employeePromotionReducer,
     requestHistory: requestHistoryReducer,
     employeeLeaveCredits: employeeLeaveCreditsReducer,
+    employeeLeaveCreditsModal: employeeLeaveCreditsModalReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

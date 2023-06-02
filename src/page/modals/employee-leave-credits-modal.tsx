@@ -1,6 +1,7 @@
 import {
   faAdd,
   faEdit,
+  faHistory,
   faSave,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
@@ -10,36 +11,95 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Pages } from '../../constant';
 import {
   useSetBusy,
+  useSetMessage,
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
 import { hasAccess, toCommaSeparateAmount } from '../../helper';
-import { getEmployeeLeaveCredits } from '../../repositories/employee-leave-credits-queries';
+import {
+  deleteEmployeeLeaveCredits,
+  getEmployeeLeaveCredits,
+} from '../../repositories/employee-leave-credits-queries';
+import { employeeLeaveCreditsModalActions } from '../../state/reducers/employee-leave-credits-modal-reducer';
 import { employeeLeaveCreditsActions } from '../../state/reducers/employee-leave-credits-reducer';
 import { RootState } from '../../state/store';
+import ManageEmployeeLeaveCredits from './manage-employee-leave-credits';
 import Modal from './modal';
 
 export default function EmployeeLeaveCreditsModal() {
   const employeeLeaveCreditsState = useSelector(
     (state: RootState) => state.employeeLeaveCredits
   );
+  const employeeLeaveCreditsModalState = useSelector(
+    (state: RootState) => state.employeeLeaveCreditsModal
+  );
   const userProfileState = useSelector((state: RootState) => state.userProfile);
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
+  const setMessage = useSetMessage();
 
   useEffect(
     () => {
-      fetchEmployeeLeaveCredits();
+      if (employeeLeaveCreditsState.initiateSearch) {
+        fetchEmployeeLeaveCredits();
+      }
     },
     //eslint-disable-next-line
-    [employeeLeaveCreditsState.employee]
+    [employeeLeaveCreditsState.initiateSearch]
   );
 
-  function addLeaveCredits() {}
-  function editLeaveCredits() {}
-  function deleteLeaveCredits() {}
+  function addLeaveCredits() {
+    dispatch(
+      employeeLeaveCreditsModalActions.setEmployee(
+        employeeLeaveCreditsState.employee
+      )
+    );
+    dispatch(
+      employeeLeaveCreditsModalActions.setEmployeeLeaveCredits(undefined)
+    );
+    dispatch(employeeLeaveCreditsModalActions.setShowModal(true));
+  }
+  function editLeaveCredits() {
+    dispatch(
+      employeeLeaveCreditsModalActions.setEmployee(
+        employeeLeaveCreditsState.employee
+      )
+    );
+    dispatch(
+      employeeLeaveCreditsModalActions.setEmployeeLeaveCredits(
+        employeeLeaveCreditsState.selectedEmployeeLeaveCredits
+      )
+    );
+    dispatch(employeeLeaveCreditsModalActions.setShowModal(true));
+  }
+  function deleteLeaveCredits() {
+    if (!employeeLeaveCreditsState.selectedEmployeeLeaveCredits?.id) return;
+    setMessage({
+      message: 'Are you sure you want to delete this?',
+      action: 'YESNO',
+      onOk: async () => {
+        setBusy(true);
+        await deleteEmployeeLeaveCredits(
+          employeeLeaveCreditsState.selectedEmployeeLeaveCredits?.id ?? 0
+        )
+          .then((res) => {
+            if (res) {
+              setToasterMessage({
+                content: 'Selected leave credit has been deleted',
+              });
+              dispatch(employeeLeaveCreditsActions.setInitiateSearch(true));
+            }
+          })
+          .catch((err) => {
+            setToasterMessage({ content: err.message });
+          })
+          .finally(() => setBusy(false));
+      },
+    });
+  }
 
   async function fetchEmployeeLeaveCredits() {
+    dispatch(employeeLeaveCreditsActions.setInitiateSearch(false));
     setBusy(true);
     await getEmployeeLeaveCredits(employeeLeaveCreditsState.employee?.id!)
       .then((res) => {
@@ -50,7 +110,7 @@ export default function EmployeeLeaveCreditsModal() {
       .catch((err) => setToasterMessage({ content: err.message }))
       .finally(() => setBusy(false));
   }
-
+  function leaveCreditsHistory() {}
   function onModalClose() {
     dispatch(employeeLeaveCreditsActions.setShowModal(false));
   }
@@ -93,6 +153,21 @@ export default function EmployeeLeaveCreditsModal() {
           {hasAccess(
             userProfileState.moduleRights,
             Pages.EmployeeLeaveCredits,
+            'History',
+            userProfileState.systemUser?.isAdmin
+          ) && (
+            <button
+              className='btn-action'
+              disabled={!employeeLeaveCreditsState.selectedEmployeeLeaveCredits}
+              onClick={leaveCreditsHistory}
+              title='History'>
+              <FontAwesomeIcon icon={faHistory} />
+              <span className='desktop-features'>History</span>
+            </button>
+          )}
+          {hasAccess(
+            userProfileState.moduleRights,
+            Pages.EmployeeLeaveCredits,
             'Delete',
             userProfileState.systemUser?.isAdmin
           ) && (
@@ -116,9 +191,22 @@ export default function EmployeeLeaveCreditsModal() {
             </thead>
             <tbody>
               {employeeLeaveCreditsState.employeeLeaveCredits.map((leave) => (
-                <tr>
+                <tr
+                  className={
+                    employeeLeaveCreditsState.selectedEmployeeLeaveCredits
+                      ?.id === leave.id
+                      ? 'selected'
+                      : ''
+                  }
+                  onClick={() =>
+                    dispatch(
+                      employeeLeaveCreditsActions.setSelectedEmployeeLeaveCredits(
+                        leave
+                      )
+                    )
+                  }>
                   <td>{leave.leaveType?.description}</td>
-                  <td>{toCommaSeparateAmount(leave.credits.toString())}</td>
+                  <td>{toCommaSeparateAmount(leave.credits?.toString())}</td>
                 </tr>
               ))}
             </tbody>
@@ -133,6 +221,11 @@ export default function EmployeeLeaveCreditsModal() {
           </button>
         </div>
       </div>
+      <>
+        {employeeLeaveCreditsModalState.isModalShow && (
+          <ManageEmployeeLeaveCredits />
+        )}
+      </>
     </Modal>
   );
 }

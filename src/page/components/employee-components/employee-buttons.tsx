@@ -95,6 +95,7 @@ export default function EmployeeButtons() {
       employeeLeaveCreditsActions.setEmployee(employeeState.selectedEmployee!)
     );
     dispatch(employeeLeaveCreditsActions.setShowModal(true));
+    dispatch(employeeLeaveCreditsActions.setInitiateSearch(true));
   }
   return (
     <section className='btn-actions-group-container'>

@@ -2,9 +2,9 @@ import LeaveType from './LeaveType';
 
 export default interface EmployeeLeaveCredits {
   id: number;
-  employeeId: number;
-  leaveTypeId: number;
-  credits: number;
+  employeeId: number | undefined;
+  leaveTypeId: number | undefined;
+  credits: number | undefined;
 
   leaveType?: LeaveType | undefined;
 }

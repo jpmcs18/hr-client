@@ -1,6 +1,6 @@
 import { EmployeeLeaveCreditsEnd } from '../endpoints';
 import EmployeeLeaveCredits from '../models/entities/EmployeeLeaveCredits';
-import { httpGet, httpPost, httpPut } from './base';
+import { httpDelete, httpGet, httpPost, httpPut } from './base';
 
 export async function getEmployeeLeaveCredits(
   employeeId: number
@@ -21,4 +21,9 @@ export async function updateEmployeeLeaveCredits(
     EmployeeLeaveCreditsEnd.Update + '/' + employeeLeaveCredits.id,
     employeeLeaveCredits
   );
+}
+export async function deleteEmployeeLeaveCredits(
+  id: number
+): Promise<boolean | undefined> {
+  return await httpDelete(EmployeeLeaveCreditsEnd.Delete + '/' + id);
 }
