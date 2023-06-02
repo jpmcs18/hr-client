@@ -578,45 +578,6 @@ input {
         }
       }
     }
-    .selection-show {
-      display: block !important;
-    }
-    .selection {
-      overflow: hidden;
-      position: absolute;
-      display: none;
-      top: 100%;
-      z-index: 12;
-      width: 100%;
-      box-sizing: border-box;
-      background: var(--container-background-color);
-      box-shadow: 0em 0em 0.5em 0.1em var(--shadow-color);
-      .search-input {
-        margin: 1em;
-        width: calc(100% - 2em);
-      }
-      .selection-list {
-        min-height: 2em;
-        max-height: 20em;
-        overflow: auto;
-        .selected {
-          background-color: var(--primary-color) !important;
-          color: var(--primary-color-accent) !important;
-        }
-        .selection-item:nth-child(odd) {
-          background-color: var(--primary-table-alternating);
-          color: var(--primary-table-alternating-accent);
-        }
-        .selection-item {
-          padding: 0.3em 0.5em;
-          cursor: pointer;
-          &:hover {
-            background-color: var(--primary-color-hover);
-            color: var(--primary-color-hover-accent);
-          }
-        }
-      }
-    }
   }
 
   &:focus-within {
@@ -638,7 +599,42 @@ input {
     // }
   }
 }
-
+.selection {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999999;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--container-background-color);
+  box-shadow: 0em 0em 0.5em 0.1em var(--shadow-color);
+  .search-input {
+    margin: 1em;
+    width: calc(100% - 2em);
+  }
+  .selection-list {
+    min-height: 2em;
+    max-height: 20em;
+    overflow: auto;
+    .selected {
+      background-color: var(--primary-color) !important;
+      color: var(--primary-color-accent) !important;
+    }
+    .selection-item:nth-child(odd) {
+      background-color: var(--primary-table-alternating);
+      color: var(--primary-table-alternating-accent);
+    }
+    .selection-item {
+      padding: 0.3em 0.5em;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--primary-color-hover);
+        color: var(--primary-color-hover-accent);
+      }
+    }
+  }
+}
 .loading-screen {
   display: none;
 }

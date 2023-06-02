@@ -22,8 +22,10 @@ import employeePromotionReducer from './reducers/employee-promotion-reducer';
 import requestHistoryReducer from './reducers/request-history-reducer';
 import employeeLeaveCreditsReducer from './reducers/employee-leave-credits-reducer';
 import employeeLeaveCreditsModalReducer from './reducers/employee-leave-credits-modal-reducer';
+import dropdownReducer from './reducers/dropdown-reducer';
 const store = configureStore({
   reducer: {
+    dropdown: dropdownReducer,
     userProfile: userProfileReducer,
     employee: employeeReducer,
     employeeModal: employeeModalReducer,

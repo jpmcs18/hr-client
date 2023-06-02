@@ -1,8 +1,13 @@
 import { faChevronDown, faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Guid } from 'guid-typescript';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import CustomReturn from '../../models/client-model/CustomReturn';
+import { dropdownActions } from '../../state/reducers/dropdown-reducer';
+import { RootState } from '../../state/store';
+import CustomDropdownItems from './custom-dropdown-items';
 
 export interface DropdownItem {
   key: string | undefined;
@@ -29,11 +34,32 @@ export default function CustomDropdown({
   onChange?: (data: CustomReturn) => void;
   selectorOnly?: boolean | undefined;
 }) {
-  const [filter, setFilter] = useState('');
-  const componentId = Guid.create().toString();
+  const dropdownState = useSelector((state: RootState) => state.dropdown);
+  const [isOpen, setIsOpen] = useState(false);
+  const componentId = useRef(Guid.create().toString());
+  const dispatch = useDispatch();
+
+  useEffect(
+    () => {
+      if (dropdownState.openDropdown === componentId.current) {
+        setIsOpen(() => true);
+      } else {
+        setIsOpen(() => false);
+      }
+      console.log(
+        'effect',
+        componentId.current,
+        dropdownState.openDropdown,
+        isOpen
+      );
+    },
+    //eslint-disable-next-line
+    [dropdownState.openDropdown]
+  );
+
   function openSelection() {
-    document.getElementById(componentId)?.classList.remove('selection-show');
-    document.getElementById(componentId)?.classList.add('selection-show');
+    dispatch(dropdownActions.setOpenDropdown(componentId.current));
+    console.log('onOpen', componentId.current);
   }
   return (
     <div className={'custom-input ' + className} id={id}>
@@ -41,9 +67,9 @@ export default function CustomDropdown({
       <div className='select-container'>
         <div
           className='select-input-container input-container'
-          onFocus={() => openSelection()}
           onClick={() => openSelection()}>
           <input
+            id={componentId.current}
             type='text'
             className='selection-input'
             readOnly={true}
@@ -52,7 +78,6 @@ export default function CustomDropdown({
                 (x) => x.key?.toString() === value?.toString()
               )?.[0]?.value ?? ''
             }
-            id={componentId + '-input'}
           />
           <div className='icon-container'>
             <FontAwesomeIcon
@@ -74,45 +99,8 @@ export default function CustomDropdown({
             )}
           </div>
         </div>
-        {!readonly && (
-          <div className='selection' id={componentId}>
-            <div>
-              <input
-                className='search-input'
-                type='text'
-                value={filter}
-                placeholder='Search...'
-                autoComplete='off'
-                id={componentId + '-search'}
-                onFocus={() => openSelection()}
-                onChange={(e) => setFilter(e.target.value)}
-              />
-            </div>
-            <div className='selection-list'>
-              {itemsList
-                .filter((x) =>
-                  x.value?.toLowerCase()?.includes(filter.toLowerCase())
-                )
-                .map((item) => (
-                  <div
-                    className={
-                      'selection-item ' +
-                      (item.key?.toString() === value?.toString()
-                        ? 'selected'
-                        : '')
-                    }
-                    key={item.key}
-                    onClick={() => {
-                      onChange?.({
-                        elementName: name ?? 'def',
-                        value: item.key,
-                      });
-                    }}>
-                    {item.value}
-                  </div>
-                ))}
-            </div>
-          </div>
+        {!readonly && isOpen && (
+          <CustomDropdownItems id={componentId.current} itemsList={itemsList} />
         )}
       </div>
     </div>

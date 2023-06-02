@@ -781,16 +781,18 @@ input:disabled {
   margin: 0 0.5em;
 }
 
-.custom-input .select-container .selection-show {
-  display: block !important;
+.custom-input:focus-within .current-selection-icon,
+.custom-input:focus-within label {
+  font-weight: var(--demibold);
+  opacity: 1;
 }
 
-.custom-input .select-container .selection {
+.selection {
   overflow: hidden;
-  position: absolute;
-  display: none;
-  top: 100%;
-  z-index: 12;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999999;
   width: 100%;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -799,41 +801,35 @@ input:disabled {
           box-shadow: 0em 0em 0.5em 0.1em var(--shadow-color);
 }
 
-.custom-input .select-container .selection .search-input {
+.selection .search-input {
   margin: 1em;
   width: calc(100% - 2em);
 }
 
-.custom-input .select-container .selection .selection-list {
+.selection .selection-list {
   min-height: 2em;
   max-height: 20em;
   overflow: auto;
 }
 
-.custom-input .select-container .selection .selection-list .selected {
+.selection .selection-list .selected {
   background-color: var(--primary-color) !important;
   color: var(--primary-color-accent) !important;
 }
 
-.custom-input .select-container .selection .selection-list .selection-item:nth-child(odd) {
+.selection .selection-list .selection-item:nth-child(odd) {
   background-color: var(--primary-table-alternating);
   color: var(--primary-table-alternating-accent);
 }
 
-.custom-input .select-container .selection .selection-list .selection-item {
+.selection .selection-list .selection-item {
   padding: 0.3em 0.5em;
   cursor: pointer;
 }
 
-.custom-input .select-container .selection .selection-list .selection-item:hover {
+.selection .selection-list .selection-item:hover {
   background-color: var(--primary-color-hover);
   color: var(--primary-color-hover-accent);
-}
-
-.custom-input:focus-within .current-selection-icon,
-.custom-input:focus-within label {
-  font-weight: var(--demibold);
-  opacity: 1;
 }
 
 .loading-screen {
