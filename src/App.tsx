@@ -25,7 +25,6 @@ function App() {
         }
         dispatch(userProfileAction.initializeState());
       }
-
       document.removeEventListener('click', () => {});
       document.addEventListener('click', (e: any) => {
         let targetId = e.target.id

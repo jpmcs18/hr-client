@@ -22,6 +22,9 @@ export default function CustomDropdownItems({
   const [filter, setFilter] = useState('');
   const divRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
+  const parentDefault = document
+    .getElementById(id + '-input')
+    ?.getBoundingClientRect() as DOMRect;
   useEffect(
     () => {
       var timer = setInterval(() => {
@@ -46,21 +49,22 @@ export default function CustomDropdownItems({
     const div = divRef.current?.getBoundingClientRect() as DOMRect;
     const screenSize = window.screen.availHeight;
     const parent = document
-      .getElementById(id)
+      .getElementById(id + '-input')
       ?.getBoundingClientRect() as DOMRect;
-    // console.log(parent.x, parent.y, screenSize);
+    if (parentDefault.x !== parent.x || parentDefault.y !== parent.y) {
+      dispatch(dropdownActions.setOpenDropdown(undefined));
+    }
     if (divRef.current?.style) {
       divRef.current.style.top = `${parent.height + parent.y}px`;
       divRef.current.style.left = `${parent.left + 1}px`;
       divRef.current.style.width = `${parent.width - 2}px`;
-
       if (div.height + parent.y + parent.height + 100 > screenSize) {
         divRef.current.style.top = `${parent.y - div.height}px`;
       }
     }
   }
   return ReactDOM.createPortal(
-    <div className='selection' ref={divRef}>
+    <div className='selection' ref={divRef} id={id}>
       <div>
         <input
           className='search-input'

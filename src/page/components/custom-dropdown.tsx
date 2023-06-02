@@ -46,35 +46,25 @@ export default function CustomDropdown({
       } else {
         setIsOpen(() => false);
       }
-      console.log(
-        'effect',
-        componentId.current,
-        dropdownState.openDropdown,
-        isOpen
-      );
     },
     //eslint-disable-next-line
     [dropdownState.openDropdown]
   );
 
   function openSelection() {
-    if (dropdownState.openDropdown === componentId.current) {
-      dispatch(dropdownActions.setOpenDropdown(undefined));
-      return;
-    }
     dispatch(dropdownActions.setOpenDropdown(componentId.current));
   }
   return (
     <div className={'custom-input ' + className} id={id}>
       <label>{title}</label>
       <div className='select-container'>
-        <div
-          className='select-input-container input-container'
-          onClick={() => openSelection()}>
+        <div className='select-input-container input-container'>
           <input
-            id={componentId.current}
+            id={componentId.current + '-input'}
             type='text'
             className='selection-input'
+            onFocus={() => openSelection()}
+            onClick={() => openSelection()}
             readOnly={true}
             value={
               itemsList.filter(
@@ -92,6 +82,7 @@ export default function CustomDropdown({
               <FontAwesomeIcon
                 icon={faClose}
                 className='close-icon'
+                id={componentId + '-icon-remove'}
                 onClick={() =>
                   onChange?.({
                     elementName: name ?? 'def',
