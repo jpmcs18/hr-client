@@ -78,7 +78,7 @@ export default function CustomNumber({
       if (inputData) {
         onValueChange?.({
           elementName: name ?? '',
-          value: inputData.replaceAll(',', ''),
+          value: +inputData.replaceAll(',', ''),
         });
       }
 

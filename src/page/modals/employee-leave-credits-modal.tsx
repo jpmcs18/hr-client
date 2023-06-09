@@ -110,7 +110,9 @@ export default function EmployeeLeaveCreditsModal() {
       .catch((err) => setToasterMessage({ content: err.message }))
       .finally(() => setBusy(false));
   }
-  function leaveCreditsHistory() {}
+  function leaveCreditsHistory() {
+    // dispatch(employeeLeaveCreditsHistoryActions.fill);
+  }
   function onModalClose() {
     dispatch(employeeLeaveCreditsActions.setShowModal(false));
   }

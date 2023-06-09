@@ -604,6 +604,11 @@ input:disabled {
   outline: none;
 }
 
+.custom-input .password-container input,
+.custom-input .select-container input {
+  padding: 0.5em 2em 0.5em 0.5em;
+}
+
 .custom-input .custom-number {
   text-align: right;
 }

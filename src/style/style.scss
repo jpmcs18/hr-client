@@ -449,6 +449,12 @@ input {
       outline: none;
     }
   }
+  .password-container,
+  .select-container {
+    input {
+      padding: 0.5em 2em 0.5em 0.5em;
+    }
+  }
   .custom-number {
     text-align: right;
   }
