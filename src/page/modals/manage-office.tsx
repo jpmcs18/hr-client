@@ -13,7 +13,6 @@ import { employeeSearchableActions } from '../../state/reducers/employee-searcha
 import { officeModalActions } from '../../state/reducers/office-modal-reducer';
 import { officeActions } from '../../state/reducers/office-reducer';
 import { RootState } from '../../state/store';
-import CustomDropdown from '../components/custom-dropdown';
 import CustomSelector from '../components/custom-selector';
 import CustomTextBox from '../components/custom-textbox';
 import ManageOfficePositionsTable from './manage-office-positions-table';

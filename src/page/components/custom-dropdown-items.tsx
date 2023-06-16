@@ -1,7 +1,6 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useDispatch } from 'react-redux';
-import { domainToASCII } from 'url';
 import CustomReturn from '../../models/client-model/CustomReturn';
 import { dropdownActions } from '../../state/reducers/dropdown-reducer';
 import { DropdownItem } from './custom-dropdown';
