@@ -53,7 +53,7 @@ export default function SystemUserPage() {
   return (
     <>
       <section className='title-container'>
-        <div className='title'>{Pages.UserRoles}</div>
+        <div className='title'>{Pages.Users}</div>
       </section>
       <section>
         <SearchBar
