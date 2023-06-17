@@ -19,11 +19,13 @@ import {
   deleteEmployeeLeaveCredits,
   getEmployeeLeaveCredits,
 } from '../../repositories/employee-leave-credits-queries';
+import { employeeLeaveCreditsHistoryModalActions } from '../../state/reducers/employee-leave-credits-history-modal-reducer';
 import { employeeLeaveCreditsModalActions } from '../../state/reducers/employee-leave-credits-modal-reducer';
 import { employeeLeaveCreditsActions } from '../../state/reducers/employee-leave-credits-reducer';
 import { RootState } from '../../state/store';
 import ManageEmployeeLeaveCredits from './manage-employee-leave-credits';
 import Modal from './modal';
+import EmployeeLeaveCreditsHistoryModal from './employee-leave-credits-history-modal';
 
 export default function EmployeeLeaveCreditsModal() {
   const employeeLeaveCreditsState = useSelector(
@@ -31,6 +33,9 @@ export default function EmployeeLeaveCreditsModal() {
   );
   const employeeLeaveCreditsModalState = useSelector(
     (state: RootState) => state.employeeLeaveCreditsModal
+  );
+  const employeeLeaveCreditsHistoryModalState = useSelector(
+    (state: RootState) => state.employeeLeaveCreditsHistoryModal
   );
   const userProfileState = useSelector((state: RootState) => state.userProfile);
   const dispatch = useDispatch();
@@ -111,7 +116,13 @@ export default function EmployeeLeaveCreditsModal() {
       .finally(() => setBusy(false));
   }
   function leaveCreditsHistory() {
-    // dispatch(employeeLeaveCreditsHistoryActions.fill);
+    dispatch(
+      employeeLeaveCreditsHistoryModalActions.setEmployeeLeaveCredits(
+        employeeLeaveCreditsState.selectedEmployeeLeaveCredits
+      )
+    );
+    dispatch(employeeLeaveCreditsHistoryModalActions.setShowModal(true));
+    dispatch(employeeLeaveCreditsHistoryModalActions.setInitiateSearch(true));
   }
   function onModalClose() {
     dispatch(employeeLeaveCreditsActions.setShowModal(false));
@@ -194,6 +205,7 @@ export default function EmployeeLeaveCreditsModal() {
             <tbody>
               {employeeLeaveCreditsState.employeeLeaveCredits.map((leave) => (
                 <tr
+                  key={leave.id}
                   className={
                     employeeLeaveCreditsState.selectedEmployeeLeaveCredits
                       ?.id === leave.id
@@ -226,6 +238,9 @@ export default function EmployeeLeaveCreditsModal() {
       <>
         {employeeLeaveCreditsModalState.isModalShow && (
           <ManageEmployeeLeaveCredits />
+        )}
+        {employeeLeaveCreditsHistoryModalState.isModalShow && (
+          <EmployeeLeaveCreditsHistoryModal />
         )}
       </>
     </Modal>

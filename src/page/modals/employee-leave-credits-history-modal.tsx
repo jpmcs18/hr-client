@@ -1,9 +1,13 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSetBusy } from '../../custom-hooks/authorize-provider';
+import { toCommaSeparateAmount, toDate } from '../../helper';
 import { employeeLeaveCreditsHistoryModalActions } from '../../state/reducers/employee-leave-credits-history-modal-reducer';
 import { RootState } from '../../state/store';
+import Pagination from '../components/pagination';
 import Modal from './modal';
+import { useEffect } from 'react';
+import { getEmployeeLeaveCredits } from '../../repositories/employee-leave-credits-queries';
+import { searchEmployeeLeaveCreditsHistory } from '../../repositories/employee-leave-credits-history-queries';
 
 export default function EmployeeLeaveCreditsHistoryModal() {
   const dispatch = useDispatch();
@@ -14,119 +18,54 @@ export default function EmployeeLeaveCreditsHistoryModal() {
   function onModalClose() {
     dispatch(employeeLeaveCreditsHistoryModalActions.setShowModal(false));
   }
-  // useEffect(
-  //   () => {
-  //     fetchEmploymentHistory();
-  //     fetchPersonalHistory();
-  //   },
-  //   //eslint-disable-next-line
-  //   [employeeHistoryModalState.employee]
-  // );
-  // useEffect(
-  //   () => {
-  //     if (employeeHistoryModalState.employeeHistorySearch.initiateSearch) {
-  //       dispatch(
-  //         employeeHistoryModalActions.setEmployeeHistorySearch({
-  //           elementName: 'initiateSearch',
-  //           value: false,
-  //         })
-  //       );
-  //       fetchEmploymentHistory();
-  //     }
-  //   },
-  //   //eslint-disable-next-line
-  //   [employeeHistoryModalState.employeeHistorySearch.initiateSearch]
-  // );
-  // useEffect(
-  //   () => {
-  //     if (employeeHistoryModalState.personalHistorySearch.initiateSearch) {
-  //       dispatch(
-  //         employeeHistoryModalActions.setPersonalHistorySearch({
-  //           elementName: 'initiateSearch',
-  //           value: false,
-  //         })
-  //       );
-  //       fetchPersonalHistory();
-  //     }
-  //   },
-  //   //eslint-disable-next-line
-  //   [employeeHistoryModalState.personalHistorySearch.initiateSearch]
-  // );
-  // async function fetchEmploymentHistory() {
-  //   if (employeeHistoryModalState.employee) {
-  //     setBusy(true);
-  //     await getEmployeeHistories(
-  //       employeeHistoryModalState.employee.id,
-  //       employeeHistoryModalState.employeeHistorySearch.currentPage
-  //     )
-  //       .then((res) => {
-  //         if (res) {
-  //           dispatch(
-  //             employeeHistoryModalActions.fillEmployeeHistory(res.results)
-  //           );
-  //           dispatch(
-  //             employeeHistoryModalActions.setEmployeeHistorySearch({
-  //               elementName: 'pageCount',
-  //               value: res.pageCount,
-  //             })
-  //           );
-  //         }
-  //       })
-  //       .finally(() => setBusy(false));
-  //   }
-  // }
-  // async function fetchPersonalHistory() {
-  //   if (employeeHistoryModalState.employee) {
-  //     setBusy(true);
-  //     await getPersonalHistories(
-  //       employeeHistoryModalState.employee.id,
-  //       employeeHistoryModalState.employeeHistorySearch.currentPage
-  //     )
-  //       .then((res) => {
-  //         if (res) {
-  //           dispatch(
-  //             employeeHistoryModalActions.fillPersonalHistory(res.results)
-  //           );
-  //           dispatch(
-  //             employeeHistoryModalActions.setPersonalHistorySearch({
-  //               elementName: 'pageCount',
-  //               value: res.pageCount,
-  //             })
-  //           );
-  //         }
-  //       })
-  //       .finally(() => setBusy(false));
-  //   }
-  // }
+  useEffect(
+    () => {
+      if (employeeLeaveCreditsHistoryModalState.initiateSearch) {
+        dispatch(
+          employeeLeaveCreditsHistoryModalActions.setInitiateSearch(false)
+        );
+        fetchLeaveCreditsHistory();
+      }
+    },
+    //eslint-disable-next-line
+    [employeeLeaveCreditsHistoryModalState.initiateSearch]
+  );
+  async function fetchLeaveCreditsHistory() {
+    setBusy(true);
+    await searchEmployeeLeaveCreditsHistory(
+      employeeLeaveCreditsHistoryModalState.employeeLeaveCredits?.employeeId!,
+      employeeLeaveCreditsHistoryModalState.employeeLeaveCredits?.leaveTypeId!,
+      employeeLeaveCreditsHistoryModalState.currentPage
+    )
+      .then((res) => {
+        if (res) {
+          dispatch(employeeLeaveCreditsHistoryModalActions.fill(res.results));
+          dispatch(
+            employeeLeaveCreditsHistoryModalActions.setPageCount(res.pageCount)
+          );
+        }
+      })
+      .finally(() => setBusy(false));
+  }
+  function nextPage(page: number) {
+    dispatch(employeeLeaveCreditsHistoryModalActions.setCurrentPage(page));
+    dispatch(employeeLeaveCreditsHistoryModalActions.setInitiateSearch(true));
+  }
   return (
     <Modal
-      className='employee-history-modal'
+      className='leave-credits-history-modal'
       onClose={onModalClose}
       title='Leave Credits History'>
-      {/* <div className='modal-content-body employee-history-modal-content-body'>
-        <section>
+      <div className='modal-content-body leave-credits-history-modal-content-body'>
+        <div>
           <Pagination
-            pages={employeeHistoryModalState.personalHistorySearch.pageCount}
+            pages={employeeLeaveCreditsHistoryModalState.pageCount}
             currentPageNumber={
-              employeeHistoryModalState.personalHistorySearch.currentPage
+              employeeLeaveCreditsHistoryModalState.currentPage
             }
-            goInPage={(page) => {
-              dispatch(
-                employeeHistoryModalActions.setPersonalHistorySearch({
-                  elementName: 'currentPage',
-                  value: page,
-                })
-              );
-
-              dispatch(
-                employeeHistoryModalActions.setPersonalHistorySearch({
-                  elementName: 'initiateSearch',
-                  value: true,
-                })
-              );
-            }}></Pagination>
-        </section>
-        <section className='table-container employee-history-table-container'>
+            goInPage={nextPage}></Pagination>
+        </div>
+        <div className='table-container employee-history-table-container'>
           <table className='item-table'>
             <thead>
               <tr>
@@ -136,36 +75,19 @@ export default function EmployeeLeaveCreditsHistoryModal() {
               </tr>
             </thead>
             <tbody>
-              {employeeHistoryModalState.history.map((history) => (
-                <tr
-                  onClick={() =>
-                    dispatch(
-                      employeeHistoryModalActions.setSelectedPersonalHistory(
-                        history
-                      )
-                    )
-                  }
-                  key={history.id}
-                  className={
-                    employeeHistoryModalState.selectedPersonalHistory?.id ===
-                    history.id
-                      ? 'selected'
-                      : ''
-                  }>
-                  <td>
-                    {toDate(history.startDate)} -{' '}
-                    {history.endDate ? toDate(history.endDate) : 'PRESENT'}
-                  </td>
-                  <td>{history.fullName}</td>
-                  <td>{history.contactNumber}</td>
-                  <td>{history.emailAddress}</td>
-                  <td>{history.civilStatus?.description}</td>
-                </tr>
-              ))}
+              {employeeLeaveCreditsHistoryModalState.employeeLeaveCreditsHistory.map(
+                (history) => (
+                  <tr key={history.id}>
+                    <td>{toDate(history.date)}</td>
+                    <td>{history.source}</td>
+                    <td>{toCommaSeparateAmount(history.credits.toString())}</td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
-        </section>
-      </div> */}
+        </div>
+      </div>
     </Modal>
   );
 }

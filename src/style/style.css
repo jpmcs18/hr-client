@@ -1150,6 +1150,17 @@ tbody tr {
   right: 0;
   bottom: 0;
 }
+.modal-container .leave-credits-history-modal {
+  width: 80%;
+}
+.modal-container .leave-credits-history-modal .leave-credits-history-modal-content-body {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+.modal-container .leave-credits-history-modal .leave-credits-history-modal-content-body .employee-history-table-container {
+  height: 80%;
+}
 .modal-container .employee-leave-credits-modal {
   width: 90%;
 }

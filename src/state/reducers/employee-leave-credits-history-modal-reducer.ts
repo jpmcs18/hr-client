@@ -1,17 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Searchable from '../../models/client-model/Searchable';
 import EmployeeLeaveCreditsHistory from '../../models/entities/EmployeeLeaveCreditsHistory';
+import EmployeeLeaveCredits from '../../models/entities/EmployeeLeaveCredits';
 
 interface State extends Searchable {
   employeeLeaveCreditsHistory: EmployeeLeaveCreditsHistory[];
-  employeeId: number;
-  leaveTypeId: number;
+  employeeLeaveCredits: EmployeeLeaveCredits | undefined;
   isModalShow: boolean;
 }
 const initialState: State = {
   employeeLeaveCreditsHistory: [],
-  employeeId: 0,
-  leaveTypeId: 0,
+  employeeLeaveCredits: undefined,
   key: '',
   currentPage: 1,
   pageCount: 0,
@@ -26,11 +25,11 @@ const employeeLeaveCreditsHistoryModalSlice = createSlice({
     fill(state, action: PayloadAction<EmployeeLeaveCreditsHistory[]>) {
       state.employeeLeaveCreditsHistory = action.payload;
     },
-    setEmployeeId(state, action: PayloadAction<number>) {
-      state.employeeId = action.payload;
-    },
-    setLeaveTypeId(state, action: PayloadAction<number>) {
-      state.leaveTypeId = action.payload;
+    setEmployeeLeaveCredits(
+      state,
+      action: PayloadAction<EmployeeLeaveCredits | undefined>
+    ) {
+      state.employeeLeaveCredits = action.payload;
     },
     setkey(state, action: PayloadAction<string>) {
       state.key = action.payload;
@@ -48,8 +47,7 @@ const employeeLeaveCreditsHistoryModalSlice = createSlice({
       state.isModalShow = action.payload;
       if (!action.payload) {
         state.employeeLeaveCreditsHistory = [];
-        state.employeeId = 0;
-        state.leaveTypeId = 0;
+        state.employeeLeaveCredits = undefined;
         state.key = '';
         state.currentPage = 1;
         state.pageCount = 0;

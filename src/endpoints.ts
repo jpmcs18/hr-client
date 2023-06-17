@@ -140,3 +140,13 @@ export const EmployeeLeaveCreditsEnd = {
   Update: 'employee-leave-credits',
   Delete: 'employee-leave-credits',
 };
+
+export const LeaveRequestEnd = {
+  SearchEmployeeRequest: 'leave-requests/search-employee-requests',
+  SearchEmployeesRequest: 'leave-requests/search-employees-requests',
+  Insert: 'leave-requests',
+  Update: 'leave-requests',
+  Delete: 'leave-requests',
+  Approve: 'leave-requests/approve',
+  Disapprove: 'leave-requests/disapprove',
+};
