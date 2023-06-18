@@ -24,6 +24,7 @@ import employeeLeaveCreditsReducer from './reducers/employee-leave-credits-reduc
 import employeeLeaveCreditsModalReducer from './reducers/employee-leave-credits-modal-reducer';
 import dropdownReducer from './reducers/dropdown-reducer';
 import employeeLeaveCreditsHistoryModalReducer from './reducers/employee-leave-credits-history-modal-reducer';
+import leaveRequestReducer from './reducers/leave-request-reducer';
 const store = configureStore({
   reducer: {
     dropdown: dropdownReducer,
@@ -51,6 +52,7 @@ const store = configureStore({
     employeeLeaveCredits: employeeLeaveCreditsReducer,
     employeeLeaveCreditsModal: employeeLeaveCreditsModalReducer,
     employeeLeaveCreditsHistoryModal: employeeLeaveCreditsHistoryModalReducer,
+    leaveRequest: leaveRequestReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

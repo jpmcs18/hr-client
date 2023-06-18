@@ -24,4 +24,5 @@ export const Pages = {
   UserRoles: 'User Roles',
   Reports: 'Reports',
   RequestHistory: 'Request History',
+  LeaveRequest: 'Leave Request',
 };

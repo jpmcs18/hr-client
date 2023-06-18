@@ -150,3 +150,11 @@ export const LeaveRequestEnd = {
   Approve: 'leave-requests/approve',
   Disapprove: 'leave-requests/disapprove',
 };
+
+export const LeaveRequestTypeEnd = {
+  GetList: 'leave-request-types',
+};
+
+export const LeaveRequestStatusEnd = {
+  GetList: 'leave-request-statuses',
+};

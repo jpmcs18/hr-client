@@ -242,6 +242,15 @@ export default function HomePage() {
                 element={<RequestHistoryPage />}
               />
             )}
+            {(!!userProfileState.module.filter(
+              (x) => x === getPage(Pages.LeaveRequest).id
+            ).length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route
+                path={getPage(Pages.LeaveRequest).route}
+                element={<RequestHistoryPage />}
+              />
+            )}
             <Route
               path='*'
               element={<Navigate to={SystemModules[0].route} replace />}

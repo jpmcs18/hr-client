@@ -3,8 +3,9 @@ export default interface LeaveRequest {
   employeeId: number | undefined;
   leaveTypeId: number | undefined;
   isWholeDay: boolean | undefined;
+  isMultipleDays: boolean | undefined;
   startDate: Date | undefined;
   endDate: Date | undefined;
-  totalLeaveCreditsToUse: number | undefined;
+  totalLeaveCredits: number | undefined;
   remarks: string | undefined;
 }

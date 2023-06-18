@@ -35,4 +35,10 @@ export const SystemModules: ModuleRoute[] = [
     route: '/request-history',
     display: true,
   },
+  {
+    id: 80,
+    pageName: Pages.LeaveRequest,
+    route: '/leave-request',
+    display: true,
+  },
 ];
