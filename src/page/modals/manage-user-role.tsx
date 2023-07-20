@@ -67,7 +67,7 @@ export default function ManageUserRole() {
       )
         .then((res) => {
           if (res) {
-            setToasterMessage({ content: 'User role has been updated.' });
+            setToasterMessage({ content: 'User role updated.' });
             onModalClose(true);
           }
         })
@@ -89,7 +89,7 @@ export default function ManageUserRole() {
       )
         .then((res) => {
           if (res !== undefined) {
-            setToasterMessage({ content: 'New user role has been added.' });
+            setToasterMessage({ content: 'New user role added.' });
             onModalClose(true);
           }
         })

@@ -5,75 +5,67 @@ import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
-import { searchEmployee } from '../../../repositories/employee-queries';
-import { getGenders } from '../../../repositories/gender-queries';
-import { getOffices } from '../../../repositories/office-queries';
-import { getPositions } from '../../../repositories/position-queries';
-import { employeeActions } from '../../../state/reducers/employee-reducer';
+import { searchLeaveRequests } from '../../../repositories/leave-request-queries';
+import { getLeaveRequestStatuses } from '../../../repositories/leave-request-status-queries';
+import { getLeaveRequestTypes } from '../../../repositories/leave-request-type-queries';
+import { leaveRequestActions } from '../../../state/reducers/leave-request-reducer';
 import { RootState } from '../../../state/store';
-import EmployeeHistoryModal from '../../modals/employee-history-components/employee-history-modal';
-import EmployeeLeaveCreditsModal from '../../modals/employee-leave-credits-modal';
-import EmployeePromotion from '../../modals/employee-promotion';
-import ManageEmployee from '../../modals/manage-employee';
-import ManageEmployeeAttachments from '../../modals/manage-employee-attachments';
-import EmployeeButtons from './leave-request-buttons';
-import EmployeeItems from './leave-request-items';
-import EmployeeSearch from './leave-request-search';
+import ManageLeaveRequest from '../../modals/manage-leave-request';
+import ManageLeaveRequestDisapproval from '../../modals/manage-leave-request-disapproval';
+import ManageLeaveRequestApproval from '../../modals/manage-leave-request-approval';
+import LeaveRequestButtons from './leave-request-buttons';
+import LeaveRequestItems from './leave-request-items';
+import LeaveRequestSearch from './leave-request-search';
 
 export default function LeaveRequestPage() {
-  const employeeModalState = useSelector(
-    (state: RootState) => state.employeeModal
+  const leaveRequestState = useSelector(
+    (state: RootState) => state.leaveRequest
   );
-  const employeeAttachmentModalState = useSelector(
-    (state: RootState) => state.employeeAttachmentModal
+  const leaveRequestModalState = useSelector(
+    (state: RootState) => state.leaveRequestModal
   );
-  const employeeHistoryModalState = useSelector(
-    (state: RootState) => state.employeeHistoryModal
+  const leaveRequestApprovalState = useSelector(
+    (state: RootState) => state.leaveRequestApproval
   );
-  const employeePromotionState = useSelector(
-    (state: RootState) => state.employeePromotion
+  const leaveRequestDisapprovalState = useSelector(
+    (state: RootState) => state.leaveRequestDisapproval
   );
-  const employeeLeaveCreditsState = useSelector(
-    (state: RootState) => state.employeeLeaveCredits
-  );
-  const employeeState = useSelector((state: RootState) => state.employee);
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
   useEffect(
     () => {
-      searchEmp();
+      fetchLeaveRequests();
     },
     //eslint-disable-next-line
-    [employeeState.initiateSearch]
+    [leaveRequestState.initiateSearch]
   );
 
   useEffect(
     () => {
-      fetchOffices();
-      fetchPositions();
-      fetchGenders();
+      fetchLeaveRequestTypes();
+      fetchLeaveRequestStatuses();
     },
     //eslint-disable-next-line
     []
   );
 
-  async function searchEmp() {
-    if (!employeeState.initiateSearch) return;
+  async function fetchLeaveRequests() {
+    if (!leaveRequestState.initiateSearch) return;
     setBusy(true);
-    dispatch(employeeActions.setInitiateSearch(false));
-    await searchEmployee(
-      employeeState.key,
-      employeeState.currentPage,
-      undefined,
-      employeeState.selectedOfficeId,
-      employeeState.selectedPositionId,
-      employeeState.selectedGenderId
+    dispatch(leaveRequestActions.setInitiateSearch(false));
+    await searchLeaveRequests(
+      leaveRequestState.key,
+      leaveRequestState.selectedLeaveRequestStatus,
+      leaveRequestState.selectedLeaveRequestType,
+      leaveRequestState.startDate,
+      leaveRequestState.endDate,
+      leaveRequestState.currentPage
     )
       .then((res) => {
         if (res !== undefined) {
-          dispatch(employeeActions.fill(res.results));
-          dispatch(employeeActions.setPageCount(res.pageCount));
+          dispatch(leaveRequestActions.fill(res.results));
+          dispatch(leaveRequestActions.setPageCount(res.pageCount));
         }
       })
       .catch((err) => {
@@ -84,56 +76,42 @@ export default function LeaveRequestPage() {
       });
   }
 
-  async function fetchOffices() {
+  async function fetchLeaveRequestTypes() {
     setBusy(true);
-    await getOffices()
+    await getLeaveRequestTypes()
       .then((res) => {
         if (res) {
-          dispatch(employeeActions.setOffices(res));
+          dispatch(leaveRequestActions.setLeaveRequestTypes(res));
         }
       })
       .catch((e) => setToasterMessage({ content: e.message }))
       .finally(() => setBusy(false));
   }
 
-  async function fetchPositions() {
+  async function fetchLeaveRequestStatuses() {
     setBusy(true);
-    await getPositions()
+    await getLeaveRequestStatuses()
       .then((res) => {
         if (res) {
-          dispatch(employeeActions.setPositions(res));
+          dispatch(leaveRequestActions.setLeaveRequestStatuses(res));
         }
       })
       .catch((e) => setToasterMessage({ content: e.message }))
       .finally(() => setBusy(false));
   }
-  async function fetchGenders() {
-    setBusy(true);
-    await getGenders()
-      .then((res) => {
-        if (res) {
-          dispatch(employeeActions.setGenders(res));
-        }
-      })
-      .catch((e) => setToasterMessage({ content: e.message }))
-      .finally(() => setBusy(false));
-  }
-
   return (
     <>
       <section className='title-container'>
-        <div className='title'>{Pages.Employees}</div>
+        <div className='title'>{Pages.LeaveRequests}</div>
       </section>
-      <EmployeeSearch />
-      <EmployeeButtons />
-      <EmployeeItems />
-      {employeeModalState.isModalShow && <ManageEmployee />}
-      {employeeAttachmentModalState.isModalShow && (
-        <ManageEmployeeAttachments />
+      <LeaveRequestSearch />
+      <LeaveRequestButtons />
+      <LeaveRequestItems />
+      {leaveRequestModalState.isModalShow && <ManageLeaveRequest />}
+      {leaveRequestApprovalState.isModalShow && <ManageLeaveRequestApproval />}
+      {leaveRequestDisapprovalState.isModalShow && (
+        <ManageLeaveRequestDisapproval />
       )}
-      {employeePromotionState.isModalShow && <EmployeePromotion />}
-      {employeeHistoryModalState.isModalShow && <EmployeeHistoryModal />}
-      {employeeLeaveCreditsState.isModalShow && <EmployeeLeaveCreditsModal />}
     </>
   );
 }

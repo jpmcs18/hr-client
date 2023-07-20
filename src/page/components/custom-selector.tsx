@@ -1,4 +1,4 @@
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faClose, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export default function CustomSelector({
   title,
@@ -9,6 +9,7 @@ export default function CustomSelector({
   readonly,
   disabled,
   onSelectorClick,
+  onClear,
 }: {
   title: string;
   name?: string;
@@ -18,6 +19,7 @@ export default function CustomSelector({
   readonly?: boolean | false;
   disabled?: boolean | false;
   onSelectorClick?: () => void;
+  onClear?: () => void;
 }) {
   return (
     <div className={'custom-input ' + className}>
@@ -31,13 +33,21 @@ export default function CustomSelector({
           id={id}
           value={value ?? ''}
         />
-        <div className='magnify-container'>
+        <div className='icon-container magnify-container'>
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
             className='icon'
             onClick={() => {
               if (disabled || readonly) return;
               onSelectorClick?.();
+            }}
+          />
+          <FontAwesomeIcon
+            icon={faClose}
+            className='close-icon'
+            onClick={() => {
+              if (disabled || readonly) return;
+              onClear?.();
             }}
           />
         </div>

@@ -1,5 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { toCommaSeparateAmount as toCommaSeparated } from '../../helper';
+import {
+  toCommaSeparateAmount as toCommaSeparated,
+  toDisplayAmount,
+} from '../../helper';
 import CustomReturn from '../../models/client-model/CustomReturn';
 
 export default function CustomNumber({
@@ -13,8 +16,10 @@ export default function CustomNumber({
   readonly,
   placeholder,
   disabled,
-  onValueChange,
+  onChange,
   onInputBlur,
+  min,
+  max,
 }: {
   title?: string;
   numberName?: string;
@@ -26,15 +31,23 @@ export default function CustomNumber({
   placeholder?: string;
   readonly?: boolean | false;
   disabled?: boolean | false;
-  onValueChange?: (data: CustomReturn) => void;
+  onChange?: (data: CustomReturn) => void;
   onInputBlur?: () => void;
+  min?: number;
+  max?: number;
 }) {
+  const oldnum = useRef<string>('');
   const input = useRef<HTMLInputElement>(null);
 
   useEffect(
     () => {
       if (input.current) {
-        input.current.value = !value ? '0' : toCommaSeparated(value.toString());
+        input.current.value = !value
+          ? '0'
+          : type === 'amount'
+          ? toDisplayAmount(value.toString())
+          : toCommaSeparated(value.toString());
+        oldnum.current = input.current.value;
       }
     },
     //eslint-disable-next-line
@@ -70,18 +83,33 @@ export default function CustomNumber({
         }
       }
     }
+
+    if (Number.isNaN(+inputData.replaceAll(',', ''))) {
+      inputData = oldnum.current;
+      input.current.value = oldnum.current;
+    }
+    console.log('data', inputData, oldnum.current);
+    if (min && +inputData.replaceAll(',', '') < min) {
+      inputData = oldnum.current;
+      input.current.value = oldnum.current;
+    }
+    if (max && +inputData.replaceAll(',', '') > max) {
+      inputData = oldnum.current;
+      input.current.value = oldnum.current;
+    }
     var newLength = inputData.length;
     input.current.value = inputData;
     selectionStart = newLength - length + (selectionStart ?? 0);
     input.current.setSelectionRange(selectionStart, selectionStart);
-    if (isBlur) {
-      if (inputData) {
-        onValueChange?.({
-          elementName: name ?? '',
-          value: +inputData.replaceAll(',', ''),
-        });
-      }
+    oldnum.current = inputData;
 
+    if (!!inputData) {
+      onChange?.({
+        elementName: name ?? '',
+        value: +inputData.replaceAll(',', ''),
+      });
+    }
+    if (isBlur) {
       onInputBlur?.();
     }
   }

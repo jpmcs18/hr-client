@@ -35,6 +35,8 @@ import { Pages } from '../constant';
 import SalaryGradePage from './components/salary-grade-components/salary-grade-page';
 import ReportPage from './components/report-components/report-page';
 import RequestHistoryPage from './components/request-history-components/request-history-page';
+import LeaveRequestPage from './components/leave-request-components/leave-request-page';
+import LeaveRequestApproverPage from './components/leave-request-approver-components/leave-request-approver-page';
 export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
   const setMessage = useSetMessage();
@@ -60,83 +62,86 @@ export default function HomePage() {
           <header>
             <nav>
               <div className='menu-container'>
-                <div className='nav-menu-container'>
-                  <button
-                    className='nav-icon'
-                    onClick={() => setShowMenu(() => true)}>
-                    <FontAwesomeIcon icon={faBars as IconProp} />
-                  </button>
-                  <div className={'menus ' + (showMenu ? 'menu-show' : '')}>
-                    <div className='menu-item-container'>
-                      <div className='menu-item-header'>
-                        <NavLink
-                          onClick={() => setShowMenu(() => false)}
-                          to={SystemModules[0].route}
-                          className='nav-icon home-icon'>
-                          <FontAwesomeIcon icon={faHome as IconProp} />
-                        </NavLink>
-                        <button
-                          className='nav-icon close-nav-menu'
-                          onClick={() => setShowMenu(() => false)}>
-                          <FontAwesomeIcon icon={faTimes as IconProp} />
-                        </button>
-                      </div>
-
-                      <div className='menu-container mobile-profile'>
-                        <div className='name'>
-                          <label
-                            className='nav-menu'
-                            onClick={() => {
-                              setShowProfile(true);
-                              setShowMenu(() => false);
-                            }}>
-                            {userProfileState.systemUser?.displayName}
-                            <FontAwesomeIcon
-                              className='name-icon'
-                              icon={faAngleRight as IconProp}
-                            />
-                          </label>
-                          <span className='name-subtitle'>
-                            {userProfileState.systemUser?.username}
-                          </span>
+                {(!!userProfileState.module.length ||
+                  userProfileState.systemUser?.isAdmin) && (
+                  <div className='nav-menu-container'>
+                    <button
+                      className='nav-icon'
+                      onClick={() => setShowMenu(() => true)}>
+                      <FontAwesomeIcon icon={faBars as IconProp} />
+                    </button>
+                    <div className={'menus ' + (showMenu ? 'menu-show' : '')}>
+                      <div className='menu-item-container'>
+                        <div className='menu-item-header'>
+                          <NavLink
+                            onClick={() => setShowMenu(() => false)}
+                            to={SystemModules[0].route}
+                            className='nav-icon home-icon'>
+                            <FontAwesomeIcon icon={faHome as IconProp} />
+                          </NavLink>
+                          <button
+                            className='nav-icon close-nav-menu'
+                            onClick={() => setShowMenu(() => false)}>
+                            <FontAwesomeIcon icon={faTimes as IconProp} />
+                          </button>
                         </div>
-                        <button
-                          onClick={logoutUser}
-                          className='nav-menu logout'>
-                          Logout
-                        </button>
-                      </div>
-                      <div className='menus-container'>
-                        {SystemModules.filter(
-                          (x) =>
-                            x.display &&
-                            (userProfileState.systemUser?.isAdmin ||
-                              !!userProfileState.module.filter(
-                                (y) => y === x.id
-                              ).length)
-                        ).map((menu) => (
-                          <div className='menu-items' key={menu.pageName}>
-                            <div className='menu-item main-menus'>
-                              <NavLink
-                                onClick={() => setShowMenu(() => false)}
-                                to={menu.route ?? ''}
-                                className='nav-menu'>
-                                {menu.pageName}
-                                <FontAwesomeIcon
-                                  className='menu-icon'
-                                  icon={faAngleRight as IconProp}
-                                />
-                              </NavLink>
-                            </div>
+
+                        <div className='menu-container mobile-profile'>
+                          <div className='name'>
+                            <label
+                              className='nav-menu'
+                              onClick={() => {
+                                setShowProfile(true);
+                                setShowMenu(() => false);
+                              }}>
+                              {userProfileState.systemUser?.displayName}
+                              <FontAwesomeIcon
+                                className='name-icon'
+                                icon={faAngleRight as IconProp}
+                              />
+                            </label>
+                            <span className='name-subtitle'>
+                              {userProfileState.systemUser?.username}
+                            </span>
                           </div>
-                        ))}
+                          <button
+                            onClick={logoutUser}
+                            className='nav-menu logout'>
+                            Logout
+                          </button>
+                        </div>
+                        <div className='menus-container'>
+                          {SystemModules.filter(
+                            (x) =>
+                              x.display &&
+                              (userProfileState.systemUser?.isAdmin ||
+                                !!userProfileState.module.filter(
+                                  (y) => y === x.id
+                                ).length)
+                          ).map((menu) => (
+                            <div className='menu-items' key={menu.pageName}>
+                              <div className='menu-item main-menus'>
+                                <NavLink
+                                  onClick={() => setShowMenu(() => false)}
+                                  to={menu.route ?? ''}
+                                  className='nav-menu'>
+                                  {menu.pageName}
+                                  <FontAwesomeIcon
+                                    className='menu-icon'
+                                    icon={faAngleRight as IconProp}
+                                  />
+                                </NavLink>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
+                      <div
+                        className='menu-content-blocker'
+                        onClick={() => setShowMenu(() => false)}></div>
                     </div>
-                    <div
-                      className='menu-content-blocker'
-                      onClick={() => setShowMenu(() => false)}></div>
                   </div>
-                </div>
+                )}
                 <NavLink to={SystemModules[1].route} className='nav-icon'>
                   <Icon />
                 </NavLink>
@@ -243,12 +248,21 @@ export default function HomePage() {
               />
             )}
             {(!!userProfileState.module.filter(
-              (x) => x === getPage(Pages.LeaveRequest).id
+              (x) => x === getPage(Pages.LeaveRequests).id
             ).length ||
               userProfileState.systemUser?.isAdmin) && (
               <Route
-                path={getPage(Pages.LeaveRequest).route}
-                element={<RequestHistoryPage />}
+                path={getPage(Pages.LeaveRequests).route}
+                element={<LeaveRequestPage />}
+              />
+            )}
+            {(!!userProfileState.module.filter(
+              (x) => x === getPage(Pages.LeaveRequestApprovers).id
+            ).length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route
+                path={getPage(Pages.LeaveRequestApprovers).route}
+                element={<LeaveRequestApproverPage />}
               />
             )}
             <Route

@@ -44,7 +44,7 @@ export default function ManageSalaryGrade() {
         .then((res) => {
           if (res) {
             setToasterMessage({
-              content: 'Salary grade batch has been updated.',
+              content: 'Salary grade batch updated.',
             });
             onModalClose(true);
           }
@@ -61,7 +61,7 @@ export default function ManageSalaryGrade() {
         .then((res) => {
           if (res !== undefined) {
             setToasterMessage({
-              content: 'New salary grade batch has been added.',
+              content: 'New salary grade batch added.',
             });
             onModalClose(true);
           }
@@ -135,7 +135,7 @@ export default function ManageSalaryGrade() {
                         <CustomNumber
                           type='amount'
                           value={salaryGradeItem.amount}
-                          onValueChange={(ret) =>
+                          onChange={(ret) =>
                             dispatch(
                               salaryGradeModalActions.updateSalaryGrade({
                                 tempId: salaryGradeItem.tempId!,

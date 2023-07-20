@@ -46,7 +46,7 @@ export default function OfficeButtons() {
           .then((res) => {
             if (res) {
               setToasterMessage({
-                content: 'Selected office has been deleted',
+                content: 'Selected office deleted',
               });
               dispatch(officeActions.setInitiateSearch(true));
             }

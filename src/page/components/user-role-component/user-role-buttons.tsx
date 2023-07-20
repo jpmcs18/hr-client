@@ -46,7 +46,7 @@ export default function UserRoleButtons() {
           .then((res) => {
             if (res) {
               setToasterMessage({
-                content: 'Selected user role has been deleted',
+                content: 'Selected user role deleted',
               });
               dispatch(userRoleActions.setInitiateSearch(true));
             }

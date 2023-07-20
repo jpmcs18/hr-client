@@ -33,7 +33,7 @@ export default function ManagePosition() {
       await updatePosition(positionModalState.position)
         .then((res) => {
           if (res) {
-            setToasterMessage({ content: 'Position has been updated.' });
+            setToasterMessage({ content: 'Position updated.' });
             onModalClose(true);
           }
         })
@@ -45,7 +45,7 @@ export default function ManagePosition() {
       await insertPosition(positionModalState.position)
         .then((res) => {
           if (res !== undefined) {
-            setToasterMessage({ content: 'New position has been added.' });
+            setToasterMessage({ content: 'New position added.' });
             onModalClose(true);
           }
         })

@@ -1,42 +1,47 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { employeeActions } from '../../../state/reducers/employee-reducer';
+import { leaveRequestActions } from '../../../state/reducers/leave-request-reducer';
 import { RootState } from '../../../state/store';
-import EmployeeItem from './leave-request-item';
+import LeaveRequestItem from './leave-request-item';
 
 export default function LeaveRequestItems() {
   const dispatch = useDispatch();
-  const employeeState = useSelector((state: RootState) => state.employee);
+  const leaveRequestState = useSelector(
+    (state: RootState) => state.leaveRequest
+  );
   return (
-    <section className='table-container'>
+    <div className='table-container leave-request-table-container'>
       <table className='item-table'>
         <thead>
           <tr>
-            <th>ID Number</th>
-            <th>Full Name</th>
-            <th>Nature of Employment</th>
-            <th>Gender</th>
-            <th>Age</th>
-            <th>Years in Service</th>
-            <th>Office</th>
-            <th>Position</th>
+            <th>Date</th>
+            <th>Reference No</th>
+            <th>Employee</th>
+            <th>Request Type</th>
+            <th>Leave Type</th>
+            <th>Inclusive Date</th>
+            <th>Day/s</th>
             <th style={{ textAlign: 'center' }}>Status</th>
           </tr>
         </thead>
         <tbody>
-          {employeeState.employees.map((employee) => (
+          {leaveRequestState.leaveRequests.map((leaveRequest) => (
             <tr
-              onClick={() => dispatch(employeeActions.setSelected(employee))}
-              key={employee.id}
+              onClick={() =>
+                dispatch(
+                  leaveRequestActions.setSelectedLeaveRequest(leaveRequest)
+                )
+              }
+              key={leaveRequest.id}
               className={
-                employeeState.selectedEmployee?.id === employee.id
+                leaveRequestState.selectedLeaveRequest?.id === leaveRequest.id
                   ? 'selected'
                   : ''
               }>
-              <EmployeeItem employee={employee} />
+              <LeaveRequestItem leaveRequest={leaveRequest} />
             </tr>
           ))}
         </tbody>
       </table>
-    </section>
+    </div>
   );
 }

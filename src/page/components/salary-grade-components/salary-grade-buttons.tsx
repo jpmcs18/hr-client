@@ -53,7 +53,7 @@ export default function SalaryGradeButtons() {
           .then((res) => {
             if (res) {
               setToasterMessage({
-                content: 'Selected salary grade batch has been deleted',
+                content: 'Selected salary grade batch deleted',
               });
               dispatch(salaryGradeBatchActions.setInitiateSearch(true));
             }

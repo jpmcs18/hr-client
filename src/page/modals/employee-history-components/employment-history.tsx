@@ -58,7 +58,7 @@ export default function EmploymentHistory() {
           .then((res) => {
             if (res) {
               setToasterMessage({
-                content: 'Selected service record has been deleted',
+                content: 'Selected service record deleted',
               });
               dispatch(
                 employeeHistoryModalActions.setEmployeeHistorySearch({

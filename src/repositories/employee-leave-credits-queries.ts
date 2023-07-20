@@ -2,6 +2,16 @@ import { EmployeeLeaveCreditsEnd } from '../endpoints';
 import EmployeeLeaveCredits from '../models/entities/EmployeeLeaveCredits';
 import { httpDelete, httpGet, httpPost, httpPut } from './base';
 
+export async function getEmployeeAvailableLeaveCredits(
+  employeeId: number,
+  leaveRequestTypeId: number
+): Promise<number | undefined> {
+  return await httpGet<number>(
+    EmployeeLeaveCreditsEnd.GetAvailableLeaveCredits +
+      `?employeeId=${employeeId}&leaveRequestTypeId=${leaveRequestTypeId}`
+  );
+}
+
 export async function getEmployeeLeaveCredits(
   employeeId: number
 ): Promise<EmployeeLeaveCredits[] | undefined> {

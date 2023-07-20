@@ -109,7 +109,7 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
             <div className='header'>
               <CustomCheckBox
                 text='Change Password'
-                checkChange={() => {
+                onChange={() => {
                   setChangePassword((x) => !x);
                 }}
                 isChecked={changePassword}

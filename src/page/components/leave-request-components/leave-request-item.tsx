@@ -1,38 +1,37 @@
-import Employee from '../../../models/entities/Employee';
+import { LeaveRequestStatusDefaults } from '../../../constant';
+import { toCommaSeparateAmount, toDate } from '../../../helper';
+import LeaveRequest from '../../../models/entities/LeaveRequest';
+import CustomDisplay from '../custom-display';
 
-export default function LeaveRequestItem({ employee }: { employee: Employee }) {
+export default function LeaveRequestItem({
+  leaveRequest,
+}: {
+  leaveRequest: LeaveRequest;
+}) {
   return (
     <>
-      <td>{employee.idNumber}</td>
-      <td>{employee.fullName}</td>
-      <td>{employee.natureOfEmployment?.description}</td>
-      <td>{employee.gender?.description}</td>
-      <td>{employee.age}</td>
-      <td>{employee.yearsInService}</td>
+      <td>{toDate(leaveRequest.requestDate)}</td>
+      <td>{leaveRequest.referenceNo}</td>
+      <td>{leaveRequest.employee?.fullName}</td>
+      <td>{leaveRequest.leaveRequestType?.description}</td>
+      <td>{leaveRequest.leaveRequestType?.leaveType?.description}</td>
       <td>
-        <div>{employee.office?.description}</div>
-        {employee.detailedOffice && (
-          <i>
-            <b>Detailed:</b> {employee.detailedOffice?.description}
-          </i>
-        )}
+        {toDate(leaveRequest.startDate) +
+          (!leaveRequest.isMultipleDays
+            ? ''
+            : ` - ${toDate(leaveRequest.endDate)}`)}
       </td>
       <td>
-        <div>{employee.position?.description}</div>
-        {employee.detailedPosition && (
-          <i>
-            <b>Detailed:</b> {employee.detailedPosition?.description}
-          </i>
-        )}
+        {toCommaSeparateAmount(leaveRequest.totalLeaveCredits?.toString())}
       </td>
-      <td align='center'>
-        <div>
-          {employee.isActive ? (
-            <span className='active'>Active</span>
-          ) : (
-            <span className='separated'>Separated</span>
-          )}
-        </div>
+      <td style={{ textAlign: 'center' }}>
+        <span
+          className={
+            leaveRequest.leaveRequestStatus?.description?.toLowerCase() +
+            ' leave-status'
+          }>
+          {leaveRequest.leaveRequestStatus?.description}
+        </span>
       </td>
     </>
   );

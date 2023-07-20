@@ -113,7 +113,7 @@ export default function EmployeePromotion() {
       .then((res) => {
         if (res !== undefined) {
           setToasterMessage({
-            content: 'Employee has been promoted.',
+            content: 'Employee promoted.',
           });
           onModalClose(true);
         }
@@ -246,7 +246,7 @@ export default function EmployeePromotion() {
                 type='number'
                 name='salaryGrade'
                 value={employeePromotionState.employeePromotion?.salaryGrade}
-                onValueChange={(ret) => {
+                onChange={(ret) => {
                   dispatch(
                     employeePromotionActions.updateEmployeePromotion(ret)
                   );
@@ -258,7 +258,7 @@ export default function EmployeePromotion() {
                 type='number'
                 name='step'
                 value={employeePromotionState.employeePromotion?.step}
-                onValueChange={(ret) => {
+                onChange={(ret) => {
                   dispatch(
                     employeePromotionActions.updateEmployeePromotion(ret)
                   );
@@ -272,7 +272,7 @@ export default function EmployeePromotion() {
             type='amount'
             name='salary'
             value={employeePromotionState.employeePromotion.salary}
-            onValueChange={(ret) =>
+            onChange={(ret) =>
               dispatch(employeePromotionActions.updateEmployeePromotion(ret))
             }
           />

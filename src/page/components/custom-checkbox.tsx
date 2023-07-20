@@ -1,15 +1,18 @@
 import React from 'react';
+import CustomReturn from '../../models/client-model/CustomReturn';
 
 export default function CustomCheckBox({
   isChecked,
-  checkChange,
+  onChange,
   id,
   text,
+  name,
 }: {
-  checkChange: () => void;
+  onChange?: (ret: CustomReturn) => void;
   isChecked: boolean;
   id?: string;
   text?: string;
+  name?: string;
 }) {
   return (
     <div className='check'>
@@ -17,7 +20,12 @@ export default function CustomCheckBox({
         <input
           type='checkbox'
           id={id ?? 'check'}
-          onChange={checkChange}
+          onChange={() =>
+            onChange?.({
+              elementName: name ?? 'def',
+              value: !isChecked,
+            })
+          }
           checked={isChecked}
         />
         <span className='checkmark'></span>

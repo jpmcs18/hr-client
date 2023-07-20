@@ -62,7 +62,7 @@ export default function EmployeeButtons() {
           .then((res) => {
             if (res) {
               setToasterMessage({
-                content: 'Selected employee has been deleted',
+                content: 'Selected employee deleted',
               });
               dispatch(employeeActions.setInitiateSearch(true));
             }

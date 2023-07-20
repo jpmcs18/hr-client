@@ -6,25 +6,30 @@ import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
-import { getEmployees } from '../../repositories/employee-queries';
+import Employee from '../../models/entities/Employee';
 import {
   insertSystemUser,
   updateSystemUser,
 } from '../../repositories/system-user-queries';
 import { getUserRoles } from '../../repositories/user-role-queries';
+import { employeeSearchableActions } from '../../state/reducers/employee-searchable-reducer';
 import { systemUserModalActions } from '../../state/reducers/system-user-modal-reducer';
 import { systemUserActions } from '../../state/reducers/system-user-reducer';
 import { RootState } from '../../state/store';
 import CustomCheckBoxButton from '../components/custom-checkbox-button';
-import CustomDropdown from '../components/custom-dropdown';
+import CustomSelector from '../components/custom-selector';
 import CustomTextBox from '../components/custom-textbox';
 import ManageSystemUserPositionsTable from './manage-system-user-access-table';
 import Modal from './modal';
+import EmployeeSearchable from './searchables/employee-searchable';
 
 export default function ManageSystemUser() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
+  const employeeSearchableState = useSelector(
+    (state: RootState) => state.employeeSearchable
+  );
 
   const systemUserModalState = useSelector(
     (state: RootState) => state.systemUserModal
@@ -32,7 +37,6 @@ export default function ManageSystemUser() {
   useEffect(
     () => {
       getUsrRoles();
-      getEmp();
     },
     //eslint-disable-next-line
     []
@@ -41,19 +45,6 @@ export default function ManageSystemUser() {
   function onModalClose(hasChange: boolean) {
     dispatch(systemUserModalActions.setShowModal(false));
     if (hasChange) dispatch(systemUserActions.setInitiateSearch(true));
-  }
-  async function getEmp() {
-    setBusy(true);
-    await getEmployees()
-      .then((res) => {
-        if (res) {
-          dispatch(systemUserModalActions.setEmployees(res));
-        }
-      })
-      .catch((err) => {
-        setToasterMessage({ content: err.message });
-      })
-      .finally(() => setBusy(false));
   }
   async function getUsrRoles() {
     setBusy(true);
@@ -78,7 +69,7 @@ export default function ManageSystemUser() {
       )
         .then((res) => {
           if (res) {
-            setToasterMessage({ content: 'User has been updated.' });
+            setToasterMessage({ content: 'User updated.' });
             onModalClose(true);
           }
         })
@@ -93,7 +84,7 @@ export default function ManageSystemUser() {
       )
         .then((res) => {
           if (res !== undefined) {
-            setToasterMessage({ content: 'New user has been added.' });
+            setToasterMessage({ content: 'New user added.' });
             onModalClose(true);
           }
         })
@@ -103,6 +94,22 @@ export default function ManageSystemUser() {
         .finally(() => setBusy(false));
     }
   }
+  function onCloseEmployeeSearch(employee?: Employee) {
+    if (employee) {
+      dispatch(
+        systemUserModalActions.updateSystemUser({
+          elementName: 'employee',
+          value: employee,
+        })
+      );
+      dispatch(
+        systemUserModalActions.updateSystemUser({
+          elementName: 'employeeId',
+          value: employee.id,
+        })
+      );
+    }
+  }
   return (
     <Modal
       className='system-user-modal'
@@ -110,19 +117,17 @@ export default function ManageSystemUser() {
       title='Manage User'>
       <div className='modal-content-body system-user-content-body'>
         <div>
-          <CustomDropdown
+          <CustomSelector
             title='Employee'
-            name='employeeId'
-            value={systemUserModalState.systemUser.employeeId}
-            onChange={(ret) => {
-              dispatch(systemUserModalActions.updateSystemUser(ret));
+            value={systemUserModalState.systemUser?.employee?.fullName}
+            onSelectorClick={() => {
+              dispatch(
+                employeeSearchableActions.setOnCloseFunction(
+                  onCloseEmployeeSearch
+                )
+              );
+              dispatch(employeeSearchableActions.setShowModal(true));
             }}
-            itemsList={systemUserModalState.employees.map((x) => {
-              return {
-                key: x.id.toString(),
-                value: `${x.fullName} (${x.office?.abbreviation})`,
-              };
-            })}
           />
           <CustomTextBox
             title='Username'
@@ -158,6 +163,7 @@ export default function ManageSystemUser() {
           </button>
         </div>
       </div>
+      <>{employeeSearchableState.isModalShow && <EmployeeSearchable />}</>
     </Modal>
   );
 }

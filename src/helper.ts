@@ -113,3 +113,11 @@ export function getPage(page: string): ModuleRoute {
 export function dateToString(date?: Date | undefined): string | undefined {
   return date === undefined ? undefined : new Date(date).toLocaleString();
 }
+
+export function validateDate(date: Date | undefined): boolean {
+  return !(
+    date?.toString() === 'Invalid Date' ||
+    date === undefined ||
+    date === null
+  );
+}

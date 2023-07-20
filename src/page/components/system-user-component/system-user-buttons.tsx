@@ -79,7 +79,7 @@ export default function SystemUserButtons() {
           .then((res) => {
             if (res) {
               setToasterMessage({
-                content: 'Selected user has been deleted',
+                content: 'Selected user deleted',
               });
               dispatch(systemUserActions.setInitiateSearch(true));
             }

@@ -90,7 +90,7 @@ export default function EmployeeLeaveCreditsModal() {
           .then((res) => {
             if (res) {
               setToasterMessage({
-                content: 'Selected leave credit has been deleted',
+                content: 'Selected leave credit deleted',
               });
               dispatch(employeeLeaveCreditsActions.setInitiateSearch(true));
             }
@@ -225,14 +225,6 @@ export default function EmployeeLeaveCreditsModal() {
               ))}
             </tbody>
           </table>
-        </div>
-      </div>
-      <div className='modal-footer'>
-        <div className='btn-actions-group'>
-          <button className='btn-action'>
-            <FontAwesomeIcon icon={faSave} />
-            <span className='desktop-features'>Save</span>
-          </button>
         </div>
       </div>
       <>

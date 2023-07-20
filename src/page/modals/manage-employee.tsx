@@ -177,7 +177,7 @@ export default function ManageEmployee() {
       )
         .then((res) => {
           if (res) {
-            setToasterMessage({ content: 'Employee has been updated.' });
+            setToasterMessage({ content: 'Employee updated.' });
             onModalClose(true);
           }
         })
@@ -193,7 +193,7 @@ export default function ManageEmployee() {
       )
         .then((res) => {
           if (res !== undefined) {
-            setToasterMessage({ content: 'New employee has been added.' });
+            setToasterMessage({ content: 'New employee added.' });
             onModalClose(true);
           }
         })
@@ -489,7 +489,7 @@ export default function ManageEmployee() {
                 type='number'
                 name='salaryGrade'
                 value={employeeModalState.employee?.salaryGrade}
-                onValueChange={(ret) => {
+                onChange={(ret) => {
                   dispatch(employeeModalActions.updateEmployee(ret));
                 }}
               />
@@ -498,7 +498,7 @@ export default function ManageEmployee() {
                 type='number'
                 name='step'
                 value={employeeModalState.employee?.step}
-                onValueChange={(ret) => {
+                onChange={(ret) => {
                   dispatch(employeeModalActions.updateEmployee(ret));
                 }}
               />
@@ -515,7 +515,7 @@ export default function ManageEmployee() {
             type='amount'
             readonly={employeeModalState.employee.isRegular}
             value={employeeModalState.employee?.salary}
-            onValueChange={(ret) => {
+            onChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}
           />

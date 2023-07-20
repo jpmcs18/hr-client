@@ -1,4 +1,4 @@
-import { LeaveRequestEnd, LeaveRequestTypeEnd } from '../endpoints';
+import { LeaveRequestTypeEnd } from '../endpoints';
 import LeaveRequestType from '../models/entities/LeaveRequestType';
 import { httpGet } from './base';
 

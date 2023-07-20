@@ -1,70 +1,65 @@
 import {
   faAdd,
   faEdit,
-  faFileArrowUp,
-  faHistory,
-  faLevelUp,
-  faPersonWalkingLuggage,
+  faThumbsDown,
+  faThumbsUp,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { Pages } from '../../../constant';
+import { LeaveRequestStatusDefaults, Pages } from '../../../constant';
 import {
   useSetBusy,
   useSetMessage,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
 import { hasAccess } from '../../../helper';
-import { deleteEmployee } from '../../../repositories/employee-queries';
-import { employeeAttachmentModalActions } from '../../../state/reducers/employee-attachment-modal-reducer';
-import { employeeHistoryModalActions } from '../../../state/reducers/employee-history-modal-reducer';
-import { employeeLeaveCreditsActions } from '../../../state/reducers/employee-leave-credits-reducer';
-import { employeeModalActions } from '../../../state/reducers/employee-modal-reducer';
-import { employeePromotionActions } from '../../../state/reducers/employee-promotion-reducer';
-import { employeeActions } from '../../../state/reducers/employee-reducer';
+import { deleteLeaveRequest } from '../../../repositories/leave-request-queries';
+import { leaveRequestApprovalActions } from '../../../state/reducers/leave-request-approval-reducer';
+import { leaveRequestDisapprovalActions } from '../../../state/reducers/leave-request-disapproval-reducer';
+import { leaveRequestModalActions } from '../../../state/reducers/leave-request-modal-reducer';
+import { leaveRequestActions } from '../../../state/reducers/leave-request-reducer';
 import { RootState } from '../../../state/store';
 import Pagination from '../pagination';
 
 export default function LeaveRequestButtons() {
-  const employeeState = useSelector((state: RootState) => state.employee);
+  const leaveRequestState = useSelector(
+    (state: RootState) => state.leaveRequest
+  );
   const userProfileState = useSelector((state: RootState) => state.userProfile);
   const dispatch = useDispatch();
   const setToasterMessage = useSetToasterMessage();
   const setMessage = useSetMessage();
   const setBusy = useSetBusy();
   function add() {
-    dispatch(employeeActions.setSelected(undefined));
-    dispatch(employeeModalActions.setEmployee());
-    dispatch(employeeModalActions.setShowModal(true));
+    dispatch(leaveRequestActions.setSelectedLeaveRequest(undefined));
+    dispatch(leaveRequestModalActions.setLeaveRequest());
+    dispatch(leaveRequestModalActions.setShowModal(true));
   }
   function edit() {
-    dispatch(employeeModalActions.setEmployee(employeeState.selectedEmployee!));
-    dispatch(employeeModalActions.setShowModal(true));
-  }
-  function attach() {
     dispatch(
-      employeeAttachmentModalActions.setEmployee(
-        employeeState.selectedEmployee!
+      leaveRequestModalActions.setLeaveRequest(
+        leaveRequestState.selectedLeaveRequest!
       )
     );
-    dispatch(employeeAttachmentModalActions.setShowModal(true));
-    dispatch(employeeAttachmentModalActions.setInitiateSearch(true));
+    dispatch(leaveRequestModalActions.setShowModal(true));
   }
   async function onDelete() {
-    if (!employeeState.selectedEmployee?.id) return;
+    if (!leaveRequestState.selectedLeaveRequest?.id) return;
     setMessage({
       message: 'Are you sure you want to delete this?',
       action: 'YESNO',
       onOk: async () => {
         setBusy(true);
-        await deleteEmployee(employeeState.selectedEmployee?.id ?? 0)
+        await deleteLeaveRequest(
+          leaveRequestState.selectedLeaveRequest?.id ?? 0
+        )
           .then((res) => {
             if (res) {
               setToasterMessage({
-                content: 'Selected employee has been deleted',
+                content: 'Selected leave request deleted',
               });
-              dispatch(employeeActions.setInitiateSearch(true));
+              dispatch(leaveRequestActions.setInitiateSearch(true));
             }
           })
           .catch((err) => {
@@ -74,35 +69,37 @@ export default function LeaveRequestButtons() {
       },
     });
   }
-  function history() {
-    dispatch(
-      employeeHistoryModalActions.setEmployee(employeeState.selectedEmployee)
-    );
-    dispatch(employeeHistoryModalActions.setShowModal(true));
-  }
   function nextPage(page: number) {
-    dispatch(employeeActions.setCurrentPage(page));
-    dispatch(employeeActions.setInitiateSearch(true));
+    dispatch(leaveRequestActions.setCurrentPage(page));
+    dispatch(leaveRequestActions.setInitiateSearch(true));
   }
-  function promote() {
+  function onApprove() {
     dispatch(
-      employeePromotionActions.setEmployee(employeeState.selectedEmployee!)
+      leaveRequestApprovalActions.setLeaveRequest(
+        leaveRequestState.selectedLeaveRequest
+      )
     );
-    dispatch(employeePromotionActions.setShowModal(true));
+    dispatch(
+      leaveRequestApprovalActions.setTotalApproveCredits(
+        leaveRequestState.selectedLeaveRequest?.totalLeaveCredits
+      )
+    );
+    dispatch(leaveRequestApprovalActions.setShowModal(true));
   }
-  function leave() {
+  function onDisapprove() {
     dispatch(
-      employeeLeaveCreditsActions.setEmployee(employeeState.selectedEmployee!)
+      leaveRequestDisapprovalActions.setLeaveRequest(
+        leaveRequestState.selectedLeaveRequest
+      )
     );
-    dispatch(employeeLeaveCreditsActions.setShowModal(true));
-    dispatch(employeeLeaveCreditsActions.setInitiateSearch(true));
+    dispatch(leaveRequestDisapprovalActions.setShowModal(true));
   }
   return (
     <section className='btn-actions-group-container'>
       <div className='btn-actions-group'>
         {hasAccess(
           userProfileState.moduleRights,
-          Pages.Employees,
+          Pages.LeaveRequests,
           'Add',
           userProfileState.systemUser?.isAdmin
         ) && (
@@ -113,13 +110,19 @@ export default function LeaveRequestButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          Pages.Employees,
+          Pages.LeaveRequests,
           'Edit',
           userProfileState.systemUser?.isAdmin
         ) && (
           <button
             className='btn-action'
-            disabled={!employeeState.selectedEmployee}
+            disabled={
+              leaveRequestState.selectedLeaveRequest === undefined ||
+              +(
+                leaveRequestState.selectedLeaveRequest?.leaveRequestStatusId ??
+                0
+              ) !== +LeaveRequestStatusDefaults.Pending
+            }
             onClick={edit}
             title='Edit'>
             <FontAwesomeIcon icon={faEdit} />
@@ -128,84 +131,71 @@ export default function LeaveRequestButtons() {
         )}
         {hasAccess(
           userProfileState.moduleRights,
-          Pages.Employees,
-          'Promote',
-          userProfileState.systemUser?.isAdmin
-        ) && (
-          <button
-            className='btn-action'
-            disabled={!employeeState.selectedEmployee}
-            onClick={promote}
-            title='Promote'>
-            <FontAwesomeIcon icon={faLevelUp} />
-            <span className='desktop-features'>Promote</span>
-          </button>
-        )}
-        {hasAccess(
-          userProfileState.moduleRights,
-          Pages.Employees,
-          'Attachments',
-          userProfileState.systemUser?.isAdmin
-        ) && (
-          <button
-            className='btn-action'
-            disabled={!employeeState.selectedEmployee}
-            onClick={attach}
-            title='Attachments'>
-            <FontAwesomeIcon icon={faFileArrowUp} />
-            <span className='desktop-features'>Attachments</span>
-          </button>
-        )}
-        {hasAccess(
-          userProfileState.moduleRights,
-          Pages.Employees,
-          'Leave Credits',
-          userProfileState.systemUser?.isAdmin
-        ) && (
-          <button
-            className='btn-action'
-            disabled={!employeeState.selectedEmployee}
-            onClick={leave}
-            title='Leave Credits'>
-            <FontAwesomeIcon icon={faPersonWalkingLuggage} />
-            <span className='desktop-features'>Leave Credits</span>
-          </button>
-        )}
-        {hasAccess(
-          userProfileState.moduleRights,
-          Pages.Employees,
-          'History',
-          userProfileState.systemUser?.isAdmin
-        ) && (
-          <button
-            className='btn-action'
-            disabled={!employeeState.selectedEmployee}
-            onClick={history}
-            title='History'>
-            <FontAwesomeIcon icon={faHistory} />
-            <span className='desktop-features'>History</span>
-          </button>
-        )}
-        {hasAccess(
-          userProfileState.moduleRights,
-          Pages.Employees,
+          Pages.LeaveRequests,
           'Delete',
           userProfileState.systemUser?.isAdmin
         ) && (
           <button
             className='btn-action'
-            disabled={!employeeState.selectedEmployee}
+            disabled={
+              leaveRequestState.selectedLeaveRequest === undefined ||
+              +(
+                leaveRequestState.selectedLeaveRequest?.leaveRequestStatusId ??
+                0
+              ) !== +LeaveRequestStatusDefaults.Pending
+            }
             onClick={onDelete}
             title='Delete'>
             <FontAwesomeIcon icon={faTrash} />
             <span className='desktop-features'>Delete</span>
           </button>
         )}
+        {hasAccess(
+          userProfileState.moduleRights,
+          Pages.LeaveRequests,
+          'Approve',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button
+            className='btn-action'
+            disabled={
+              leaveRequestState.selectedLeaveRequest === undefined ||
+              +(
+                leaveRequestState.selectedLeaveRequest?.leaveRequestStatusId ??
+                0
+              ) !== +LeaveRequestStatusDefaults.Pending
+            }
+            onClick={onApprove}
+            title='Approve'>
+            <FontAwesomeIcon icon={faThumbsUp} />
+            <span className='desktop-features'>Approve</span>
+          </button>
+        )}
+        {hasAccess(
+          userProfileState.moduleRights,
+          Pages.LeaveRequests,
+          'Disapprove',
+          userProfileState.systemUser?.isAdmin
+        ) && (
+          <button
+            className='btn-action'
+            disabled={
+              leaveRequestState.selectedLeaveRequest === undefined ||
+              +(
+                leaveRequestState.selectedLeaveRequest?.leaveRequestStatusId ??
+                0
+              ) !== +LeaveRequestStatusDefaults.Pending
+            }
+            onClick={onDisapprove}
+            title='Disapprove'>
+            <FontAwesomeIcon icon={faThumbsDown} />
+            <span className='desktop-features'>Disapprove</span>
+          </button>
+        )}
       </div>
-
       <Pagination
-        pages={employeeState.pageCount}
-        currentPageNumber={employeeState.currentPage}
+        pages={leaveRequestState.pageCount}
+        currentPageNumber={leaveRequestState.currentPage}
         goInPage={nextPage}></Pagination>
     </section>
   );

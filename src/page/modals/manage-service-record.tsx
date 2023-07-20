@@ -94,7 +94,7 @@ export default function ManageServiceRecord() {
       await updateEmployeeHistory(serviceRecordModalState.employeeHistory)
         .then((res) => {
           if (res) {
-            setToasterMessage({ content: 'Service record has been updated.' });
+            setToasterMessage({ content: 'Service record updated.' });
             onModalClose(true);
           }
         })
@@ -107,7 +107,7 @@ export default function ManageServiceRecord() {
         .then((res) => {
           if (res !== undefined) {
             setToasterMessage({
-              content: 'New service record has been added.',
+              content: 'New service record added.',
             });
             onModalClose(true);
           }
@@ -214,7 +214,7 @@ export default function ManageServiceRecord() {
           type='amount'
           name='salary'
           value={serviceRecordModalState.employeeHistory.salary}
-          onValueChange={(ret) =>
+          onChange={(ret) =>
             dispatch(serviceRecordModalActions.updateEmployeeHistory(ret))
           }
         />

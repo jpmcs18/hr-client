@@ -6,6 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch } from 'react-redux';
+import { AppName } from '../../constant';
 import {
   useMessage,
   useSetCloseMessageDialog,
@@ -30,44 +31,43 @@ export default function MessageDialog() {
     Message?.onOk?.();
   }
   return (
-    <Modal>
+    <Modal title={AppName}>
       <div className='modal-content-body'>
-        <p>{Message?.message}</p>
+        <span style={{ whiteSpace: 'pre-line' }}>{Message?.message}</span>
       </div>
       <div className='modal-footer'>
-        <div className='btn-actions-group'>
-          {Message?.action === 'OKCANCEL' && (
+        {Message?.action === 'OKCANCEL' && (
+          <div className='btn-actions-group'>
             <button onClick={handleClose} className='btn-action btn-secondary '>
               <FontAwesomeIcon icon={faCancel} />
               <span className='desktop-features'>Cancel</span>
             </button>
-          )}
-        </div>
-        <div className='btn-actions-group'>
-          {(Message?.action === undefined ||
-            Message?.action === 'OKCANCEL') && (
+          </div>
+        )}
+        {(Message?.action === undefined || Message?.action === 'OKCANCEL') && (
+          <div className='btn-actions-group'>
             <button onClick={ok} className='btn-action btn-primary'>
               <FontAwesomeIcon icon={faCheck} />
               <span className='desktop-features'>Ok</span>
             </button>
-          )}
-        </div>
-        <div className='btn-actions-group'>
-          {Message?.action === 'YESNO' && (
+          </div>
+        )}
+        {Message?.action === 'YESNO' && (
+          <div className='btn-actions-group'>
             <button onClick={handleClose} className='btn-action btn-secondary'>
               <FontAwesomeIcon icon={faThumbsDown} />
               <span className='desktop-features'>No</span>
             </button>
-          )}
-        </div>
-        <div className='btn-actions-group'>
-          {Message?.action === 'YESNO' && (
+          </div>
+        )}
+        {Message?.action === 'YESNO' && (
+          <div className='btn-actions-group'>
             <button onClick={ok} className='btn-action btn-primary'>
               <FontAwesomeIcon icon={faThumbsUp} />
               <span className='desktop-features'>Yes</span>
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </Modal>
   );

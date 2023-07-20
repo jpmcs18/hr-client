@@ -1,13 +1,12 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSetBusy } from '../../custom-hooks/authorize-provider';
 import { toCommaSeparateAmount, toDate } from '../../helper';
+import { searchEmployeeLeaveCreditsHistory } from '../../repositories/employee-leave-credits-history-queries';
 import { employeeLeaveCreditsHistoryModalActions } from '../../state/reducers/employee-leave-credits-history-modal-reducer';
 import { RootState } from '../../state/store';
 import Pagination from '../components/pagination';
 import Modal from './modal';
-import { useEffect } from 'react';
-import { getEmployeeLeaveCredits } from '../../repositories/employee-leave-credits-queries';
-import { searchEmployeeLeaveCreditsHistory } from '../../repositories/employee-leave-credits-history-queries';
 
 export default function EmployeeLeaveCreditsHistoryModal() {
   const dispatch = useDispatch();
@@ -80,7 +79,9 @@ export default function EmployeeLeaveCreditsHistoryModal() {
                   <tr key={history.id}>
                     <td>{toDate(history.date)}</td>
                     <td>{history.source}</td>
-                    <td>{toCommaSeparateAmount(history.credits.toString())}</td>
+                    <td align='right'>
+                      {toCommaSeparateAmount(history.credits.toString())}
+                    </td>
                   </tr>
                 )
               )}

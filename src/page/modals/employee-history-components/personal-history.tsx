@@ -57,7 +57,7 @@ export default function PersonalHistory() {
           .then((res) => {
             if (res) {
               setToasterMessage({
-                content: 'Selected personal history has been deleted',
+                content: 'Selected personal history deleted',
               });
               dispatch(
                 employeeHistoryModalActions.setPersonalHistorySearch({

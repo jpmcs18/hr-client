@@ -53,7 +53,7 @@ export default function ManageEmployeeRemunerationTable() {
                     type='amount'
                     placeholder='Amount...'
                     value={x.amount}
-                    onValueChange={(ret) =>
+                    onChange={(ret) =>
                       dispatch(
                         employeeModalActions.updateRemuneration({
                           rowId: x.tempId!,

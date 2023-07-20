@@ -45,7 +45,7 @@ export default function PositionButtons() {
           .then((res) => {
             if (res) {
               setToasterMessage({
-                content: 'Selected position has been deleted',
+                content: 'Selected position deleted',
               });
               dispatch(positionActions.setInitiateSearch(true));
             }

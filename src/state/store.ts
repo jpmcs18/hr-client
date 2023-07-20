@@ -25,6 +25,17 @@ import employeeLeaveCreditsModalReducer from './reducers/employee-leave-credits-
 import dropdownReducer from './reducers/dropdown-reducer';
 import employeeLeaveCreditsHistoryModalReducer from './reducers/employee-leave-credits-history-modal-reducer';
 import leaveRequestReducer from './reducers/leave-request-reducer';
+import leaveRequestModalReducer from './reducers/leave-request-modal-reducer';
+import leaveRequestApprovalReducer from './reducers/leave-request-approval-reducer';
+import leaveRequestDisapprovalReducer from './reducers/leave-request-disapproval-reducer';
+import leaveApplicationReducer from './reducers/leave-application-reducer';
+import leaveRequestApproverReducer from './reducers/leave-request-approver-reducer';
+import leaveRequestApproverModalReducer from './reducers/leave-request-approver-modal-reducer';
+import leaveRequestRecommendationReducer from './reducers/leave-request-recommendation-reducer';
+import leaveRequestRecommendationModalReducer from './reducers/leave-request-recommendation-modal-reducer';
+import leaveTransactionReducer from './reducers/leave-transaction-reducer';
+import leaveApplicationApprovalReducer from './reducers/leave-application-approval-reducer';
+import leaveApplicationAppprovalModalReducer from './reducers/leave-application-appproval-modal-reducer';
 const store = configureStore({
   reducer: {
     dropdown: dropdownReducer,
@@ -53,6 +64,17 @@ const store = configureStore({
     employeeLeaveCreditsModal: employeeLeaveCreditsModalReducer,
     employeeLeaveCreditsHistoryModal: employeeLeaveCreditsHistoryModalReducer,
     leaveRequest: leaveRequestReducer,
+    leaveRequestModal: leaveRequestModalReducer,
+    leaveRequestApproval: leaveRequestApprovalReducer,
+    leaveRequestDisapproval: leaveRequestDisapprovalReducer,
+    leaveApplication: leaveApplicationReducer,
+    leaveRequestApprover: leaveRequestApproverReducer,
+    leaveRequestApproverModal: leaveRequestApproverModalReducer,
+    leaveRequestRecommendation: leaveRequestRecommendationReducer,
+    leaveRequestRecommendationModal: leaveRequestRecommendationModalReducer,
+    leaveTransaction: leaveTransactionReducer,
+    leaveApplicationApproval: leaveApplicationApprovalReducer,
+    leaveApplicationApprovalModal: leaveApplicationAppprovalModalReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -8,9 +8,9 @@ interface State extends Searchable {
   leaveRequests: LeaveRequest[];
   selectedLeaveRequest: LeaveRequest | undefined;
   leaveRequestTypes: LeaveRequestType[];
-  selectedLeaveRequestType: LeaveRequestType | undefined;
+  selectedLeaveRequestType: number | undefined;
   leaveRequestStatuses: LeaveRequestStatus[];
-  selectedLeaveRequestStatus: LeaveRequestStatus | undefined;
+  selectedLeaveRequestStatus: number | undefined;
   startDate: Date | undefined;
   endDate: Date | undefined;
 }
@@ -48,7 +48,7 @@ const leaveRequestSlice = createSlice({
     },
     setSelectedLeaveRequestType(
       state,
-      action: PayloadAction<LeaveRequestType | undefined>
+      action: PayloadAction<number | undefined>
     ) {
       state.selectedLeaveRequestType = action.payload;
     },
@@ -60,9 +60,15 @@ const leaveRequestSlice = createSlice({
     },
     setSelectedLeaveRequestStatus(
       state,
-      action: PayloadAction<LeaveRequestStatus | undefined>
+      action: PayloadAction<number | undefined>
     ) {
       state.selectedLeaveRequestStatus = action.payload;
+    },
+    setStartDate(state, action: PayloadAction<Date | undefined>) {
+      state.startDate = action.payload;
+    },
+    setEndDate(state, action: PayloadAction<Date | undefined>) {
+      state.endDate = action.payload;
     },
     setkey(state, action: PayloadAction<string>) {
       state.key = action.payload;

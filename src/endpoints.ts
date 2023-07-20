@@ -139,16 +139,23 @@ export const EmployeeLeaveCreditsEnd = {
   Insert: 'employee-leave-credits',
   Update: 'employee-leave-credits',
   Delete: 'employee-leave-credits',
+  GetAvailableLeaveCredits: 'employee-leave-credits/available',
 };
 
 export const LeaveRequestEnd = {
+  SearchRequest: 'leave-requests/search-requests',
   SearchEmployeeRequest: 'leave-requests/search-employee-requests',
   SearchEmployeesRequest: 'leave-requests/search-employees-requests',
   Insert: 'leave-requests',
   Update: 'leave-requests',
   Delete: 'leave-requests',
+  Recommend: 'leave-requests/recommend',
   Approve: 'leave-requests/approve',
   Disapprove: 'leave-requests/disapprove',
+  RecommendationCount: 'leave-requests/recommendation/count',
+  Recommendation: 'leave-requests/recommendation',
+  ApprovalCount: 'leave-requests/approval/count',
+  Approval: 'leave-requests/approval',
 };
 
 export const LeaveRequestTypeEnd = {
@@ -157,4 +164,14 @@ export const LeaveRequestTypeEnd = {
 
 export const LeaveRequestStatusEnd = {
   GetList: 'leave-request-statuses',
+};
+
+export const LeaveRequestApproverEnd = {
+  Search: 'leave-request-approvers/search',
+  Insert: 'leave-request-approvers',
+  Update: 'leave-request-approvers',
+  Delete: 'leave-request-approvers',
+};
+export const LeaveRequestApproverTypeEnd = {
+  GetList: 'leave-request-approver-types',
 };

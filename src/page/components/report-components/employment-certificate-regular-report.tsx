@@ -24,10 +24,22 @@ export default function EmploymentCertificateRegularReport() {
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
   const reportState = useSelector((state: RootState) => state.reportModal);
-  function onCloseEmployeeSearch(employee: Employee) {
+  function onCloseEmployeeSearch(employee: Employee | undefined) {
     setEmployee(() => employee);
   }
   async function printCOE() {
+    if (!employee?.id) {
+      setToasterMessage({ content: 'Employee is required.' });
+      return;
+    }
+    if (!date) {
+      setToasterMessage({ content: 'Date is required.' });
+      return;
+    }
+    if (!purpose) {
+      setToasterMessage({ content: 'Purpose is required.' });
+      return;
+    }
     setBusy(true);
     await generateRegularCOE(employee?.id ?? 0, date, purpose)
       .then((res) => {
@@ -63,6 +75,7 @@ export default function EmploymentCertificateRegularReport() {
               )
             );
           }}
+          onClear={() => onCloseEmployeeSearch(undefined)}
         />
         <CustomDateTimePicker
           type='date'

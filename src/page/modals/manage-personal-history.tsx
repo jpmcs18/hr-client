@@ -64,7 +64,7 @@ export default function ManagePersonalHistory() {
         .then((res) => {
           if (res) {
             setToasterMessage({
-              content: 'Personal history has been updated.',
+              content: 'Personal history updated.',
             });
             onModalClose(true);
           }
@@ -78,7 +78,7 @@ export default function ManagePersonalHistory() {
         .then((res) => {
           if (res !== undefined) {
             setToasterMessage({
-              content: 'New personal history has been added.',
+              content: 'New personal history added.',
             });
             onModalClose(true);
           }

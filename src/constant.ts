@@ -12,6 +12,7 @@ export const totalSteps = 8;
 export const genderFemale: number = 2;
 export const civilStatusMarried: number = 1;
 export const Pages = {
+  Dashboard: 'Dashboard',
   Employees: 'Employees',
   Attachment: 'Employee Attachments',
   ServiceRecord: 'Service Record',
@@ -24,5 +25,21 @@ export const Pages = {
   UserRoles: 'User Roles',
   Reports: 'Reports',
   RequestHistory: 'Request History',
-  LeaveRequest: 'Leave Request',
+  LeaveRequests: 'Leave Requests',
+  LeaveRequestApprovers: 'Leave Request Approvers',
 };
+
+export enum LeaveRequestTypeDefaults {
+  VacationLeave = 1,
+  SpecialPriviledgeLeave = 6,
+  SickLeave = 3,
+  SpecialLeaveBenefitforWomen = 11,
+  StudyLeave = 8,
+}
+
+export enum LeaveRequestStatusDefaults {
+  Pending = 1,
+  Recommended = 2,
+  Approved = 3,
+  Disapproved = 4,
+}

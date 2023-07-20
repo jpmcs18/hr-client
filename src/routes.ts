@@ -37,8 +37,14 @@ export const SystemModules: ModuleRoute[] = [
   },
   {
     id: 80,
-    pageName: Pages.LeaveRequest,
+    pageName: Pages.LeaveRequests,
     route: '/leave-request',
+    display: true,
+  },
+  {
+    id: 80,
+    pageName: Pages.LeaveRequestApprovers,
+    route: '/leave-request-approvers',
     display: true,
   },
 ];

@@ -62,7 +62,7 @@ export default function ManageOffice() {
       )
         .then((res) => {
           if (res) {
-            setToasterMessage({ content: 'Office has been updated.' });
+            setToasterMessage({ content: 'Office updated.' });
             onModalClose(true);
           }
         })
@@ -74,7 +74,7 @@ export default function ManageOffice() {
       await insertOffice(officeModalState.office, officeModalState.newPosition)
         .then((res) => {
           if (res !== undefined) {
-            setToasterMessage({ content: 'New office has been added.' });
+            setToasterMessage({ content: 'New office added.' });
             onModalClose(true);
           }
         })

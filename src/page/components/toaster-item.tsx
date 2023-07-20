@@ -18,7 +18,9 @@ export default function ToasterItem({
       onMouseLeave={onMouseLeave}>
       <div className='title'>{title}</div>
       <div className='progress' style={{ width: `${100 / time}%` }}></div>
-      <div className='content'>{content}</div>
+      <div className='content'>
+        <span style={{ whiteSpace: 'pre-line' }}>{content}</span>
+      </div>
     </div>
   );
 }

@@ -10,4 +10,7 @@ export default interface SystemUser {
   employeeId: number | undefined;
   employee: Employee | undefined;
   userAccesses: UserAccess[] | undefined;
+  isLeaveRequestApprover?: boolean | undefined;
+  isLeaveRequestHeadApprover?: boolean | undefined;
+  isLeaveRequestFinalApprover?: boolean | undefined;
 }

@@ -60,7 +60,7 @@ export default function ManageEmployeeLeaveCredits() {
       )
         .then((res) => {
           if (res) {
-            setToasterMessage({ content: 'Leave credit has been updated.' });
+            setToasterMessage({ content: 'Leave credit updated.' });
             onModalClose(true);
           }
         })
@@ -74,7 +74,7 @@ export default function ManageEmployeeLeaveCredits() {
       )
         .then((res) => {
           if (res !== undefined) {
-            setToasterMessage({ content: 'New leave credit has been added.' });
+            setToasterMessage({ content: 'New leave credit added.' });
             onModalClose(true);
           }
         })
@@ -114,7 +114,7 @@ export default function ManageEmployeeLeaveCredits() {
           type='number'
           name='credits'
           value={employeeLeaveCreditsModalState.employeeLeaveCredits.credits}
-          onValueChange={(ret) =>
+          onChange={(ret) =>
             dispatch(
               employeeLeaveCreditsModalActions.updateEmployeeLeaveCredits(ret)
             )

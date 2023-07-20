@@ -22,10 +22,22 @@ export default function ServiceRecordReport() {
   const [purpose, setPurpose] = useState(() => '');
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
-  function onCloseEmployeeSearch(employee: Employee) {
+  function onCloseEmployeeSearch(employee: Employee | undefined) {
     setEmployee(() => employee);
   }
   async function printSR() {
+    if (!employee?.id) {
+      setToasterMessage({ content: 'Employee is required.' });
+      return;
+    }
+    if (!date) {
+      setToasterMessage({ content: 'Date is required.' });
+      return;
+    }
+    if (!purpose) {
+      setToasterMessage({ content: 'Purpose is required.' });
+      return;
+    }
     setBusy(true);
     await generateServiceRecord(employee?.id ?? 0, date, purpose)
       .then((res) => {
@@ -61,6 +73,7 @@ export default function ServiceRecordReport() {
               )
             );
           }}
+          onClear={() => onCloseEmployeeSearch(undefined)}
         />
         <CustomDateTimePicker
           type='date'

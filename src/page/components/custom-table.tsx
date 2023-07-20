@@ -32,7 +32,7 @@ export default function CustomTable({
                 {x.isCheckBox && (
                   <CustomCheckBox
                     id={x.id}
-                    checkChange={() => x.checkFunction?.()}
+                    onChange={() => x.checkFunction?.()}
                     isChecked={false}
                   />
                 )}
