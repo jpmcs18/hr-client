@@ -24,8 +24,8 @@
   --primary-color-disable: #ccc;
   --primary-table-alternating: #f2f7fa;
   --referral-background-color: #44484b;
-  --secondary-color: #c3b9b9;
-  --secondary-color-accent: #684042;
+  --secondary-color: #f1e7e7;
+  --secondary-color-accent: #4d1c1f;
   --table-hover-color: rgb(255, 79, 79);
   --table-hover-color-accent: #fff;
   --table-selected-color: #c70202;
@@ -50,10 +50,11 @@
   --menu-font-size: 1rem;
   --header-font-size: 1rem;
   --table-header-font-size: 0.9rem;
-  --login-header-font-size: 1.6rem;
+  --login-header-font-size: 1.8rem;
   --loading-font-size: 1.5rem;
   --requisition-box-font-size: 1.1rem;
   --display-font-size: 1rem;
+  --otp-font-size: 2rem;
   --normal: 300;
   --light: 400;
   --regular: 500;
@@ -83,10 +84,10 @@
   --primary-color-hover: #204700;
   --primary-color-hover-accent: #eee;
   --primary-color-menu-inactive: #ddd;
-  --primary-color-disable: #555;
+  --primary-color-disable: rgb(167, 167, 167);
   --primary-table-alternating: #131313;
-  --secondary-color: #4f4646;
-  --secondary-color-accent: #af9c9d;
+  --secondary-color: #bcbcbc;
+  --secondary-color-accent: #5e2023;
   --table-selected-color: #1a3a00;
   --table-selected-color-accent: #eee;
   --table-hover-color: #0e1f00;
@@ -164,7 +165,6 @@ body {
       color: var(--primary-color);
       &:hover {
         box-shadow: 0em 0em 0.5em var(--primary-color);
-        scale: 1.1;
       }
       .bubble {
         position: absolute;
@@ -446,7 +446,7 @@ section {
 
   .login-header {
     border-radius: 0.5em 0.5em 0 0;
-    padding: 1em 2em;
+    padding: 0.5em;
     box-shadow: 0em 0.1em 0.2em 0em #ccc;
 
     h1 {
@@ -461,9 +461,8 @@ section {
     gap: 0.5em;
     display: flex;
     flex-direction: column;
-    .btn {
+    .btn-actions-group {
       margin: 1em 0.2em 0.2em 0.2em;
-      width: 10em;
       align-self: flex-end;
     }
   }
@@ -1366,11 +1365,44 @@ fieldset {
   margin: 0.5em;
   cursor: pointer;
   span {
-    font-weight: var(--regular);
+    font-weight: var(--light);
   }
-  &:hover {
+  &:hover:not(:disabled) {
     text-decoration: underline;
   }
+  &:disabled {
+    color: var(--disable-color);
+    cursor: not-allowed;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+.otp-main-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  .otp-container {
+    height: 4em;
+    width: 4em;
+    border-radius: 0.3em;
+    box-shadow: 0em 0em 0.3em var(--shadow-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .otp {
+      font-size: var(--otp-font-size);
+      font-weight: var(--demibold);
+    }
+  }
+}
+.otp-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0em 0em 0em 1em;
 }
 .modal-container {
   z-index: 1000;
@@ -1382,6 +1414,17 @@ fieldset {
   left: 0;
   right: 0;
   bottom: 0;
+  .profile-modal {
+    .profile-body {
+      .profile-container {
+        display: flex;
+        flex-direction: row;
+        .user-information {
+          width: 20em;
+        }
+      }
+    }
+  }
   .leave-request-recommendation-modal {
     height: 90vh;
     width: 80%;
@@ -1433,6 +1476,7 @@ fieldset {
           margin: 0.5em;
           padding: 1em;
           cursor: pointer;
+          border-radius: 0.2em;
           outline: none;
           font-weight: var(--demibold);
           border: none;

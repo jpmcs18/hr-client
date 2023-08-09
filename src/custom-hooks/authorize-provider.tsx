@@ -5,7 +5,7 @@ import ToasterMessage from '../models/client-model/ToasterMessage';
 import ToasterMessageItem from '../models/client-model/ToasterMessageItem';
 import Toaster from '../page/components/toaster';
 import MessageDialog from '../page/modals/message-dialog';
-import { userProfileAction } from '../state/reducers/user-profile-reducer';
+import { userProfileActions } from '../state/reducers/user-profile-reducer';
 
 const SetToasterMessageContext = React.createContext<
   (message: ToasterMessageItem) => void
@@ -74,7 +74,7 @@ export function AuthorizeProvider({ children }: { children: ReactNode }) {
   }
   function showToaster(message: ToasterMessageItem) {
     if (message?.content === 'Unauthorized')
-      dispatch(userProfileAction.clearProfile());
+      dispatch(userProfileActions.clearProfile());
     setToasterMessages((r) => [
       ...r,
       {

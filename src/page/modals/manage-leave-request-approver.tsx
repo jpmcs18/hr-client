@@ -97,7 +97,6 @@ export default function ManageLeaveRequestApprover() {
   }
   function onCloseEmployeeSearch(employee?: Employee) {
     if (employee) {
-      console.log(employee);
       dispatch(
         leaveRequestApproverModalActions.updateLeaveRequestApprover({
           elementName: 'approver',

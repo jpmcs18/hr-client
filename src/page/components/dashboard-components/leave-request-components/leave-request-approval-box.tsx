@@ -6,13 +6,9 @@ import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../../../custom-hooks/authorize-provider';
-import {
-  getLeaveRequestApprovalCount,
-  getLeaveRequestRecommendationCount,
-} from '../../../../repositories/leave-request-queries';
+import { getLeaveRequestApprovalCount } from '../../../../repositories/leave-request-queries';
 import { leaveApplicationApprovalModalActions } from '../../../../state/reducers/leave-application-appproval-modal-reducer';
 import { leaveApplicationApprovalActions } from '../../../../state/reducers/leave-application-approval-reducer';
-import { leaveRequestRecommendationModalActions } from '../../../../state/reducers/leave-request-recommendation-modal-reducer';
 import { leaveRequestRecommendationActions } from '../../../../state/reducers/leave-request-recommendation-reducer';
 import { RootState } from '../../../../state/store';
 import ManageLeaveApplicationApproval from '../../../modals/manage-leave-application-approval';
@@ -40,7 +36,7 @@ export default function LeaveRequestApprovalBox() {
   useEffect(
     () => {
       if (leaveApplicationApprovalState.initiateSearch) {
-        dispatch(leaveRequestRecommendationActions.setInitiateSearch(false));
+        dispatch(leaveApplicationApprovalActions.setInitiateSearch(false));
         fetchPendingApplications();
       }
     },
@@ -53,7 +49,7 @@ export default function LeaveRequestApprovalBox() {
       userProfileState.systemUser?.employeeId ?? 0
     )
       .then((res) => {
-        if (!!res) {
+        if (res) {
           dispatch(leaveApplicationApprovalActions.setApplicationCount(res));
         }
       })

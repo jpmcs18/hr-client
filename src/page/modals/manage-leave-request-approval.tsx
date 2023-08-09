@@ -30,7 +30,6 @@ export default function ManageLeaveRequestApproval() {
   }
 
   async function approve() {
-    console.log(leaveRequestApprovalState.totalApproveCredits);
     if ((leaveRequestApprovalState.totalApproveCredits ?? 0) <= 0) {
       setToasterMessage({ content: 'Invalid approved leave credits' });
       return;

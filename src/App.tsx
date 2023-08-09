@@ -5,7 +5,7 @@ import HomePage from './page/home-page';
 import { refreshTokenAuthentication } from './repositories/base';
 import { getTheme, getToken } from './repositories/session-managers';
 import { dropdownActions } from './state/reducers/dropdown-reducer';
-import { userProfileAction } from './state/reducers/user-profile-reducer';
+import { userProfileActions } from './state/reducers/user-profile-reducer';
 import { RootState } from './state/store';
 import './style/style.css';
 function App() {
@@ -23,7 +23,7 @@ function App() {
         if (getToken() !== undefined) {
           refreshTokenAuthentication();
         }
-        dispatch(userProfileAction.initializeState());
+        dispatch(userProfileActions.initializeState());
       }
       document.removeEventListener('click', () => {});
       document.addEventListener('click', (e: any) => {

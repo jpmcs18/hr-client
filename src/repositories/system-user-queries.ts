@@ -1,18 +1,13 @@
 import { SystemUserEnd } from '../endpoints';
 import SystemUser from '../models/entities/SystemUser';
+import UpdateUserProfile from '../models/request-model/UpdateProfile';
 import SearchResult from '../models/response-model/SearchResult';
 import { httpDelete, httpGet, httpPost, httpPut } from './base';
 
 export async function saveProfile(
-  username: string,
-  password: string | null | undefined,
-  newPassword: string | null | undefined
+  user: UpdateUserProfile
 ): Promise<boolean | undefined> {
-  return await httpPost(SystemUserEnd.SaveProfile, {
-    username,
-    password,
-    newPassword,
-  });
+  return await httpPost(SystemUserEnd.SaveProfile, user);
 }
 
 export async function getData(): Promise<SystemUser | undefined> {

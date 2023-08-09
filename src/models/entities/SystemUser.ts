@@ -10,6 +10,8 @@ export default interface SystemUser {
   employeeId: number | undefined;
   employee: Employee | undefined;
   userAccesses: UserAccess[] | undefined;
+  allow2FA: boolean | undefined;
+  mobileNumber: string | undefined;
   isLeaveRequestApprover?: boolean | undefined;
   isLeaveRequestHeadApprover?: boolean | undefined;
   isLeaveRequestFinalApprover?: boolean | undefined;

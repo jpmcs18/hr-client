@@ -83,6 +83,7 @@ export default function ManageLeaveRequestRecommendation() {
   function disapprove(leaveRequest: LeaveRequest) {
     dispatch(leaveRequestDisapprovalActions.setShowModal(true));
     dispatch(leaveRequestDisapprovalActions.setLeaveRequest(leaveRequest));
+    dispatch(leaveRequestDisapprovalActions.setIsFinal(false));
     dispatch(
       leaveRequestDisapprovalActions.setOnCloseFunction(fetchLeaveRequests)
     );

@@ -11,7 +11,7 @@ import {
   useMessage,
   useSetCloseMessageDialog,
 } from '../../custom-hooks/authorize-provider';
-import { userProfileAction } from '../../state/reducers/user-profile-reducer';
+import { userProfileActions } from '../../state/reducers/user-profile-reducer';
 import Modal from './modal';
 
 export default function MessageDialog() {
@@ -25,7 +25,7 @@ export default function MessageDialog() {
 
   function ok() {
     if (Message?.message === 'Unauthorized') {
-      dispatch(userProfileAction.clearProfile());
+      dispatch(userProfileActions.clearProfile());
     }
     closeDialog();
     Message?.onOk?.();

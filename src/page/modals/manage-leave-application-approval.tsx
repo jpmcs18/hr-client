@@ -5,22 +5,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LeaveRequestTypeDefaults } from '../../constant';
 import {
   useSetBusy,
-  useSetMessage,
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
 import { toDate } from '../../helper';
 import LeaveRequest from '../../models/entities/LeaveRequest';
-import {
-  approveLeaveRequest,
-  getLeaveRequestsForApproval,
-  getLeaveRequestsForRecommendation,
-  recommendLeaveRequest,
-} from '../../repositories/leave-request-queries';
+import { getLeaveRequestsForApproval } from '../../repositories/leave-request-queries';
 import { leaveApplicationApprovalModalActions } from '../../state/reducers/leave-application-appproval-modal-reducer';
+import { leaveApplicationApprovalActions } from '../../state/reducers/leave-application-approval-reducer';
 import { leaveRequestApprovalActions } from '../../state/reducers/leave-request-approval-reducer';
 import { leaveRequestDisapprovalActions } from '../../state/reducers/leave-request-disapproval-reducer';
-import { leaveRequestRecommendationModalActions } from '../../state/reducers/leave-request-recommendation-modal-reducer';
-import { leaveRequestRecommendationActions } from '../../state/reducers/leave-request-recommendation-reducer';
 import { RootState } from '../../state/store';
 import CustomDisplay from '../components/custom-display';
 import ManageLeaveRequestApproval from './manage-leave-request-approval';
@@ -31,7 +24,6 @@ export default function ManageLeaveApplicationApproval() {
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
-  const setMessage = useSetMessage();
   const leaveApplicationApprovalModalState = useSelector(
     (state: RootState) => state.leaveApplicationApprovalModal
   );
@@ -59,6 +51,7 @@ export default function ManageLeaveApplicationApproval() {
       .then((res) => {
         if (res) {
           dispatch(leaveApplicationApprovalModalActions.setLeaveRequests(res));
+          dispatch(leaveApplicationApprovalActions.setInitiateSearch(true));
         }
       })
       .catch((err) => setToasterMessage({ content: err.message }))
@@ -74,6 +67,7 @@ export default function ManageLeaveApplicationApproval() {
   function disapprove(leaveRequest: LeaveRequest) {
     dispatch(leaveRequestDisapprovalActions.setShowModal(true));
     dispatch(leaveRequestDisapprovalActions.setLeaveRequest(leaveRequest));
+    dispatch(leaveRequestDisapprovalActions.setIsFinal(true));
     dispatch(
       leaveRequestDisapprovalActions.setOnCloseFunction(fetchLeaveRequests)
     );

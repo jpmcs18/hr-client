@@ -16,7 +16,7 @@ import Modal from './modal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/store';
 import { useDispatch } from 'react-redux';
-import { userProfileAction } from '../../state/reducers/user-profile-reducer';
+import { userProfileActions } from '../../state/reducers/user-profile-reducer';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -28,6 +28,8 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
   const [user, setUser] = useState<UpdateUserProfile>(() => {
     return {
       username: userProfileState.systemUser?.username ?? '',
+      allow2FA: userProfileState.systemUser?.allow2FA ?? false,
+      mobileNumber: userProfileState.systemUser?.mobileNumber,
       password: '',
       confirmNewPassword: '',
       newPassword: '',
@@ -43,19 +45,17 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
       return;
     }
     setBusy(true);
-    await saveProfile(
-      user.username,
-      changePassword ? user.password : null,
-      changePassword ? user.confirmNewPassword : null
-    )
+    await saveProfile(user)
       .finally(() => {
         setMessage({
           message: 'User Information Saved',
           onOk: () => {
             dispatch(
-              userProfileAction.setProfile({
+              userProfileActions.setProfile({
                 ...userProfileState.systemUser!,
                 username: user.username,
+                mobileNumber: user.mobileNumber,
+                allow2FA: user.allow2FA,
               })
             );
             onClose();
@@ -63,7 +63,6 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
         });
       })
       .catch((err) => {
-        console.log(err);
         setToasterMessage({ content: err.message });
       })
       .finally(() => setBusy(false));
@@ -76,7 +75,7 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
   }
   return (
     <Modal className='profile-modal' onClose={onClose} title='Users Profile'>
-      <div className='modal-content-body'>
+      <div className='modal-content-body profile-body'>
         <div>
           <CustomCheckBoxButton
             isCheck={darkMode}
@@ -93,24 +92,49 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
             }}
           />
         </div>
-        <div>
-          <CustomTextBox
-            title='Name'
-            readonly={true}
-            value={userProfileState.systemUser?.displayName}
-          />
-          <CustomTextBox
-            title='Username'
-            name='username'
-            value={user?.username}
-            onChange={onChange}
-          />
-          <div className='group-check'>
+        <div className='profile-container'>
+          <div className='user-information'>
+            <CustomTextBox
+              title='Name'
+              readonly={true}
+              value={userProfileState.systemUser?.displayName}
+            />
+            <CustomTextBox
+              title='Username'
+              name='username'
+              value={user?.username}
+              onChange={onChange}
+            />
+            <CustomTextBox
+              title='Mobile Number'
+              name='mobileNumber'
+              value={user?.mobileNumber}
+              onChange={onChange}
+            />
+            <CustomCheckBox
+              text='Allow 2FA'
+              isChecked={user?.allow2FA ?? false}
+              name='allow2FA'
+              id='allow2FA'
+              onChange={onChange}
+            />
+          </div>
+          <div className='group-check user-information'>
             <div className='header'>
               <CustomCheckBox
                 text='Change Password'
-                onChange={() => {
-                  setChangePassword((x) => !x);
+                onChange={(ret) => {
+                  if (!ret.value) {
+                    setUser((x) => {
+                      return {
+                        ...x,
+                        password: '',
+                        confirmNewPassword: '',
+                        newPassword: '',
+                      };
+                    });
+                  }
+                  setChangePassword((x) => ret.value);
                 }}
                 isChecked={changePassword}
               />

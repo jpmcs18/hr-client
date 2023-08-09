@@ -1,4 +1,4 @@
-import { faChevronLeft, faSave } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { LeaveRequestTypeDefaults } from '../../../constant';
@@ -128,8 +128,8 @@ export default function ThirdStep() {
             <span className='desktop-features'>Back</span>
           </button>
           <button onClick={saveData} className='btn-action'>
-            <FontAwesomeIcon icon={faSave} />
-            <span className='desktop-features'>Save</span>
+            <FontAwesomeIcon icon={faPaperPlane} />
+            <span className='desktop-features'>Apply</span>
           </button>
         </div>
       </div>

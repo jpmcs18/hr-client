@@ -42,13 +42,14 @@ export default function LeaveRequestRecommendationsBox() {
     //eslint-disable-next-line
     [leaveRequestRecommendationState.initiateSearch]
   );
+
   async function fetchPendingApplications() {
     setBusy(true);
     await getLeaveRequestRecommendationCount(
       userProfileState.systemUser?.employeeId ?? 0
     )
       .then((res) => {
-        if (!!res) {
+        if (res) {
           dispatch(leaveRequestRecommendationActions.setApplicationCount(res));
         }
       })

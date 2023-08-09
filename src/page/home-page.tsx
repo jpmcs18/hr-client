@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SystemModules } from '../routes';
-import { userProfileAction } from '../state/reducers/user-profile-reducer';
+import { userProfileActions } from '../state/reducers/user-profile-reducer';
 import { RootState } from '../state/store';
 import PositionPage from './components/position-components/position-page';
 import EmployeePage from './components/employee-components/employee-page';
@@ -48,7 +48,7 @@ export default function HomePage() {
       message: 'Continue to logout?',
       action: 'YESNO',
       onOk: () => {
-        dispatch(userProfileAction.clearProfile());
+        dispatch(userProfileActions.clearProfile());
         setShowProfile(false);
       },
     });
@@ -100,9 +100,6 @@ export default function HomePage() {
                                 icon={faAngleRight as IconProp}
                               />
                             </label>
-                            <span className='name-subtitle'>
-                              {userProfileState.systemUser?.username}
-                            </span>
                           </div>
                           <button
                             onClick={logoutUser}
@@ -153,9 +150,6 @@ export default function HomePage() {
                     onClick={() => setShowProfile(true)}>
                     {userProfileState.systemUser?.displayName ?? '---'}
                   </label>
-                  <span className='name-subtitle'>
-                    {userProfileState.systemUser?.username}
-                  </span>
                 </div>
                 <button onClick={logoutUser} className='nav-icon'>
                   <FontAwesomeIcon icon={faPowerOff as IconProp} />

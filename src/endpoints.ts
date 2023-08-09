@@ -162,6 +162,11 @@ export const LeaveRequestTypeEnd = {
   GetList: 'leave-request-types',
 };
 
+export const OTPEnd = {
+  Generate: 'otp/generate',
+  Validate: 'otp/validate',
+};
+
 export const LeaveRequestStatusEnd = {
   GetList: 'leave-request-statuses',
 };

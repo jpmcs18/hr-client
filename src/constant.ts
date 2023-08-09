@@ -6,6 +6,7 @@ export const API =
     : process.env.REACT_APP_SECURED_PROD;
 export const AppName = 'HRIS';
 export const APP_SECRET = process.env.REACT_APP_SECRET_KEY;
+export const ADMIN_APP: boolean = process.env.REACT_APP_ADMIN === 'True';
 
 export const totalSalaryGrades = 32;
 export const totalSteps = 8;

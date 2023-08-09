@@ -25,6 +25,8 @@ const systemUserInitialState: SystemUser = {
   employeeId: undefined,
   employee: undefined,
   userAccesses: [],
+  allow2FA: undefined,
+  mobileNumber: undefined,
 };
 
 const initialState: State = {

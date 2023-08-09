@@ -2,7 +2,6 @@ import {
   faAdd,
   faEdit,
   faHistory,
-  faSave,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,9 +22,9 @@ import { employeeLeaveCreditsHistoryModalActions } from '../../state/reducers/em
 import { employeeLeaveCreditsModalActions } from '../../state/reducers/employee-leave-credits-modal-reducer';
 import { employeeLeaveCreditsActions } from '../../state/reducers/employee-leave-credits-reducer';
 import { RootState } from '../../state/store';
+import EmployeeLeaveCreditsHistoryModal from './employee-leave-credits-history-modal';
 import ManageEmployeeLeaveCredits from './manage-employee-leave-credits';
 import Modal from './modal';
-import EmployeeLeaveCreditsHistoryModal from './employee-leave-credits-history-modal';
 
 export default function EmployeeLeaveCreditsModal() {
   const employeeLeaveCreditsState = useSelector(

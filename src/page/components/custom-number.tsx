@@ -88,7 +88,6 @@ export default function CustomNumber({
       inputData = oldnum.current;
       input.current.value = oldnum.current;
     }
-    console.log('data', inputData, oldnum.current);
     if (min && +inputData.replaceAll(',', '') < min) {
       inputData = oldnum.current;
       input.current.value = oldnum.current;
