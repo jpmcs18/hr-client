@@ -1,27 +1,24 @@
-import React, { useState } from 'react';
-import CustomReturn from '../../models/client-model/CustomReturn';
+import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   useSetBusy,
   useSetMessage,
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
-import { getTheme, setTheme } from '../../repositories/session-managers';
-import { saveProfile } from '../../repositories/system-user-queries';
+import CustomReturn from '../../models/client-model/CustomReturn';
 import UpdateUserProfile from '../../models/request-model/UpdateProfile';
+import { saveProfile } from '../../repositories/system-user-queries';
+import { userProfileActions } from '../../state/reducers/user-profile-reducer';
+import { RootState } from '../../state/store';
 import CustomCheckBox from '../components/custom-checkbox';
-import CustomCheckBoxButton from '../components/custom-checkbox-button';
 import CustomPassword from '../components/custom-password';
 import CustomTextBox from '../components/custom-textbox';
 import Modal from './modal';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../state/store';
-import { useDispatch } from 'react-redux';
-import { userProfileActions } from '../../state/reducers/user-profile-reducer';
-import { faSave } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function ManageProfile({ onClose }: { onClose: () => void }) {
-  const [darkMode, setdarkMode] = useState(() => !!getTheme());
+  // const [darkMode, setdarkMode] = useState(() => !!getTheme());
   const [changePassword, setChangePassword] = useState(false);
   const userProfileState = useSelector((state: RootState) => state.userProfile);
   const dispatch = useDispatch();
@@ -76,7 +73,7 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
   return (
     <Modal className='profile-modal' onClose={onClose} title='Users Profile'>
       <div className='modal-content-body profile-body'>
-        <div>
+        {/* <div>
           <CustomCheckBoxButton
             isCheck={darkMode}
             CheckedTitle='Dark Mode'
@@ -91,7 +88,7 @@ export default function ManageProfile({ onClose }: { onClose: () => void }) {
               }
             }}
           />
-        </div>
+        </div> */}
         <div className='profile-container'>
           <div className='user-information'>
             <CustomTextBox

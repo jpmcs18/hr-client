@@ -2,7 +2,6 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { LeaveRequestStatusDefaults } from '../../constant';
 import {
   useSetBusy,
   useSetToasterMessage,
@@ -11,11 +10,9 @@ import { toCommaSeparateAmount, toDate } from '../../helper';
 import { searchEmployeeLeaveRequests } from '../../repositories/leave-request-queries';
 import { getLeaveRequestStatuses } from '../../repositories/leave-request-status-queries';
 import { getLeaveRequestTypes } from '../../repositories/leave-request-type-queries';
-import { employeeLeaveCreditsActions } from '../../state/reducers/employee-leave-credits-reducer';
 import { leaveTransactionActions } from '../../state/reducers/leave-transaction-reducer';
 import { RootState } from '../../state/store';
 import CustomDateTimePicker from '../components/custom-datetime-picker';
-import CustomDisplay from '../components/custom-display';
 import CustomDropdown from '../components/custom-dropdown';
 import CustomTextBox from '../components/custom-textbox';
 import Pagination from '../components/pagination';

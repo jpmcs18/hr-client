@@ -9,7 +9,6 @@ import {
 import { getLeaveRequestApprovalCount } from '../../../../repositories/leave-request-queries';
 import { leaveApplicationApprovalModalActions } from '../../../../state/reducers/leave-application-appproval-modal-reducer';
 import { leaveApplicationApprovalActions } from '../../../../state/reducers/leave-application-approval-reducer';
-import { leaveRequestRecommendationActions } from '../../../../state/reducers/leave-request-recommendation-reducer';
 import { RootState } from '../../../../state/store';
 import ManageLeaveApplicationApproval from '../../../modals/manage-leave-application-approval';
 

@@ -1,7 +1,5 @@
-import { LeaveRequestStatusDefaults } from '../../../constant';
 import { toCommaSeparateAmount, toDate } from '../../../helper';
 import LeaveRequest from '../../../models/entities/LeaveRequest';
-import CustomDisplay from '../custom-display';
 
 export default function LeaveRequestItem({
   leaveRequest,

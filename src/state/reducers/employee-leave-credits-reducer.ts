@@ -30,6 +30,7 @@ const employeeLeaveCreditsSlice = createSlice({
       action: PayloadAction<EmployeeLeaveCredits[]>
     ) {
       state.employeeLeaveCredits = action.payload;
+      state.selectedEmployeeLeaveCredits = undefined;
     },
     setSelectedEmployeeLeaveCredits(
       state,

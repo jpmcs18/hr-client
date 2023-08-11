@@ -35,7 +35,7 @@ function App() {
         let selection = document.getElementsByClassName('selection');
         for (let i = 0; i < selection.length; i++) {
           if (selection[i].id !== targetId) {
-            dispatch(dropdownActions.setOpenDropdown(undefined));
+            dispatch(dropdownActions.setOpenDropdown());
           }
         }
       });

@@ -7,7 +7,7 @@ interface State {
 
 const initialState: State = {
   applicationCount: 0,
-  initiateSearch: false,
+  initiateSearch: true,
 };
 
 const leaveApplicationApprovalSlice = createSlice({
