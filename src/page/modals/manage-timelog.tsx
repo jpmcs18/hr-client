@@ -16,7 +16,6 @@ import { timelogActions } from '../../state/reducers/timelog-reducer';
 import { RootState } from '../../state/store';
 import CustomDateTimePicker from '../components/custom-datetime-picker';
 import CustomDropdown from '../components/custom-dropdown';
-import CustomTextBox from '../components/custom-textbox';
 import Modal from './modal';
 
 export default function ManageTimeLog() {
@@ -37,7 +36,7 @@ export default function ManageTimeLog() {
 
   function onModalClose(hasChange: boolean) {
     dispatch(timelogModalActions.setShowModal(false));
-    if (hasChange) dispatch(timelogActions.setInitiateSearch(true));
+    if (hasChange) dispatch(timelogActions.setRefreshTimelog(true));
   }
 
   async function fetchArea() {

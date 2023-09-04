@@ -1,4 +1,3 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import {
   faAngleDoubleLeft,
   faAngleDoubleRight,
@@ -127,18 +126,17 @@ export default function Pagination({
   }
 
   return (
-    <div className='pagination'>
-      <FontAwesomeIcon
-        icon={faAngleDoubleLeft as IconProp}
-        className={!canGoFirst ? 'disabled' : ''}
-        onClick={goToFirst}
-      />
-      <FontAwesomeIcon
-        icon={faAngleLeft as IconProp}
-        onClick={goToBefore}
-        className={!canGoBefore ? 'disabled' : ''}
-      />
-      <div className='pages-container'>
+    <div className='pagination btn-actions-group'>
+      <button className='btn-action' disabled={!canGoFirst} onClick={goToFirst}>
+        <FontAwesomeIcon icon={faAngleDoubleLeft} />
+      </button>
+      <button
+        className='btn-action'
+        disabled={!canGoBefore}
+        onClick={goToBefore}>
+        <FontAwesomeIcon icon={faAngleLeft} />
+      </button>
+      <div className='pages-container '>
         <button className='current-page'>{currentPage.current}</button>
         <div className='pages'>
           {pageList.current.map((pl) => (
@@ -153,16 +151,12 @@ export default function Pagination({
           ))}
         </div>
       </div>
-      <FontAwesomeIcon
-        icon={faAngleRight as IconProp}
-        onClick={goToAfter}
-        className={!canGoAfter ? 'disabled' : ''}
-      />
-      <FontAwesomeIcon
-        icon={faAngleDoubleRight as IconProp}
-        onClick={goToLast}
-        className={!canGoLast ? 'disabled' : ''}
-      />
+      <button onClick={goToAfter} className='btn-action' disabled={!canGoAfter}>
+        <FontAwesomeIcon icon={faAngleRight} />
+      </button>
+      <button onClick={goToLast} className='btn-action' disabled={!canGoLast}>
+        <FontAwesomeIcon icon={faAngleDoubleRight} />
+      </button>
     </div>
   );
 }

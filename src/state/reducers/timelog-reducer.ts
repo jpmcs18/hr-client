@@ -8,6 +8,7 @@ interface State extends Searchable {
   timelogs: TimeLog[];
   selectedEmployee: Employee | undefined;
   selectedTimelog: TimeLog | undefined;
+  refreshTimelog: boolean;
   startDate: Date;
   endDate: Date;
 }
@@ -22,6 +23,7 @@ const initialState: State = {
   currentPage: 1,
   pageCount: 0,
   initiateSearch: true,
+  refreshTimelog: false,
 };
 
 const timelogSlice = createSlice({
@@ -32,8 +34,15 @@ const timelogSlice = createSlice({
       state.employees = action.payload;
       state.selectedEmployee = undefined;
     },
+    setStartDate(state, action: PayloadAction<Date>) {
+      state.startDate = action.payload;
+    },
+    setEndDate(state, action: PayloadAction<Date>) {
+      state.endDate = action.payload;
+    },
     setSelectedEmployee(state, action: PayloadAction<Employee | undefined>) {
       state.selectedEmployee = action.payload;
+      state.refreshTimelog = true;
     },
     setTimeLogs(state, action: PayloadAction<TimeLog[]>) {
       state.timelogs = action.payload;
@@ -53,6 +62,9 @@ const timelogSlice = createSlice({
     },
     setInitiateSearch(state, action: PayloadAction<boolean>) {
       state.initiateSearch = action.payload;
+    },
+    setRefreshTimelog(state, action: PayloadAction<boolean>) {
+      state.refreshTimelog = action.payload;
     },
   },
 });

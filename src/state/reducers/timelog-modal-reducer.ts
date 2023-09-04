@@ -27,6 +27,7 @@ const timelogModalSlice = createSlice({
   initialState: initialState,
   reducers: {
     setTimeLog(state, action: PayloadAction<TimeLog | undefined>) {
+      console.log(action.payload);
       state.timelog = action.payload ?? timelogInitialState;
     },
     updateTimeLog(state, action: PayloadAction<CustomReturn>) {
@@ -34,6 +35,7 @@ const timelogModalSlice = createSlice({
         ...state.timelog,
         [action.payload.elementName]: action.payload.value,
       };
+      console.log(state.timelog, action);
     },
     setAreas(state, action: PayloadAction<Area[]>) {
       state.areas = action.payload;

@@ -418,6 +418,7 @@ header {
     }
   }
 }
+
 section {
   margin: 0 auto;
 }
@@ -429,6 +430,10 @@ section {
     margin-bottom: -0.5em;
     cursor: pointer;
   }
+}
+.subtitle {
+  font-style: italic;
+  opacity: 0.8;
 }
 .login-container {
   position: relative;
@@ -476,6 +481,9 @@ section {
   }
   .timelog-container {
     width: 40%;
+    .table-container {
+      height: 60vh;
+    }
   }
 }
 .btn {
@@ -863,37 +871,12 @@ input {
   }
 }
 .pagination {
-  float: right;
-  display: flex;
-  font-size: var(--normal-font-size);
-  margin: 1em;
-  svg {
-    height: 1.2em !important;
-    width: 1.2em !important;
-    box-sizing: border-box;
-    font-size: var(--normal-font-size);
-    padding: 0.3em;
-    background: var(--primary-color);
-    color: var(--primary-color-accent);
-    border: none;
-    border-radius: 0.2em;
-    box-shadow: 0em 0em 0.1em 0em var(--primary-color);
-    margin: 0 0.2em;
-    cursor: pointer;
-  }
-
-  .disabled {
-    color: var(--disable-color-accent);
-    background-color: var(--disable-color);
-    box-shadow: none;
-    cursor: not-allowed;
-  }
-
   .pages-container {
     position: relative;
     z-index: 2;
     margin: 0 0.2em;
-    height: 1.8em !important;
+    align-self: center;
+    height: 2.2em !important;
     box-sizing: border-box;
     font-size: var(--normal-font-size);
     background: var(--container-background-color);
@@ -1016,7 +999,6 @@ input {
   width: 100%;
   border-collapse: collapse;
   box-sizing: border-box;
-  border: 0.01em solid var(--shadow-color);
   .deleted {
     color: var(--shadow-color) !important;
     box-shadow: inset 0.5em 0em var(--disable-color);
@@ -1175,7 +1157,7 @@ input {
     padding: 0.6em;
     border-right: 0.1em solid var(--background-color);
     transition: transform 0.2s ease-in-out;
-    &:hover {
+    &:hover:not(:disabled) {
       border-radius: 0.3em;
       transform: scale(1.1);
       border-color: var(--primary-color);

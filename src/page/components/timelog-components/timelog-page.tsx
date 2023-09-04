@@ -13,22 +13,47 @@ import SearchBar from '../searchbar';
 import EmployeeItems from './employee-items';
 import TimeLogButtons from './timelog-buttons';
 import TimeLogItems from './timelog-items';
+import { getTimeLogs } from '../../../repositories/timelog-queries';
+import TimeLogSearch from './timelog-search';
+import ManageTimeLog from '../../modals/manage-timelog';
 
 export default function TimeLogPage() {
   const timelogState = useSelector((state: RootState) => state.timelog);
+  const timeloModalState = useSelector(
+    (state: RootState) => state.timelogModal
+  );
   const dispatch = useDispatch();
   const setBusy = useSetBusy();
   const setToasterMessage = useSetToasterMessage();
   useEffect(
     () => {
-      fetchEmployees();
+      if (timelogState.initiateSearch) {
+        fetchEmployees();
+      }
     },
     //eslint-disable-next-line
     [timelogState.initiateSearch]
   );
+  useEffect(
+    () => {
+      if (timelogState.refreshTimelog) {
+        fetchTimeLogs();
+      }
+    },
+    //eslint-disable-next-line
+    [timelogState.refreshTimelog]
+  );
+  useEffect(
+    () => {
+      var d = new Date(timelogState.endDate);
+      d.setDate(d.getDate() - 15);
+      dispatch(timelogActions.setStartDate(d));
+    },
+    //eslint-disable-next-line
+    []
+  );
 
   async function fetchEmployees() {
-    if (!timelogState.initiateSearch) return;
     setBusy(true);
     dispatch(timelogActions.setInitiateSearch(false));
     await searchEmployee(timelogState.key, timelogState.currentPage)
@@ -46,7 +71,29 @@ export default function TimeLogPage() {
       });
   }
 
-  function search() {
+  async function fetchTimeLogs() {
+    setBusy(true);
+    dispatch(timelogActions.setRefreshTimelog(false));
+    await getTimeLogs(
+      timelogState.selectedEmployee?.id ?? 0,
+      timelogState.startDate,
+      timelogState.endDate
+    )
+      .then((res) => {
+        if (res !== undefined) {
+          dispatch(timelogActions.setTimeLogs(res));
+        }
+      })
+      .catch((err) => {
+        setToasterMessage({ content: err.message });
+      })
+      .finally(() => {
+        setBusy(false);
+      });
+  }
+
+  function search(key: string) {
+    dispatch(timelogActions.setkey(key));
     dispatch(timelogActions.setCurrentPage(1));
     dispatch(timelogActions.setInitiateSearch(true));
   }
@@ -59,7 +106,7 @@ export default function TimeLogPage() {
       <section className='title-container'>
         <div className='title'>{Pages.TimeLogs}</div>
       </section>
-      <SearchBar search={search} />
+      <SearchBar search={search} value={timelogState.key} />
       <section className='timelog-main-container'>
         <div className='employee-container'>
           <Pagination
@@ -69,10 +116,12 @@ export default function TimeLogPage() {
           <EmployeeItems />
         </div>
         <div className='timelog-container'>
+          <TimeLogSearch />
           <TimeLogButtons />
           <TimeLogItems />
         </div>
       </section>
+      {timeloModalState.isModalShow && <ManageTimeLog />}
     </>
   );
 }

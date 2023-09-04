@@ -214,4 +214,5 @@ export const TimeLogEnd = {
   Insert: 'timelogs',
   Update: 'timelogs',
   Delete: 'timelogs',
+  ActualTimeLog: 'timelogs/report/actual',
 };

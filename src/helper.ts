@@ -1,3 +1,4 @@
+import printJS from 'print-js';
 import ModuleRoute from './models/client-model/ModuleRoute';
 import ModuleRight from './models/entities/ModuleRight';
 import { SystemModules } from './routes';
@@ -103,6 +104,11 @@ export function toTimeDisplay(date?: Date | null): string {
     .toString()
     .padStart(2, '0')}`;
 }
+export function toDateTimeDisplay(date?: Date | null): string {
+  if (date === undefined || date === null) return '';
+  const d = new Date(date);
+  return toDateDisplay(d) + ' ' + toTimeDisplay(d);
+}
 
 export function toCommaSeparateAmount(amount?: string): string {
   if (amount === undefined || amount === null) return '';
@@ -134,4 +140,12 @@ export function validateDate(date: Date | undefined): boolean {
     date === undefined ||
     date === null
   );
+}
+
+export function printPDFReport(report: string) {
+  printJS({
+    printable: report.replace('data:application/pdf;base64,', ''),
+    type: 'pdf',
+    base64: true,
+  });
 }

@@ -1,6 +1,5 @@
 import CustomReturn from '../../models/client-model/CustomReturn';
-import { toDateDisplay, toTimeDisplay } from '../../helper';
-import { useEffect, useRef } from 'react';
+import { toDateDisplay, toDateTimeDisplay, toTimeDisplay } from '../../helper';
 type DateTimePickerType = 'date' | 'time' | 'datetime-local';
 export default function CustomDateTimePicker({
   title,
@@ -10,8 +9,8 @@ export default function CustomDateTimePicker({
   className,
   value,
   readonly,
-  placeholder,
   disabled,
+  placeholder,
   onChange,
 }: {
   title?: string;
@@ -20,48 +19,38 @@ export default function CustomDateTimePicker({
   id?: string;
   className?: string;
   value?: Date;
-  placeholder?: string;
   readonly?: boolean | false;
   disabled?: boolean | false;
+  placeholder?: string | undefined;
   onChange?: (data: CustomReturn) => void;
 }) {
-  const input = useRef<HTMLInputElement>(null);
-
-  useEffect(
-    () => {
-      if (input.current) {
-        input.current.value = !value
-          ? ''
-          : type === 'date'
-          ? toDateDisplay(value)
-          : toTimeDisplay(value);
-      }
-    },
-    //eslint-disable-next-line
-    [value]
-  );
-
-  function onBlur() {
-    onChange?.({
-      elementName: name ?? '',
-      value: input.current?.valueAsDate,
-    });
-  }
-
   return (
     <div className={'custom-input ' + className}>
-      {title && <label htmlFor={name}>{title}</label>}
+      <label htmlFor={name}>{title}</label>
       <div className='input-container'>
         <input
           disabled={disabled}
           readOnly={readonly}
+          placeholder={placeholder}
           type={type ?? 'time'}
           name={name}
-          placeholder={placeholder}
           id={id}
-          ref={input}
+          value={
+            !value
+              ? undefined
+              : type === 'date'
+              ? toDateDisplay(value)
+              : type === 'time'
+              ? toTimeDisplay(value)
+              : toDateTimeDisplay(value)
+          }
           className={type}
-          onBlur={onBlur}
+          onChange={(e) => {
+            onChange?.({
+              elementName: name ?? '',
+              value: new Date(e.target.value),
+            });
+          }}
         />
       </div>
     </div>

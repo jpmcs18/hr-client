@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { employeeActions } from '../../../state/reducers/employee-reducer';
+import { timelogActions } from '../../../state/reducers/timelog-reducer';
 import { RootState } from '../../../state/store';
 
 export default function EmployeeItems() {
   const dispatch = useDispatch();
-  const employeeState = useSelector((state: RootState) => state.employee);
+  const timelogState = useSelector((state: RootState) => state.timelog);
   return (
     <section className='table-container'>
       <table className='item-table'>
@@ -16,12 +16,14 @@ export default function EmployeeItems() {
           </tr>
         </thead>
         <tbody>
-          {employeeState.employees.map((employee) => (
+          {timelogState.employees.map((employee) => (
             <tr
-              onClick={() => dispatch(employeeActions.setSelected(employee))}
+              onClick={() =>
+                dispatch(timelogActions.setSelectedEmployee(employee))
+              }
               key={employee.id}
               className={
-                employeeState.selectedEmployee?.id === employee.id
+                timelogState.selectedEmployee?.id === employee.id
                   ? 'selected'
                   : ''
               }>
