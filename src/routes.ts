@@ -5,9 +5,18 @@ export const SystemModules: ModuleRoute[] = [
   { route: '/', display: false }, //0
   { route: '/dashboard', display: false }, //1
   { id: 1, pageName: Pages.Employees, route: '/employees', display: true }, //2
-  { id: 2, pageName: Pages.Attachment, route: '', display: false }, //2
-  { id: 3, pageName: Pages.ServiceRecord, route: '', display: false }, //2
-  { id: 4, pageName: Pages.PersonalHistory, route: '', display: false }, //2
+  {
+    id: 100,
+    pageName: Pages.WorkSchedules,
+    route: '/work-schedules',
+    display: true,
+  },
+  {
+    id: 110,
+    pageName: Pages.TimeLogs,
+    route: '/timelogs',
+    display: true,
+  },
   {
     id: 10,
     pageName: Pages.Positions,
@@ -42,7 +51,7 @@ export const SystemModules: ModuleRoute[] = [
     display: true,
   },
   {
-    id: 80,
+    id: 90,
     pageName: Pages.LeaveRequestApprovers,
     route: '/leave-request-approvers',
     display: true,

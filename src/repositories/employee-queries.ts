@@ -32,6 +32,21 @@ export async function searchEmployee(
   return await httpGet<SearchResult<Employee>>(EmployeeEnd.Search + query);
 }
 
+export async function searchEmployeeInWorkSchedule(
+  workScheduleId: number,
+  officeId: number
+): Promise<Employee[] | undefined> {
+  var query = '?workScheduleId=' + workScheduleId + '&officeId=' + officeId;
+  return await httpGet<Employee[]>(EmployeeEnd.SearchInWorkSchedule + query);
+}
+export async function searchEmployeeNotInWorkSchedule(
+  workScheduleId: number,
+  officeId: number
+): Promise<Employee[] | undefined> {
+  var query = '?workScheduleId=' + workScheduleId + '&officeId=' + officeId;
+  return await httpGet<Employee[]>(EmployeeEnd.SearchNotInWorkSchedule + query);
+}
+
 export async function getEmployees(): Promise<Employee[] | undefined> {
   return await httpGet<Employee[]>(EmployeeEnd.GetList);
 }

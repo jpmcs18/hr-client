@@ -1,6 +1,6 @@
 import { faPaperPlane, faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useSetBusy,
@@ -27,18 +27,7 @@ export default function LoginPage() {
   const [startTimer, setStartTimer] = useState(false);
   const setBusy = useSetBusy();
   const dispatch = useDispatch();
-  const onKeyDown = useCallback(
-    (key: KeyboardEvent) => {
-      if (key.key === 'Backspace') {
-        dispatch(userProfileActions.removeOTP());
-      }
-      if (key.key.match(/^[0-9\b]+$/)) {
-        dispatch(userProfileActions.setOTP(key.key));
-      }
-    },
-    //eslint-disable-next-line
-    []
-  );
+  const inputRef = useRef<HTMLInputElement | null>(null);
   useEffect(
     () => {
       if (!userProfileState.systemUser?.allow2FA) {
@@ -76,6 +65,7 @@ export default function LoginPage() {
     //eslint-disable-next-line
     [userProfileState.OTP6]
   );
+
   async function validateOTPCode() {
     setBusy(true);
     await validateOTP(
@@ -89,7 +79,6 @@ export default function LoginPage() {
     )
       .then((res) => {
         if (res) {
-          window.removeEventListener('keydown', onKeyDown);
           dispatch(userProfileActions.saveSession());
           dispatch(userProfileActions.initializeState());
         }
@@ -110,8 +99,7 @@ export default function LoginPage() {
       .catch((err) => setToasterMessage({ content: err.message }))
       .finally(() => {
         setBusy(false);
-        window.removeEventListener('keydown', onKeyDown);
-        window.addEventListener('keydown', onKeyDown);
+        inputRef.current?.focus();
       });
   }
   async function signIn() {
@@ -171,6 +159,17 @@ export default function LoginPage() {
       signIn();
     }
   }
+  function onKeyDown(key: React.KeyboardEvent<HTMLInputElement>) {
+    if (key.key === 'Backspace') {
+      dispatch(userProfileActions.removeOTP());
+    }
+  }
+  function onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.value.match(/^[0-9\b]+$/)) {
+      dispatch(userProfileActions.setOTP(e.target.value));
+    }
+    inputRef.current!.value = '';
+  }
   return (
     <section>
       <div className='login-container'>
@@ -208,7 +207,16 @@ export default function LoginPage() {
           </>
         ) : (
           <>
-            <div className='otp-main-container'>
+            <input
+              type='text'
+              ref={inputRef}
+              style={{ opacity: 0 }}
+              onKeyDown={onKeyDown}
+              onChange={onChange}
+            />
+            <div
+              className='otp-main-container'
+              onClick={() => inputRef.current?.focus()}>
               <div className='otp-container'>
                 <label className='otp'>{userProfileState.OTP1}</label>
               </div>

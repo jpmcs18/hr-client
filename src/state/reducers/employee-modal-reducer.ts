@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Guid } from 'guid-typescript';
 import { toCommaSeparateAmount } from '../../helper';
 import CustomReturn from '../../models/client-model/CustomReturn';
+import Area from '../../models/entities/Area';
 import BloodType from '../../models/entities/BloodType';
 import CivilStatus from '../../models/entities/CivilStatus';
 import EducationalAttainment from '../../models/entities/EducationalAttainment';
@@ -10,7 +11,7 @@ import Employee from '../../models/entities/Employee';
 import EmployeeEligibility from '../../models/entities/EmployeeEligibility';
 import EmployeeRemuneration from '../../models/entities/EmployeeRemuneration';
 import Gender from '../../models/entities/Gender';
-import ModeOfResignation from '../../models/entities/ModeOfResignation';
+import ModeOfSeparation from '../../models/entities/ModeOfSeparation';
 import NatureOfEmployment from '../../models/entities/NatureOfEmployment';
 import Office from '../../models/entities/Office';
 import Position from '../../models/entities/Position';
@@ -19,9 +20,10 @@ import VaccinationStatus from '../../models/entities/VaccinationStatus';
 
 interface State {
   employee: Employee;
+  areas: Area[];
   offices: Office[];
   detailedOffices: Office[];
-  modeOfResignations: ModeOfResignation[];
+  modeOfSeparations: ModeOfSeparation[];
   natureOfEmployments: NatureOfEmployment[];
   bloodTypes: BloodType[];
   allPositions: Position[];
@@ -42,7 +44,7 @@ interface State {
 const employeeInitialState: Employee = {
   id: 0,
   idNumber: '',
-  modeOfResignationId: undefined,
+  modeOfSeparationId: undefined,
   resignationDate: undefined,
   firstName: '',
   lastName: '',
@@ -83,6 +85,7 @@ const employeeInitialState: Employee = {
 
 const initialState: State = {
   employee: employeeInitialState,
+  areas: [],
   offices: [],
   positions: [],
   isModalShow: false,
@@ -95,7 +98,7 @@ const initialState: State = {
   eligibilities: [],
   employeeEligibilities: [],
   allPositions: [],
-  modeOfResignations: [],
+  modeOfSeparations: [],
   isSalaryGradeUpdate: false,
   detailedOffices: [],
   detailedPositions: [],
@@ -384,8 +387,8 @@ const employeeModalSlice = createSlice({
         return x;
       });
     },
-    setModeOfResignation(state, action: PayloadAction<ModeOfResignation[]>) {
-      state.modeOfResignations = action.payload;
+    setModeOfSeparation(state, action: PayloadAction<ModeOfSeparation[]>) {
+      state.modeOfSeparations = action.payload;
     },
     setNatureOfEmployments(state, action: PayloadAction<NatureOfEmployment[]>) {
       state.natureOfEmployments = action.payload;
@@ -415,6 +418,9 @@ const employeeModalSlice = createSlice({
     },
     setVaccinationStatuses(state, action: PayloadAction<VaccinationStatus[]>) {
       state.vaccinationStatuses = action.payload;
+    },
+    setAreas(state, action: PayloadAction<Area[]>) {
+      state.areas = action.payload;
     },
   },
 });

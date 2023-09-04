@@ -59,15 +59,29 @@ export function getMonthName(date: Date): string {
 export function toDate(date?: Date | null): string {
   if (date === undefined || date === null) return '';
   const d = new Date(date);
+  return d.toLocaleDateString('en-US', {
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric',
+  });
+}
+export function toDateTime(date?: Date | null): string {
+  if (date === undefined || date === null) return '';
+  const d = new Date(date);
   return (
-    (d.getMonth() + 1).toString().padStart(2, '0') +
-    '/' +
-    d.getDate().toString().padStart(2, '0') +
-    '/' +
-    d.getFullYear()
+    d.toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+    }) +
+    ' ' +
+    d.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    })
   );
 }
-
 export function toDateDisplay(date?: Date | null): string {
   if (date === undefined || date === null) return '';
   const d = new Date(date);

@@ -7,6 +7,7 @@ import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
+import { getAreas } from '../../repositories/area-queries';
 import { getBloodTypes } from '../../repositories/blood-type-queries';
 import { getCivilStatuses } from '../../repositories/civil-status-queries';
 import { getEligibilities } from '../../repositories/eligibility-queries';
@@ -15,6 +16,7 @@ import {
   updateEmployee,
 } from '../../repositories/employee-queries';
 import { getGenders } from '../../repositories/gender-queries';
+import { getModeOfSeparations } from '../../repositories/mode-of-separation-queries';
 import { getNatureOfEmployments } from '../../repositories/nature-of-employment-queries';
 import { getOffices } from '../../repositories/office-queries';
 import { getPositions } from '../../repositories/position-queries';
@@ -24,6 +26,7 @@ import { getVaccinationStatuses } from '../../repositories/vaccination-status-qu
 import { employeeModalActions } from '../../state/reducers/employee-modal-reducer';
 import { employeeActions } from '../../state/reducers/employee-reducer';
 import { RootState } from '../../state/store';
+import CustomCheckBox from '../components/custom-checkbox';
 import CustomCheckBoxButton from '../components/custom-checkbox-button';
 import CustomDateTimePicker from '../components/custom-datetime-picker';
 import CustomDropdown from '../components/custom-dropdown';
@@ -67,8 +70,20 @@ export default function ManageEmployee() {
     await fetchEligibilities();
     await fetchPositions();
     await fetchRemunerations();
+    await fetchModeofResignation();
+    await fetchAreas();
   }
 
+  async function fetchModeofResignation() {
+    setBusy(true);
+    await getModeOfSeparations()
+      .then((res) => {
+        if (res) {
+          dispatch(employeeModalActions.setModeOfSeparation(res));
+        }
+      })
+      .finally(() => setBusy(false));
+  }
   async function fetchNatureOfEmployments() {
     setBusy(true);
     await getNatureOfEmployments()
@@ -155,6 +170,16 @@ export default function ManageEmployee() {
       .then((res) => {
         if (res) {
           dispatch(employeeModalActions.setRemunerations(res));
+        }
+      })
+      .finally(() => setBusy(false));
+  }
+  async function fetchAreas() {
+    setBusy(true);
+    await getAreas()
+      .then((res) => {
+        if (res) {
+          dispatch(employeeModalActions.setAreas(res));
         }
       })
       .finally(() => setBusy(false));
@@ -259,12 +284,12 @@ export default function ManageEmployee() {
               <CustomDropdown
                 title='Mode of Separation'
                 className='resigned-fields'
-                name='modeOfResignationId'
-                value={employeeModalState.employee.modeOfResignationId}
+                name='modeOfSeparationId'
+                value={employeeModalState.employee.modeOfSeparationId}
                 onChange={(ret) => {
                   dispatch(employeeModalActions.updateEmployee(ret));
                 }}
-                itemsList={employeeModalState.modeOfResignations.map((x) => {
+                itemsList={employeeModalState.modeOfSeparations.map((x) => {
                   return {
                     key: x.id.toString(),
                     value: x.description,
@@ -613,6 +638,42 @@ export default function ManageEmployee() {
             title='TIN'
             name='tinNo'
             value={employeeModalState.employee?.tinNo}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+            }}
+          />
+          <CustomDropdown
+            title='Area'
+            name='areaId'
+            value={employeeModalState.employee.areaId}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+            }}
+            itemsList={employeeModalState.areas.map((x) => {
+              return {
+                key: x.id.toString(),
+                value: x.description,
+              };
+            })}
+          />
+          <CustomTextBox
+            title='Code (Note: Number only)'
+            placeholder='Leave it blank, to auto generate code'
+            name='timeKeepingCode'
+            value={employeeModalState.employee?.timeKeepingCode}
+            onChange={(ret) => {
+              dispatch(employeeModalActions.updateEmployee(ret));
+            }}
+          />
+        </div>
+        <div>
+          <CustomCheckBox
+            isChecked={
+              employeeModalState.employee.allowTimeKeepingCodeUsage ?? false
+            }
+            text='Allow Code for Biometrix'
+            name='allowTimeKeepingCodeUsage'
+            id='allowTimeKeepingCodeUsage'
             onChange={(ret) => {
               dispatch(employeeModalActions.updateEmployee(ret));
             }}

@@ -19,6 +19,8 @@ export const UserAccessEnd = {
 
 export const EmployeeEnd = {
   Search: 'employees/search',
+  SearchInWorkSchedule: 'employees/search/work-schedule',
+  SearchNotInWorkSchedule: 'employees/search/work-schedule/not',
   GetList: 'employees',
   Insert: 'employees',
   Update: 'employees',
@@ -82,6 +84,8 @@ export const UserRoleEnd = {
 
 export const OfficeEnd = {
   Search: 'offices/search',
+  SearchInWorkSchedule: 'offices/search/work-schedule',
+  SearchAll: 'offices/search/all',
   GetList: 'offices',
   Insert: 'offices',
   Update: 'offices',
@@ -106,11 +110,14 @@ export const CivilStatusEnd = {
 export const BloodTypeEnd = {
   GetList: 'blood-types',
 };
+export const AreaEnd = {
+  GetList: 'areas',
+};
 export const LeaveTypeEnd = {
   GetList: 'leave-types',
 };
-export const ModeOfResignationEnd = {
-  GetList: 'mode-of-resignations',
+export const ModeOfSeparationEnd = {
+  GetList: 'mode-of-separations',
 };
 export const VaccinationStatusEnd = {
   GetList: 'vaccination-statuses',
@@ -177,6 +184,34 @@ export const LeaveRequestApproverEnd = {
   Update: 'leave-request-approvers',
   Delete: 'leave-request-approvers',
 };
+
 export const LeaveRequestApproverTypeEnd = {
   GetList: 'leave-request-approver-types',
+};
+
+export const ScheduleEnd = {
+  GetList: 'schedules',
+};
+
+export const WorkScheduleEnd = {
+  Search: 'work-schedules/search',
+  Insert: 'work-schedules',
+  Update: 'work-schedules',
+  Delete: 'work-schedules',
+};
+
+export const EmployeeScheduleEnd = {
+  SelectedOffice: 'employee-schedules/office',
+  SelectedEmployee: 'employee-schedules/employee',
+  CheckedOffices: 'employee-schedules/office/checked',
+  CheckedEmployeesOfSelectedOffice: 'employee-schedules/employee/office',
+  DeleteCheckedEmployees: 'employee-schedules/employee/mass-delete',
+  All: 'employee-schedules/all',
+};
+
+export const TimeLogEnd = {
+  GetList: 'timelogs',
+  Insert: 'timelogs',
+  Update: 'timelogs',
+  Delete: 'timelogs',
 };

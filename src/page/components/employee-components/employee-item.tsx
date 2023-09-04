@@ -4,6 +4,16 @@ export default function EmployeeItem({ employee }: { employee: Employee }) {
   return (
     <>
       <td>{employee.idNumber}</td>
+      <td>
+        {employee.timeKeepingCode && (
+          <span
+            className={
+              employee.allowTimeKeepingCodeUsage ? 'active' : 'separated'
+            }>
+            {employee.timeKeepingCode}
+          </span>
+        )}
+      </td>
       <td>{employee.fullName}</td>
       <td>{employee.natureOfEmployment?.description}</td>
       <td>{employee.gender?.description}</td>

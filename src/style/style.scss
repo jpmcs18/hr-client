@@ -467,6 +467,17 @@ section {
     }
   }
 }
+.timelog-main-container {
+  display: flex;
+  .employee-container {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+  }
+  .timelog-container {
+    width: 40%;
+  }
+}
 .btn {
   border-radius: 0.3em;
   margin-top: 0.5em;
@@ -1061,12 +1072,22 @@ input {
           }
         }
       }
+      .checker {
+        min-width: 1.2em !important;
+        max-width: 1.2em !important;
+        .check-container {
+          border-color: var(--primary-color-accent);
+        }
+      }
     }
   }
   tbody {
     .selected {
       background-color: var(--table-selected-color) !important;
       color: var(--table-selected-color-accent) !important;
+      .check-container {
+        border-color: var(--primary-color-accent);
+      }
     }
     tr {
       box-sizing: border-box;
@@ -1083,6 +1104,9 @@ input {
         box-sizing: border-box;
         background-color: var(--table-hover-color);
         color: var(--table-hover-color-accent);
+        .check-container {
+          border-color: var(--primary-color-accent);
+        }
       }
       td {
         box-sizing: border-box;
@@ -1130,6 +1154,7 @@ input {
   box-sizing: border-box;
   display: flex;
   width: fit-content !important;
+  align-items: center;
   .btn-action:first-child {
     border-top-left-radius: 0.3em;
     border-bottom-left-radius: 0.3em;
@@ -1414,6 +1439,46 @@ fieldset {
   left: 0;
   right: 0;
   bottom: 0;
+  .add-employee-modal {
+    width: 90%;
+    .add-employee-body {
+      height: 80vh;
+      .employee-container {
+        display: flex;
+        .office-table-container {
+          width: 30%;
+          height: 100%;
+        }
+        .employe-table-container {
+          width: 70%;
+          height: 100%;
+        }
+        .table-container {
+          height: 63vh;
+        }
+      }
+    }
+  }
+  .work-schedule-employee-modal {
+    width: 90%;
+    .work-schedule-employee-body {
+      height: 80vh;
+      .employee-container {
+        display: flex;
+        .office-table-container {
+          width: 30%;
+          height: 100%;
+        }
+        .employe-table-container {
+          width: 70%;
+          height: 100%;
+        }
+        .table-container {
+          height: 57vh;
+        }
+      }
+    }
+  }
   .profile-modal {
     .profile-body {
       .profile-container {
@@ -1723,6 +1788,9 @@ fieldset {
         .custom-text-area {
           flex: 1 1 100%;
         }
+        .check {
+          flex: 1 1 30%;
+        }
         overflow: visible;
       }
       .manage-container {
@@ -1835,6 +1903,13 @@ fieldset {
       .btn-actions-group:not(:last-child) {
         margin-right: 0.5em !important;
       }
+      .modal-footer-container {
+        display: flex;
+        align-items: flex-end;
+        .btn-actions-group {
+          margin-bottom: 0.4em;
+        }
+      }
     }
   }
   .modal-blocker {
@@ -1945,18 +2020,16 @@ fieldset {
   z-index: 0;
   display: block;
   position: relative;
+  box-sizing: border-box;
   cursor: pointer;
   font-size: var(--normal-font-size);
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  height: 15px;
-  width: 15px;
+  height: 17px;
+  width: 17px;
   border: 1px solid var(--color);
-  &:has(input:checked) {
-    border-color: var(--primary-color);
-  }
   input {
     position: absolute;
     opacity: 0;

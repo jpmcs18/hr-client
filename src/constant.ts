@@ -27,6 +27,9 @@ export const Pages = {
   RequestHistory: 'Request History',
   LeaveRequests: 'Leave Requests',
   LeaveRequestApprovers: 'Leave Request Approvers',
+  WorkSchedules: 'Work Schedules',
+  EmployeeSchedule: 'Employee Schedule',
+  TimeLogs: 'Time Logs',
 };
 
 export enum LeaveRequestTypeDefaults {

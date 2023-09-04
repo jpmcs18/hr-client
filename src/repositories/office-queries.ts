@@ -14,6 +14,27 @@ export async function searchOffice(
   return await httpGet<SearchResult<Office>>(OfficeEnd.Search + query);
 }
 
+export async function searchNotInWorkSchedule(
+  key: string
+): Promise<Office[] | undefined> {
+  var query = '';
+  if (!!key) {
+    query += '?key=' + encodeURI(key);
+  }
+  return await httpGet<Office[]>(OfficeEnd.SearchAll + query);
+}
+
+export async function searchOfficeInWorkSchedule(
+  workScheduleId: number,
+  key: string
+): Promise<Office[] | undefined> {
+  var query = '?workScheduleId=' + workScheduleId;
+  if (!!key) {
+    query += '&key=' + encodeURI(key);
+  }
+  return await httpGet<Office[]>(OfficeEnd.SearchInWorkSchedule + query);
+}
+
 export async function getOffices(): Promise<Office[] | undefined> {
   return await httpGet<Office[]>(OfficeEnd.GetList);
 }

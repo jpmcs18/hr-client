@@ -9,4 +9,6 @@ export default interface Office {
 
   departmentHead?: Employee | undefined;
   positions: OfficePosition[] | undefined;
+
+  isChecked?: boolean | undefined;
 }

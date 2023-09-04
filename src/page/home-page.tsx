@@ -37,6 +37,8 @@ import ReportPage from './components/report-components/report-page';
 import RequestHistoryPage from './components/request-history-components/request-history-page';
 import LeaveRequestPage from './components/leave-request-components/leave-request-page';
 import LeaveRequestApproverPage from './components/leave-request-approver-components/leave-request-approver-page';
+import WorkSchedulePage from './components/work-schedule-components/work-schedule-page';
+import TimeLogPage from './components/timelog-components/timelog-page';
 export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
   const setMessage = useSetMessage();
@@ -257,6 +259,24 @@ export default function HomePage() {
               <Route
                 path={getPage(Pages.LeaveRequestApprovers).route}
                 element={<LeaveRequestApproverPage />}
+              />
+            )}
+            {(!!userProfileState.module.filter(
+              (x) => x === getPage(Pages.WorkSchedules).id
+            ).length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route
+                path={getPage(Pages.WorkSchedules).route}
+                element={<WorkSchedulePage />}
+              />
+            )}
+            {(!!userProfileState.module.filter(
+              (x) => x === getPage(Pages.TimeLogs).id
+            ).length ||
+              userProfileState.systemUser?.isAdmin) && (
+              <Route
+                path={getPage(Pages.TimeLogs).route}
+                element={<TimeLogPage />}
               />
             )}
             <Route

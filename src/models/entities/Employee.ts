@@ -8,13 +8,14 @@ import Gender from './Gender';
 import NatureOfEmployment from './NatureOfEmployment';
 import Office from './Office';
 import VaccinationStatus from './VaccinationStatus';
-import ModeOfResignation from './ModeOfResignation';
+import ModeOfSeparation from './ModeOfSeparation';
 import EmployeeRemuneration from './EmployeeRemuneration';
+import Area from './Area';
 
 export default interface Employee {
   id: number;
   idNumber: string | undefined;
-  modeOfResignationId: number | undefined;
+  modeOfSeparationId: number | undefined;
   resignationDate: Date | undefined;
   firstName: string | undefined;
   middleName: string | undefined;
@@ -53,6 +54,10 @@ export default interface Employee {
   detailedPositionId: number | undefined;
   salaryGrade: number | undefined;
   step: number | undefined;
+  timeKeepingCode?: string | undefined;
+  allowTimeKeepingCodeUsage?: boolean | undefined;
+  areaId?: number | undefined;
+
   office?: Office | undefined;
   position?: Position | undefined;
   natureOfEmployment?: NatureOfEmployment | undefined;
@@ -63,10 +68,12 @@ export default interface Employee {
   vaccinationStatus?: VaccinationStatus | undefined;
   employeeEligibilities?: EmployeeEligibility[] | undefined;
   employeeAttachments?: EmployeeAttachment[] | undefined;
-  modeOfResignation?: ModeOfResignation | undefined;
+  modeOfSeparation?: ModeOfSeparation | undefined;
   detailedPosition?: Position | undefined;
   detailedOffice?: Office | undefined;
   employeeRemunerations?: EmployeeRemuneration[] | undefined;
+  area?: Area | undefined;
 
   isRegular?: boolean;
+  isChecked?: boolean | undefined;
 }

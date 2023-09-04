@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { employeeActions } from '../../../state/reducers/employee-reducer';
 import { RootState } from '../../../state/store';
-import EmployeeItem from './employee-item';
 
 export default function EmployeeItems() {
   const dispatch = useDispatch();
@@ -11,16 +10,9 @@ export default function EmployeeItems() {
       <table className='item-table'>
         <thead>
           <tr>
-            <th>ID Number</th>
-            <th>Code</th>
             <th>Full Name</th>
-            <th>Nature of Employment</th>
-            <th>Gender</th>
-            <th>Age</th>
-            <th>Years in Service</th>
             <th>Office</th>
             <th>Position</th>
-            <th style={{ textAlign: 'center' }}>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -33,7 +25,23 @@ export default function EmployeeItems() {
                   ? 'selected'
                   : ''
               }>
-              <EmployeeItem employee={employee} />
+              <td>{employee.fullName}</td>
+              <td>
+                <div>{employee.office?.description}</div>
+                {employee.detailedOffice && (
+                  <i>
+                    <b>Detailed:</b> {employee.detailedOffice?.description}
+                  </i>
+                )}
+              </td>
+              <td>
+                <div>{employee.position?.description}</div>
+                {employee.detailedPosition && (
+                  <i>
+                    <b>Detailed:</b> {employee.detailedPosition?.description}
+                  </i>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

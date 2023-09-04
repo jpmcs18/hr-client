@@ -631,6 +631,27 @@ section {
       align-self: flex-end;
 }
 
+.timelog-main-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.timelog-main-container .employee-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 60%;
+}
+
+.timelog-main-container .timelog-container {
+  width: 40%;
+}
+
 .btn {
   border-radius: 0.3em;
   margin-top: 0.5em;
@@ -1403,9 +1424,22 @@ input:disabled {
           transform: scale(1.1);
 }
 
+.item-table thead tr .checker {
+  min-width: 1.2em !important;
+  max-width: 1.2em !important;
+}
+
+.item-table thead tr .checker .check-container {
+  border-color: var(--primary-color-accent);
+}
+
 .item-table tbody .selected {
   background-color: var(--table-selected-color) !important;
   color: var(--table-selected-color-accent) !important;
+}
+
+.item-table tbody .selected .check-container {
+  border-color: var(--primary-color-accent);
 }
 
 .item-table tbody tr {
@@ -1429,6 +1463,10 @@ input:disabled {
           box-sizing: border-box;
   background-color: var(--table-hover-color);
   color: var(--table-hover-color-accent);
+}
+
+.item-table tbody tr:hover .check-container {
+  border-color: var(--primary-color-accent);
 }
 
 .item-table tbody tr td {
@@ -1503,6 +1541,9 @@ input:disabled {
   width: -webkit-fit-content !important;
   width: -moz-fit-content !important;
   width: fit-content !important;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .btn-actions-group .btn-action:first-child {
@@ -1911,6 +1952,62 @@ fieldset legend {
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.modal-container .add-employee-modal {
+  width: 90%;
+}
+
+.modal-container .add-employee-modal .add-employee-body {
+  height: 80vh;
+}
+
+.modal-container .add-employee-modal .add-employee-body .employee-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.modal-container .add-employee-modal .add-employee-body .employee-container .office-table-container {
+  width: 30%;
+  height: 100%;
+}
+
+.modal-container .add-employee-modal .add-employee-body .employee-container .employe-table-container {
+  width: 70%;
+  height: 100%;
+}
+
+.modal-container .add-employee-modal .add-employee-body .employee-container .table-container {
+  height: 63vh;
+}
+
+.modal-container .work-schedule-employee-modal {
+  width: 90%;
+}
+
+.modal-container .work-schedule-employee-modal .work-schedule-employee-body {
+  height: 80vh;
+}
+
+.modal-container .work-schedule-employee-modal .work-schedule-employee-body .employee-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.modal-container .work-schedule-employee-modal .work-schedule-employee-body .employee-container .office-table-container {
+  width: 30%;
+  height: 100%;
+}
+
+.modal-container .work-schedule-employee-modal .work-schedule-employee-body .employee-container .employe-table-container {
+  width: 70%;
+  height: 100%;
+}
+
+.modal-container .work-schedule-employee-modal .work-schedule-employee-body .employee-container .table-container {
+  height: 57vh;
 }
 
 .modal-container .profile-modal .profile-body .profile-container {
@@ -2418,6 +2515,12 @@ fieldset legend {
           flex: 1 1 100%;
 }
 
+.modal-container .employee-modal .manage-employee-body .details-container .check {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 30%;
+          flex: 1 1 30%;
+}
+
 .modal-container .employee-modal .manage-employee-body .manage-container {
   width: 100%;
 }
@@ -2566,6 +2669,19 @@ fieldset legend {
 
 .modal-container .modal-content .modal-footer .btn-actions-group:not(:last-child) {
   margin-right: 0.5em !important;
+}
+
+.modal-container .modal-content .modal-footer .modal-footer-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.modal-container .modal-content .modal-footer .modal-footer-container .btn-actions-group {
+  margin-bottom: 0.4em;
 }
 
 .modal-container .modal-blocker {
@@ -2724,19 +2840,17 @@ fieldset legend {
   z-index: 0;
   display: block;
   position: relative;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   cursor: pointer;
   font-size: var(--normal-font-size);
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  height: 15px;
-  width: 15px;
+  height: 17px;
+  width: 17px;
   border: 1px solid var(--color);
-}
-
-.check-container:has(input:checked) {
-  border-color: var(--primary-color);
 }
 
 .check-container input {
