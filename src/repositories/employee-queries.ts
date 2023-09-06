@@ -1,4 +1,5 @@
 import { EmployeeEnd } from '../endpoints';
+import { dateToString } from '../helper';
 import Employee from '../models/entities/Employee';
 import EmployeeEligibility from '../models/entities/EmployeeEligibility';
 import EmployeeRemuneration from '../models/entities/EmployeeRemuneration';
@@ -115,4 +116,25 @@ export async function promoteEmployee(
     step,
     salary,
   });
+}
+
+export async function searchEmployeeWithTimeLog(
+  officeId: number,
+  startDate: Date,
+  endDate: Date,
+  page: number
+): Promise<SearchResult<Employee> | undefined> {
+  var query =
+    '?page=' +
+    page +
+    '&officeId=' +
+    officeId +
+    '&startDate=' +
+    encodeURI(dateToString(startDate) ?? '') +
+    '&endDate=' +
+    encodeURI(dateToString(endDate) ?? '');
+
+  return await httpGet<SearchResult<Employee>>(
+    EmployeeEnd.SearchWithTimeLog + query
+  );
 }

@@ -30,6 +30,7 @@ export const Pages = {
   WorkSchedules: 'Work Schedules',
   EmployeeSchedule: 'Employee Schedule',
   TimeLogs: 'Time Logs',
+  DTRExport: 'DTR Export',
 };
 
 export enum LeaveRequestTypeDefaults {

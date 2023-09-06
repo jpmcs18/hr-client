@@ -472,6 +472,27 @@ section {
     }
   }
 }
+.dtr-main-container {
+  display: flex;
+  flex-direction: column;
+  .dtr-export-buttons {
+    display: flex;
+    align-self: flex-end;
+    .btn-actions-group {
+      align-self: flex-end;
+      margin-bottom: 0.4em;
+    }
+  }
+  .dtr-table-container {
+    display: flex;
+    .office-container {
+      width: 50%;
+    }
+    .employee-container {
+      width: 50%;
+    }
+  }
+}
 .timelog-main-container {
   display: flex;
   .employee-container {

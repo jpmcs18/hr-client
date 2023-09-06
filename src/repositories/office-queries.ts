@@ -1,4 +1,5 @@
 import { OfficeEnd } from '../endpoints';
+import { dateToString, toDateDisplay } from '../helper';
 import Office from '../models/entities/Office';
 import SearchResult from '../models/response-model/SearchResult';
 import { httpDelete, httpGet, httpPost, httpPut } from './base';
@@ -12,6 +13,24 @@ export async function searchOffice(
     query += '&key=' + encodeURI(key);
   }
   return await httpGet<SearchResult<Office>>(OfficeEnd.Search + query);
+}
+
+export async function searchOfficeWithTimeLog(
+  startDate: Date,
+  endDate: Date,
+  page: number
+): Promise<SearchResult<Office> | undefined> {
+  var query =
+    '?page=' +
+    page +
+    '&startDate=' +
+    encodeURI(dateToString(startDate) ?? '') +
+    '&endDate=' +
+    encodeURI(dateToString(endDate) ?? '');
+
+  return await httpGet<SearchResult<Office>>(
+    OfficeEnd.SearchWithTimeLog + query
+  );
 }
 
 export async function searchNotInWorkSchedule(

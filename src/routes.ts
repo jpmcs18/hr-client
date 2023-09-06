@@ -18,6 +18,12 @@ export const SystemModules: ModuleRoute[] = [
     display: true,
   },
   {
+    id: 120,
+    pageName: Pages.DTRExport,
+    route: '/dtr-export',
+    display: true,
+  },
+  {
     id: 10,
     pageName: Pages.Positions,
     route: '/positions',

@@ -20,6 +20,7 @@ export const UserAccessEnd = {
 export const EmployeeEnd = {
   Search: 'employees/search',
   SearchInWorkSchedule: 'employees/search/work-schedule',
+  SearchWithTimeLog: 'employees/search/timelog',
   SearchNotInWorkSchedule: 'employees/search/work-schedule/not',
   GetList: 'employees',
   Insert: 'employees',
@@ -84,6 +85,7 @@ export const UserRoleEnd = {
 
 export const OfficeEnd = {
   Search: 'offices/search',
+  SearchWithTimeLog: 'offices/search/timelog',
   SearchInWorkSchedule: 'offices/search/work-schedule',
   SearchAll: 'offices/search/all',
   GetList: 'offices',

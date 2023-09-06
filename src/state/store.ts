@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import dropdownReducer from './reducers/dropdown-reducer';
+import dtrExportReducer from './reducers/dtr-export-reducer';
 import employeeAttachmentModalReducer from './reducers/employee-attachment-modal-reducer';
 import employeeHistoryModalReducer from './reducers/employee-history-modal-reducer';
 import employeeLeaveCreditsHistoryModalReducer from './reducers/employee-leave-credits-history-modal-reducer';
@@ -87,6 +88,7 @@ const store = configureStore({
     employeeScheduleModal: employeeScheduleModalReducer,
     timelog: timelogReducer,
     timelogModal: timelogModalReducer,
+    dtrExport: dtrExportReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

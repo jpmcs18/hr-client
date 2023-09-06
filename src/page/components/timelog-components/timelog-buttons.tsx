@@ -13,6 +13,7 @@ import {
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
 import { hasAccess, printPDFReport } from '../../../helper';
+import TimeLog from '../../../models/entities/TimeLog';
 import {
   deleteTimeLog,
   generateActualTimeLogs,
@@ -20,8 +21,6 @@ import {
 import { timelogModalActions } from '../../../state/reducers/timelog-modal-reducer';
 import { timelogActions } from '../../../state/reducers/timelog-reducer';
 import { RootState } from '../../../state/store';
-import TimeLog from '../../../models/entities/TimeLog';
-import printJS from 'print-js';
 
 export default function TimeLogButtons() {
   const timelogState = useSelector((state: RootState) => state.timelog);
