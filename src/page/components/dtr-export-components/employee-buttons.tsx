@@ -1,12 +1,6 @@
-import { faFileExport, faPrint } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Pages } from '../../../constant';
-import { hasAccess } from '../../../helper';
+import { useDispatch, useSelector } from 'react-redux';
 import { dtrExportActions } from '../../../state/reducers/dtr-export-reducer';
 import { RootState } from '../../../state/store';
-import CustomDropdown from '../custom-dropdown';
 import Pagination from '../pagination';
 
 export default function EmployeeButtons() {

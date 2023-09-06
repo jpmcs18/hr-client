@@ -217,4 +217,5 @@ export const TimeLogEnd = {
   Update: 'timelogs',
   Delete: 'timelogs',
   ActualTimeLog: 'timelogs/report/actual',
+  DTR: 'timelogs/report/dtr',
 };

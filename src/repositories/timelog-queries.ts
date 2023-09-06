@@ -49,3 +49,30 @@ export async function generateActualTimeLogs(
     encodeURI(dateToString(endDate) ?? '');
   return await httpGet<string>(TimeLogEnd.ActualTimeLog + query);
 }
+
+export async function generateDTR(
+  exportOption: string,
+  fileSegregation: string,
+  officeId: number | undefined,
+  employeeId: number | undefined,
+  startDate: Date,
+  endDate: Date
+): Promise<string | undefined> {
+  var query =
+    '?exportOption=' +
+    exportOption +
+    '&fileSegregation=' +
+    fileSegregation +
+    '&startDate=' +
+    encodeURI(dateToString(startDate) ?? '') +
+    '&endDate=' +
+    encodeURI(dateToString(endDate) ?? '');
+
+  if (!!officeId) {
+    query += '&officeId=' + officeId;
+  }
+  if (!!employeeId) {
+    query += '&selectedOfficeId=' + employeeId;
+  }
+  return await httpGet<string>(TimeLogEnd.DTR + query);
+}

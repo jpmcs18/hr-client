@@ -1,5 +1,5 @@
 import { OfficeEnd } from '../endpoints';
-import { dateToString, toDateDisplay } from '../helper';
+import { dateToString } from '../helper';
 import Office from '../models/entities/Office';
 import SearchResult from '../models/response-model/SearchResult';
 import { httpDelete, httpGet, httpPost, httpPut } from './base';
