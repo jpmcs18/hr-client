@@ -71,7 +71,7 @@ const employeeAttachmentModalSlice = createSlice({
     deleteAttachment(state, action: PayloadAction<string>) {
       state.files = state.files
         .slice()
-        .filter((file) => file.tempId === action.payload);
+        .filter((file) => file.tempId !== action.payload);
     },
     setUploadedFiles(state, action: PayloadAction<FileList>) {
       const fileTypes = ['jpeg', 'jpg', 'png'];
