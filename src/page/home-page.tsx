@@ -40,6 +40,7 @@ import LeaveRequestApproverPage from './components/leave-request-approver-compon
 import WorkSchedulePage from './components/work-schedule-components/work-schedule-page';
 import TimeLogPage from './components/timelog-components/timelog-page';
 import DTRExportPage from './components/dtr-export-components/dtr-export-page';
+import KeyGenerator from './key-generator';
 export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
   const setMessage = useSetMessage();
@@ -287,6 +288,12 @@ export default function HomePage() {
               <Route
                 path={getPage(Pages.DTRExport).route}
                 element={<DTRExportPage />}
+              />
+            )}
+            {userProfileState.systemUser?.isAdmin && (
+              <Route
+                path={getPage(Pages.KeyGenerator).route}
+                element={<KeyGenerator />}
               />
             )}
             <Route

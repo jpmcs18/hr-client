@@ -62,4 +62,10 @@ export const SystemModules: ModuleRoute[] = [
     route: '/leave-request-approvers',
     display: true,
   },
+  {
+    id: 130,
+    pageName: Pages.KeyGenerator,
+    route: '/key-generator',
+    display: true,
+  }, //5
 ];

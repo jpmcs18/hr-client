@@ -1,6 +1,7 @@
 export const SecurityEnd = {
   Refresh: 'securities/refresh-token',
   Login: 'securities/log',
+  GenerateKey: 'securities/generate-key',
 };
 
 export const SystemUserEnd = {

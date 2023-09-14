@@ -25,6 +25,7 @@ export const Pages = {
   UserRoles: 'User Roles',
   Reports: 'Reports',
   RequestHistory: 'Request History',
+  KeyGenerator: 'Key Generator',
   LeaveRequests: 'Leave Requests',
   LeaveRequestApprovers: 'Leave Request Approvers',
   WorkSchedules: 'Work Schedules',
