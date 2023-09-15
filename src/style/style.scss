@@ -8,6 +8,8 @@
   --input-border-color: #888888;
   --input-selected-border-color: #b70000;
   --color: #000;
+  --error-color: #ff0000;
+  --error-color-accent: #fff;
   --input-color: #b70000;
   --login-backgroud-color: #fff;
   --login-header-foreground-color: #b70000;
@@ -1714,7 +1716,6 @@ fieldset {
       display: flex;
       flex-wrap: wrap;
       overflow-y: scroll;
-      line-height: 0.5em !important;
       padding: 1em;
       .attachment-deleted {
         opacity: 0.5;
@@ -1740,6 +1741,17 @@ fieldset {
           top: 0;
           background-color: var(--shadow-color);
           border-radius: 0.5em;
+        }
+        .error-message {
+          background-color: var(--error-color);
+          color: var(--error-color-accent);
+          margin-top: 3em;
+          padding: 1em;
+          .file {
+            font-size: var(--header-font-size) !important;
+            font-weight: var(--demibold);
+            margin-bottom: 1em;
+          }
         }
       }
       .attachment-add {

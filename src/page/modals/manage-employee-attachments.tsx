@@ -1,13 +1,18 @@
-import { faMaximize, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faExclamationCircle,
+  faMaximize,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { isCatchClause } from 'typescript';
 import { Pages } from '../../constant';
 import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
-import { hasAccess } from '../../helper';
+import { hasAccess, validateFileSize } from '../../helper';
 import {
   deleteAttachment,
   getAttachments,
@@ -80,56 +85,72 @@ export default function ManageEmployeeAttachments() {
       )
     );
     toUpload.forEach((file) => {
-      uploadAttachment(file.file!, employeeAttachmentModalState.employee!.id)
+      try {
+        validateFileSize(file.file);
+        uploadAttachment(file.file!, employeeAttachmentModalState.employee!.id)
+          .then((res) => {
+            if (res) {
+              dispatch(
+                employeeAttachmentModalActions.updateUploadedFiles({
+                  tempId: file.tempId,
+                  attachment: res,
+                })
+              );
+            }
+          })
+          .catch((err) => {
+            setToasterMessage({ content: err.message });
+          })
+          .finally(() => setBusy(false));
+      } catch (err: any) {
+        dispatch(
+          employeeAttachmentModalActions.setErrorFile({
+            tempId: file.tempId!,
+            errorMessage: err.message,
+          })
+        );
+      }
+    });
+  }
+  async function onSelectCapture() {
+    if (!!fileRef.current?.files?.length) {
+      dispatch(
+        employeeAttachmentModalActions.setUploadedFiles(fileRef.current.files!)
+      );
+
+      fileRef.current.value = '';
+    }
+  }
+  async function deletion(file: FileUploading) {
+    if (file.isError) {
+      dispatch(employeeAttachmentModalActions.deleteAttachment(file.tempId));
+    } else {
+      dispatch(
+        employeeAttachmentModalActions.updateProcessingFile({
+          tempId: file.tempId,
+          isProcessing: true,
+        })
+      );
+      await deleteAttachment(file.id)
         .then((res) => {
           if (res) {
             dispatch(
-              employeeAttachmentModalActions.updateUploadedFiles({
-                tempId: file.tempId,
-                attachment: res,
-              })
+              employeeAttachmentModalActions.deleteAttachment(file.tempId)
             );
           }
         })
         .catch((err) => {
           setToasterMessage({ content: err.message });
         })
-        .finally(() => setBusy(false));
-    });
-  }
-  async function onSelectCapture() {
-    if (!!fileRef.current?.files?.length) {
-      dispatch(
-        employeeAttachmentModalActions.setUploadedFiles(fileRef.current?.files!)
-      );
-    }
-  }
-  async function deletion(file: FileUploading) {
-    dispatch(
-      employeeAttachmentModalActions.updateProcessingFile({
-        tempId: file.tempId,
-        isProcessing: true,
-      })
-    );
-    await deleteAttachment(file.id)
-      .then((res) => {
-        if (res) {
+        .finally(() => {
           dispatch(
-            employeeAttachmentModalActions.deleteAttachment(file.tempId)
+            employeeAttachmentModalActions.updateProcessingFile({
+              tempId: file.tempId,
+              isProcessing: false,
+            })
           );
-        }
-      })
-      .catch((err) => {
-        setToasterMessage({ content: err.message });
-      })
-      .finally(() => {
-        dispatch(
-          employeeAttachmentModalActions.updateProcessingFile({
-            tempId: file.tempId,
-            isProcessing: false,
-          })
-        );
-      });
+        });
+    }
   }
   function openNewTab(fileUrl?: string) {
     window.open(fileUrl, '_blank');
@@ -168,14 +189,15 @@ export default function ManageEmployeeAttachments() {
                   Pages.Attachment,
                   'Maximize (Print & Download)',
                   userProfileState.systemUser?.isAdmin
-                ) && (
-                  <button
-                    className='btn-action'
-                    title='Maximize (Print & Download)'
-                    onClick={() => openNewTab(file.fileUrl)}>
-                    <FontAwesomeIcon icon={faMaximize} />
-                  </button>
-                )}
+                ) &&
+                  !file.isError && (
+                    <button
+                      className='btn-action'
+                      title='Maximize (Print & Download)'
+                      onClick={() => openNewTab(file.fileUrl)}>
+                      <FontAwesomeIcon icon={faMaximize} />
+                    </button>
+                  )}
                 {hasAccess(
                   userProfileState.moduleRights,
                   Pages.Attachment,
@@ -191,10 +213,23 @@ export default function ManageEmployeeAttachments() {
                 )}
               </div>
             )}
-            {file.isImage ? (
-              <img src={file.url} alt={file.fileName} />
+
+            {file.isError ? (
+              <div className='error-message'>
+                <div className='file'>{file.file?.name}</div>
+                <div className='error'>
+                  <FontAwesomeIcon icon={faExclamationCircle} />{' '}
+                  {file.errorMessage}
+                </div>
+              </div>
             ) : (
-              <iframe title={file.url} src={file.url} />
+              <>
+                {file.isImage ? (
+                  <img src={file.url} alt={file.fileName} />
+                ) : (
+                  <iframe title={file.url} src={file.url} />
+                )}
+              </>
             )}
           </div>
         ))}

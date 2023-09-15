@@ -2,6 +2,19 @@ import printJS from 'print-js';
 import ModuleRoute from './models/client-model/ModuleRoute';
 import ModuleRight from './models/entities/ModuleRight';
 import { SystemModules } from './routes';
+export function validateFileSize(selectedFile: File | undefined) {
+  const MAX_FILE_SIZE = 5120; // 5MB
+
+  if (!selectedFile) {
+    throw new Error('Invalid file');
+  }
+
+  const fileSizeKiloBytes = selectedFile.size / 1024;
+
+  if (fileSizeKiloBytes > MAX_FILE_SIZE) {
+    throw new Error('File must me less than or equal to 5mb');
+  }
+}
 
 export function hasAccess(
   moduleRight: ModuleRight[],
