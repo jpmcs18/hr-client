@@ -1,4 +1,5 @@
 import {
+  faDownload,
   faExclamationCircle,
   faMaximize,
   faTrash,
@@ -12,7 +13,7 @@ import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../custom-hooks/authorize-provider';
-import { hasAccess, validateFileSize } from '../../helper';
+import { downloadFile, hasAccess, validateFileSize } from '../../helper';
 import {
   deleteAttachment,
   getAttachments,
@@ -190,7 +191,8 @@ export default function ManageEmployeeAttachments() {
                   'Maximize (Print & Download)',
                   userProfileState.systemUser?.isAdmin
                 ) &&
-                  !file.isError && (
+                  !file.isError &&
+                  file.showPreview && (
                     <button
                       className='btn-action'
                       title='Maximize (Print & Download)'
@@ -222,6 +224,24 @@ export default function ManageEmployeeAttachments() {
                   {file.errorMessage}
                 </div>
               </div>
+            ) : !file.showPreview ? (
+              <>
+                <a
+                  href={file.url}
+                  download='Example-PDF-document'
+                  target='_blank'
+                  rel='noopener noreferrer'>
+                  <button className='btn-tool download-file'>
+                    <div className='file-name'>
+                      <p>{file.fileName}</p>
+                    </div>
+                    <div className='download'>
+                      <FontAwesomeIcon icon={faDownload} />
+                      <span className='desktop-features'>Download</span>
+                    </div>
+                  </button>
+                </a>
+              </>
             ) : (
               <>
                 {file.isImage ? (

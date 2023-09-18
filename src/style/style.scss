@@ -1408,6 +1408,16 @@ fieldset {
     outline: none;
   }
 }
+.download-file {
+  margin: 0 auto;
+  margin-top: 3em;
+  box-sizing: border-box;
+  .file-name {
+    p {
+      word-break: break-all;
+    }
+  }
+}
 .otp-main-container {
   display: flex;
   flex-direction: row;

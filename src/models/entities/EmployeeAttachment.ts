@@ -3,4 +3,5 @@ export default interface EmployeeAttachment {
   employeeId: number | undefined;
   fileName: string | undefined;
   fileUrl: string | undefined;
+  showPreview: boolean | undefined;
 }

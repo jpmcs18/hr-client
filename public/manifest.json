@@ -1,6 +1,6 @@
 {
   "short_name": "HRIS",
-  "name": "Main Application",
+  "name": "HRIS Application",
   "icons": [],
   "start_url": ".",
   "display": "standalone",

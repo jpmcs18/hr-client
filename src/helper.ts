@@ -33,6 +33,7 @@ export function hasAccess(
 export function downloadFile(file: string, fileName: string) {
   let link = document.createElement('a');
   link.href = file;
+  link.target = '_blank';
   link.setAttribute('download', fileName);
   document.body.appendChild(link);
   link.click();
