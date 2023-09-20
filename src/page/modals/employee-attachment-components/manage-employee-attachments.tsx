@@ -1,29 +1,25 @@
 import {
-  faDownload,
   faExclamationCircle,
   faFileUpload,
-  faMaximize,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { isCatchClause } from 'typescript';
 import { Pages } from '../../../constant';
 import {
   useSetBusy,
   useSetToasterMessage,
 } from '../../../custom-hooks/authorize-provider';
-import { downloadFile, hasAccess, validateFileSize } from '../../../helper';
+import { hasAccess } from '../../../helper';
 import {
   deleteAttachment,
   getAttachments,
   uploadAttachment,
 } from '../../../repositories/employee-attachment-queries';
 import {
-  employeeAttachmentModalActions,
   FileUploading,
+  employeeAttachmentModalActions,
 } from '../../../state/reducers/employee-attachment-modal-reducer';
 import { RootState } from '../../../state/store';
 import CustomLoading from '../../components/custom-loading';

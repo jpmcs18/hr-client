@@ -62,6 +62,7 @@ export default function EmployeePage() {
     if (!employeeState.initiateSearch) return;
     setBusy(true);
     dispatch(employeeActions.setInitiateSearch(false));
+    console.log(new Date(), 'Search Called');
     await searchEmployee(
       employeeState.key,
       employeeState.currentPage,

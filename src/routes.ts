@@ -63,9 +63,13 @@ export const SystemModules: ModuleRoute[] = [
     display: true,
   },
   {
-    id: 130,
     pageName: Pages.KeyGenerator,
     route: '/key-generator',
     display: true,
-  }, //5
+  },
+  {
+    pageName: Pages.ActivityLog,
+    route: '/activity-log',
+    display: true,
+  },
 ];

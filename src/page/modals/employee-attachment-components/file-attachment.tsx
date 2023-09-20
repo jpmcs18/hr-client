@@ -1,5 +1,3 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { FileUploading } from '../../../state/reducers/employee-attachment-modal-reducer';
 
 export default function FileAttachment({

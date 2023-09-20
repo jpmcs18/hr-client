@@ -43,6 +43,7 @@ import userRoleReducer from './reducers/user-role-reducer';
 import workScheduleEmployeeModalReducer from './reducers/work-schedule-employee-modal-reducer';
 import workScheduleModalReducer from './reducers/work-schedule-modal-reducer';
 import workScheduleReducer from './reducers/work-schedule-reducer';
+import activityLogReducer from './reducers/activity-log-reducer';
 const store = configureStore({
   reducer: {
     dropdown: dropdownReducer,
@@ -89,6 +90,7 @@ const store = configureStore({
     timelog: timelogReducer,
     timelogModal: timelogModalReducer,
     dtrExport: dtrExportReducer,
+    activityLog: activityLogReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
