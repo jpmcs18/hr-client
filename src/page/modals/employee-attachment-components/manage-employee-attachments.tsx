@@ -1,31 +1,34 @@
 import {
   faDownload,
   faExclamationCircle,
+  faFileUpload,
   faMaximize,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { isCatchClause } from 'typescript';
-import { Pages } from '../../constant';
+import { Pages } from '../../../constant';
 import {
   useSetBusy,
   useSetToasterMessage,
-} from '../../custom-hooks/authorize-provider';
-import { downloadFile, hasAccess, validateFileSize } from '../../helper';
+} from '../../../custom-hooks/authorize-provider';
+import { downloadFile, hasAccess, validateFileSize } from '../../../helper';
 import {
   deleteAttachment,
   getAttachments,
   uploadAttachment,
-} from '../../repositories/employee-attachment-queries';
+} from '../../../repositories/employee-attachment-queries';
 import {
   employeeAttachmentModalActions,
   FileUploading,
-} from '../../state/reducers/employee-attachment-modal-reducer';
-import { RootState } from '../../state/store';
-import CustomLoading from '../components/custom-loading';
-import Modal from './modal';
+} from '../../../state/reducers/employee-attachment-modal-reducer';
+import { RootState } from '../../../state/store';
+import CustomLoading from '../../components/custom-loading';
+import Modal from '../modal';
+import FileAttachment from './file-attachment';
 
 export default function ManageEmployeeAttachments() {
   const dispatch = useDispatch();
@@ -86,31 +89,21 @@ export default function ManageEmployeeAttachments() {
       )
     );
     toUpload.forEach((file) => {
-      try {
-        validateFileSize(file.file);
-        uploadAttachment(file.file!, employeeAttachmentModalState.employee!.id)
-          .then((res) => {
-            if (res) {
-              dispatch(
-                employeeAttachmentModalActions.updateUploadedFiles({
-                  tempId: file.tempId,
-                  attachment: res,
-                })
-              );
-            }
-          })
-          .catch((err) => {
-            setToasterMessage({ content: err.message });
-          })
-          .finally(() => setBusy(false));
-      } catch (err: any) {
-        dispatch(
-          employeeAttachmentModalActions.setErrorFile({
-            tempId: file.tempId!,
-            errorMessage: err.message,
-          })
-        );
-      }
+      uploadAttachment(file.file!, employeeAttachmentModalState.employee!.id)
+        .then((res) => {
+          if (res) {
+            dispatch(
+              employeeAttachmentModalActions.updateUploadedFiles({
+                tempId: file.tempId,
+                attachment: res,
+              })
+            );
+          }
+        })
+        .catch((err) => {
+          setToasterMessage({ content: err.message });
+        })
+        .finally(() => setBusy(false));
     });
   }
   async function onSelectCapture() {
@@ -153,9 +146,6 @@ export default function ManageEmployeeAttachments() {
         });
     }
   }
-  function openNewTab(fileUrl?: string) {
-    window.open(fileUrl, '_blank');
-  }
   return (
     <Modal
       className='employee-attachment-modal'
@@ -170,36 +160,33 @@ export default function ManageEmployeeAttachments() {
         accept='image/png, image/jpeg, application/pdf'
       />
       <div className='employee-attachment-content-body'>
-        {hasAccess(
-          userProfileState.moduleRights,
-          Pages.Attachment,
-          'Add',
-          userProfileState.systemUser?.isAdmin
-        ) && (
-          <div
-            className='attachment attachment-add'
-            onClick={showFileBrowser}></div>
-        )}
         {employeeAttachmentModalState.files.map((file) => (
           <div key={file.tempId} className='attachment'>
             {file.isProcessing && <CustomLoading />}
+
+            {file.isError ? (
+              <div className='error-message'>
+                <div className='file'>{file.file?.name}</div>
+                <div className='error'>
+                  <FontAwesomeIcon icon={faExclamationCircle} />
+                  {file.errorMessage}
+                </div>
+              </div>
+            ) : (
+              <FileAttachment
+                file={file!}
+                allowView={
+                  !!hasAccess(
+                    userProfileState.moduleRights,
+                    Pages.Attachment,
+                    'Maximize (Print & Download)',
+                    userProfileState.systemUser?.isAdmin
+                  )
+                }
+              />
+            )}
             {!file.isProcessing && (
               <div className='attachment-control btn-actions-group'>
-                {hasAccess(
-                  userProfileState.moduleRights,
-                  Pages.Attachment,
-                  'Maximize (Print & Download)',
-                  userProfileState.systemUser?.isAdmin
-                ) &&
-                  !file.isError &&
-                  file.showPreview && (
-                    <button
-                      className='btn-action'
-                      title='Maximize (Print & Download)'
-                      onClick={() => openNewTab(file.fileUrl)}>
-                      <FontAwesomeIcon icon={faMaximize} />
-                    </button>
-                  )}
                 {hasAccess(
                   userProfileState.moduleRights,
                   Pages.Attachment,
@@ -215,45 +202,24 @@ export default function ManageEmployeeAttachments() {
                 )}
               </div>
             )}
-
-            {file.isError ? (
-              <div className='error-message'>
-                <div className='file'>{file.file?.name}</div>
-                <div className='error'>
-                  <FontAwesomeIcon icon={faExclamationCircle} />{' '}
-                  {file.errorMessage}
-                </div>
-              </div>
-            ) : !file.showPreview ? (
-              <>
-                <a
-                  href={file.url}
-                  download='Example-PDF-document'
-                  target='_blank'
-                  rel='noopener noreferrer'>
-                  <button className='btn-tool download-file'>
-                    <div className='file-name'>
-                      <p>{file.fileName}</p>
-                    </div>
-                    <div className='download'>
-                      <FontAwesomeIcon icon={faDownload} />
-                      <span className='desktop-features'>Download</span>
-                    </div>
-                  </button>
-                </a>
-              </>
-            ) : (
-              <>
-                {file.isImage ? (
-                  <img src={file.url} alt={file.fileName} />
-                ) : (
-                  <iframe title={file.url} src={file.url} />
-                )}
-              </>
-            )}
           </div>
         ))}
       </div>
+      {hasAccess(
+        userProfileState.moduleRights,
+        Pages.Attachment,
+        'Add',
+        userProfileState.systemUser?.isAdmin
+      ) && (
+        <div className='modal-footer'>
+          <div className='btn-actions-group'>
+            <button className='btn-action' onClick={showFileBrowser}>
+              <FontAwesomeIcon icon={faFileUpload} />
+              <span className='desktop-features'>Upload File</span>
+            </button>
+          </div>
+        </div>
+      )}
     </Modal>
   );
 }

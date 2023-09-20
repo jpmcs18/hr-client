@@ -15,7 +15,7 @@ export interface FileUploading {
   isImage: boolean;
   isError: boolean;
   errorMessage: string;
-  showPreview: boolean;
+  fileSize: string;
 }
 interface State {
   employee: Employee | undefined;
@@ -60,7 +60,7 @@ const employeeAttachmentModalSlice = createSlice({
             fileUrl: attachments.fileUrl,
             isDeleted: false,
             isError: false,
-            showPreview: !!attachments.showPreview,
+            fileSize: attachments.fileSize ?? '',
             errorMessage: '',
           };
         })
@@ -97,7 +97,7 @@ const employeeAttachmentModalSlice = createSlice({
             fileName: file.name,
             url: isImage ? URL.createObjectURL(file) : '',
             isImage: isImage,
-            showPreview: false,
+            fileSize: '',
             isDeleted: false,
             isError: false,
             errorMessage: '',
@@ -137,7 +137,7 @@ const employeeAttachmentModalSlice = createSlice({
           file.id = action.payload.attachment.id;
           file.url = action.payload.attachment.fileUrl!;
           file.fileUrl = action.payload.attachment.fileUrl;
-          file.showPreview = !!action.payload.attachment.showPreview;
+          file.fileSize = action.payload.attachment.fileSize ?? '';
         }
         return file;
       });

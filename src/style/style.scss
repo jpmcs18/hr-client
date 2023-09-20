@@ -1408,16 +1408,6 @@ fieldset {
     outline: none;
   }
 }
-.download-file {
-  margin: 0 auto;
-  margin-top: 3em;
-  box-sizing: border-box;
-  .file-name {
-    p {
-      word-break: break-all;
-    }
-  }
-}
 .otp-main-container {
   display: flex;
   flex-direction: row;
@@ -1724,33 +1714,42 @@ fieldset {
     .employee-attachment-content-body {
       height: 70vh !important;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       overflow-y: scroll;
       padding: 1em;
       .attachment-deleted {
         opacity: 0.5;
       }
       .attachment {
+        width: 100%;
         border-radius: 0.5em;
         box-sizing: border-box;
         position: relative;
-        margin: 0.5em;
+        margin: 0.2em 0;
         padding: 0.5em;
-        height: 20em;
-        width: 23%;
         box-shadow: 0em 0em 0.3em 0em var(--shadow-color);
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        .file-attachment {
+          margin: 0 0.5em;
+          .btn-tool {
+            margin: 0 !important;
+            padding: 0 !important;
+            .file-name {
+              word-break: break-all;
+              font-size: var(--header-font-size);
+            }
+          }
+          .subtitle {
+            margin-top: -0.5em !important;
+          }
+        }
         img,
         iframe {
           height: 100%;
           width: 100%;
           object-fit: contain;
-        }
-        .attachment-control {
-          position: absolute;
-          right: 0;
-          top: 0;
-          background-color: var(--shadow-color);
-          border-radius: 0.5em;
         }
         .error-message {
           background-color: var(--error-color);

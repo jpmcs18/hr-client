@@ -15,7 +15,7 @@ import EmployeeHistoryModal from '../../modals/employee-history-components/emplo
 import EmployeeLeaveCreditsModal from '../../modals/employee-leave-credits-modal';
 import EmployeePromotion from '../../modals/employee-promotion';
 import ManageEmployee from '../../modals/manage-employee';
-import ManageEmployeeAttachments from '../../modals/manage-employee-attachments';
+import ManageEmployeeAttachments from '../../modals/employee-attachment-components/manage-employee-attachments';
 import EmployeeButtons from './employee-buttons';
 import EmployeeItems from './employee-items';
 import EmployeeSearch from './employee-search';
