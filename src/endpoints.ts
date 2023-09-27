@@ -224,3 +224,7 @@ export const TimeLogEnd = {
   ActualTimeLog: 'timelogs/report/actual',
   DTR: 'timelogs/report/dtr',
 };
+
+export const ActivityLogEnd = {
+  Search: 'activity-log/search',
+};
