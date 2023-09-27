@@ -1,40 +1,42 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Searchable from '../../models/client-model/Searchable';
-import WorkSchedule from '../../models/entities/WorkSchedule';
+import ActivityLog from '../../models/entities/ActivityLog';
+import Employee from '../../models/entities/Employee';
+import RequestHistory from '../../models/entities/RequestHistory';
+import RequestType from '../../models/entities/RequestType';
 
 interface State extends Searchable {
-  workSchedules: WorkSchedule[];
-  selectedWorkSchedule: WorkSchedule | undefined;
+  activityLogs: ActivityLog[];
   startDate: Date | undefined;
   endDate: Date | undefined;
+  employee: Employee | undefined;
 }
 const initialState: State = {
-  workSchedules: [],
-  selectedWorkSchedule: undefined,
+  activityLogs: [],
+  startDate: undefined,
+  endDate: undefined,
+  employee: undefined,
   key: '',
   currentPage: 1,
   pageCount: 0,
   initiateSearch: false,
-  startDate: undefined,
-  endDate: undefined,
 };
 
-const workScheduleSlice = createSlice({
-  name: 'work-schedule',
+const activityLogSlice = createSlice({
+  name: 'activity-log',
   initialState: initialState,
   reducers: {
-    fill(state, action: PayloadAction<WorkSchedule[]>) {
-      state.workSchedules = action.payload;
-      state.selectedWorkSchedule = undefined;
-    },
-    setSelected(state, action: PayloadAction<WorkSchedule | undefined>) {
-      state.selectedWorkSchedule = action.payload;
+    fill(state, action: PayloadAction<ActivityLog[]>) {
+      state.activityLogs = action.payload;
     },
     setStartDate(state, action: PayloadAction<Date | undefined>) {
       state.startDate = action.payload;
     },
     setEndDate(state, action: PayloadAction<Date | undefined>) {
       state.endDate = action.payload;
+    },
+    setEmployee(state, action: PayloadAction<Employee | undefined>) {
+      state.employee = action.payload;
     },
     setCurrentPage(state, action: PayloadAction<number>) {
       state.currentPage = action.payload;
@@ -48,5 +50,5 @@ const workScheduleSlice = createSlice({
   },
 });
 
-export default workScheduleSlice.reducer;
-export const workScheduleActions = workScheduleSlice.actions;
+export default activityLogSlice.reducer;
+export const activityLogActions = activityLogSlice.actions;

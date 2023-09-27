@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Pages } from '../../../constant';
 import {
@@ -42,12 +42,15 @@ export default function EmployeePage() {
   const setToasterMessage = useSetToasterMessage();
   useEffect(
     () => {
-      searchEmp();
+      if (employeeState.initiateSearch) {
+        dispatch(employeeActions.setInitiateSearch(false));
+        console.log(employeeState.initiateSearch);
+        searchEmp();
+      }
     },
     //eslint-disable-next-line
     [employeeState.initiateSearch]
   );
-
   useEffect(
     () => {
       fetchOffices();
@@ -58,10 +61,9 @@ export default function EmployeePage() {
     []
   );
 
-  async function searchEmp() {
-    if (!employeeState.initiateSearch) return;
+  const searchEmp = useCallback(async () => {
+    console.log('asd');
     setBusy(true);
-    dispatch(employeeActions.setInitiateSearch(false));
     await searchEmployee(
       employeeState.key,
       employeeState.currentPage,
@@ -82,7 +84,13 @@ export default function EmployeePage() {
       .finally(() => {
         setBusy(false);
       });
-  }
+  }, [
+    employeeState.key,
+    employeeState.currentPage,
+    employeeState.selectedOfficeId,
+    employeeState.selectedPositionId,
+    employeeState.selectedGenderId,
+  ]);
 
   async function fetchOffices() {
     setBusy(true);

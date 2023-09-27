@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import activityLogReducer from './reducers/activity-log-reducer';
 import dropdownReducer from './reducers/dropdown-reducer';
 import dtrExportReducer from './reducers/dtr-export-reducer';
 import employeeAttachmentModalReducer from './reducers/employee-attachment-modal-reducer';
@@ -89,6 +90,7 @@ const store = configureStore({
     timelog: timelogReducer,
     timelogModal: timelogModalReducer,
     dtrExport: dtrExportReducer,
+    activityLog: activityLogReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

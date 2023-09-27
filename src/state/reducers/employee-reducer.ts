@@ -21,7 +21,7 @@ const initialState: State = {
   key: '',
   currentPage: 1,
   pageCount: 0,
-  initiateSearch: true,
+  initiateSearch: false,
   positions: [],
   offices: [],
   genders: [],
@@ -69,6 +69,7 @@ const employeeSlice = createSlice({
       state.pageCount = action.payload;
     },
     setInitiateSearch(state, action: PayloadAction<boolean>) {
+      console.log(action.payload);
       state.initiateSearch = action.payload;
     },
   },

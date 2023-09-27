@@ -56,6 +56,10 @@ export const RequestHistoryEnd = {
   Search: 'request-history/search',
 };
 
+export const ActivityLogEnd = {
+  Search: 'activity-logs/search',
+};
+
 export const EmployeeLeaveCreditsHistoryEnd = {
   Search: 'employee-leave-credits-history/search',
 };

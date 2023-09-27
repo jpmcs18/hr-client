@@ -16,7 +16,7 @@ const initialState: State = {
   requestTypeId: undefined,
   currentPage: 1,
   pageCount: 0,
-  initiateSearch: true,
+  initiateSearch: false,
   requestTypes: [],
 };
 

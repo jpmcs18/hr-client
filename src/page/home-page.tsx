@@ -41,6 +41,7 @@ import WorkSchedulePage from './components/work-schedule-components/work-schedul
 import TimeLogPage from './components/timelog-components/timelog-page';
 import DTRExportPage from './components/dtr-export-components/dtr-export-page';
 import KeyGenerator from './key-generator';
+import ActivityLogPage from './components/activity-log-components/activity-log-page';
 export default function HomePage() {
   const [showProfile, setShowProfile] = useState(false);
   const setMessage = useSetMessage();
@@ -294,6 +295,12 @@ export default function HomePage() {
               <Route
                 path={getPage(Pages.KeyGenerator).route}
                 element={<KeyGenerator />}
+              />
+            )}
+            {userProfileState.systemUser?.isAdmin && (
+              <Route
+                path={getPage(Pages.ActivityLog).route}
+                element={<ActivityLogPage />}
               />
             )}
             <Route
