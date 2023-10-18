@@ -55,11 +55,6 @@ export const PositionEnd = {
 export const RequestHistoryEnd = {
   Search: 'request-history/search',
 };
-
-export const ActivityLogEnd = {
-  Search: 'activity-logs/search',
-};
-
 export const EmployeeLeaveCreditsHistoryEnd = {
   Search: 'employee-leave-credits-history/search',
 };
@@ -226,5 +221,5 @@ export const TimeLogEnd = {
 };
 
 export const ActivityLogEnd = {
-  Search: 'activity-log/search',
+  Search: 'activity-logs/search',
 };

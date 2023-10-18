@@ -2,8 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Searchable from '../../models/client-model/Searchable';
 import ActivityLog from '../../models/entities/ActivityLog';
 import Employee from '../../models/entities/Employee';
-import RequestHistory from '../../models/entities/RequestHistory';
-import RequestType from '../../models/entities/RequestType';
 
 interface State extends Searchable {
   activityLogs: ActivityLog[];
