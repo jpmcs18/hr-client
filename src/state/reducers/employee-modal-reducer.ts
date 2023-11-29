@@ -141,7 +141,6 @@ const employeeModalSlice = createSlice({
               tempId: Guid.create().toString(),
               deleted: false,
               updated: false,
-              tempAmount: toCommaSeparateAmount(x.amount.toString()),
             };
           })
           .sort((a, b) =>
@@ -337,7 +336,6 @@ const employeeModalSlice = createSlice({
         updated: false,
         added: true,
         amount: 0,
-        tempAmount: '0',
       });
       state.remunerations = state.remunerations.filter(
         (x) => x.id !== +action.payload
@@ -371,14 +369,13 @@ const employeeModalSlice = createSlice({
     },
     updateRemuneration(
       state,
-      action: PayloadAction<{ rowId: string; value: string }>
+      action: PayloadAction<{ rowId: string; value: number }>
     ) {
       state.employeeRemunerations = state.employeeRemunerations.map((x) => {
         if (x.tempId === action.payload.rowId) {
           x = {
             ...x,
-            tempAmount: action.payload.value,
-            amount: +action.payload.value.replaceAll(',', ''),
+            amount: action.payload.value,
           };
           if (x.id > 0) {
             x.updated = true;
@@ -386,6 +383,7 @@ const employeeModalSlice = createSlice({
         }
         return x;
       });
+      console.log(state.employeeRemunerations.slice());
     },
     setModeOfSeparation(state, action: PayloadAction<ModeOfSeparation[]>) {
       state.modeOfSeparations = action.payload;

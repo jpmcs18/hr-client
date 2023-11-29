@@ -5,6 +5,5 @@ export default interface SalaryGradeItem {
   step: number;
   amount: number;
 
-  tempAmount: string | undefined;
   tempId: string | undefined;
 }

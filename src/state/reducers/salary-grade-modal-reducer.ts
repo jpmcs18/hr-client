@@ -44,7 +44,6 @@ const salaryGradeModalSlice = createSlice({
               salaryGrade: i,
               step: j,
               amount: 0,
-              tempAmount: '0.00',
               tempId: Guid.create().toString(),
             });
           }
@@ -60,7 +59,6 @@ const salaryGradeModalSlice = createSlice({
                   return {
                     ...x,
                     tempId: Guid.create().toString(),
-                    tempAmount: toDisplayAmount(x.amount.toString()),
                   };
                 })
                 .filter((x) => x.salaryGrade === i && x.step === j)[0]
@@ -84,7 +82,7 @@ const salaryGradeModalSlice = createSlice({
       action: PayloadAction<{
         tempId: string;
         index: number;
-        amount: string;
+        amount: number;
       }>
     ) {
       state.salaryGradeItems[action.payload.index] = state.salaryGradeItems[
@@ -93,8 +91,7 @@ const salaryGradeModalSlice = createSlice({
         .slice()
         .map((sg) => {
           if (sg.tempId === action.payload.tempId) {
-            sg.tempAmount = action.payload.amount;
-            sg.amount = +action.payload.amount.replaceAll(',', '');
+            sg.amount = action.payload.amount;
           }
 
           return sg;

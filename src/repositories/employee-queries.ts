@@ -74,7 +74,7 @@ export async function updateEmployee(
   updatedEmployeeEligibilities: EmployeeEligibility[],
   employeeEligibilityIdsToDelete: number[],
   newRemunerations: EmployeeRemuneration[],
-  updatedEmployeeRemunerations: EmployeeRemuneration[],
+  updatedRemunerations: EmployeeRemuneration[],
   employeeRemunerationIdsToDelete: number[]
 ): Promise<boolean | undefined> {
   return await httpPut(EmployeeEnd.Update + '/' + employee.id, {
@@ -83,7 +83,7 @@ export async function updateEmployee(
     updatedEmployeeEligibilities,
     employeeEligibilityIdsToDelete,
     newRemunerations,
-    updatedEmployeeRemunerations,
+    updatedRemunerations,
     employeeRemunerationIdsToDelete,
   });
 }

@@ -102,12 +102,6 @@ export default function CustomNumber({
     input.current.setSelectionRange(selectionStart, selectionStart);
     oldnum.current = inputData;
 
-    if (!!inputData) {
-      onChange?.({
-        elementName: name ?? '',
-        value: +inputData.replaceAll(',', ''),
-      });
-    }
     if (isBlur) {
       onInputBlur?.();
     }
@@ -115,7 +109,7 @@ export default function CustomNumber({
 
   return (
     <div className={'custom-input ' + className}>
-      <label htmlFor={name}>{title}</label>
+      {title && <label htmlFor={name}>{title}</label>}
       <input
         className='custom-number'
         disabled={disabled}
@@ -125,11 +119,16 @@ export default function CustomNumber({
         type='text'
         name={name}
         id={id}
-        onChange={(e) => {
+        onChange={() => {
           formatCurrency(false);
         }}
         onBlur={() => {
           formatCurrency(true);
+
+          onChange?.({
+            elementName: name ?? '',
+            value: +oldnum.current.replaceAll(',', ''),
+          });
         }}
       />
     </div>

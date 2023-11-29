@@ -8,6 +8,4 @@ export default interface EmployeeRemuneration extends ManageableInterface {
   amount: number;
 
   remuneration: Remuneration | undefined;
-
-  tempAmount?: string;
 }
